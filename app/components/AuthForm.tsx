@@ -6,8 +6,10 @@ import { z } from "zod"
 
 import { Button } from "@/app/components/ui/button"
 import { Form } from "@/app/components/ui/form"
+
 import Image from "next/image"
 import Link from "next/link"
+
 import { toast } from "sonner"
 
 const authFormSchema = (type: FormType) => {
