@@ -9,7 +9,7 @@ const app = express()
 const Port = process.env.PORT || 8000
 
 const corsOptions = {
-    origin: ['http://localhost:4173', 'http://localhost:4174', "https://design.trendgully.com"],
+    origin: ['http://localhost:3000'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 };
