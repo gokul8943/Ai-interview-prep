@@ -5,6 +5,8 @@ export interface IUserSchema extends Document{
     email: string;
     password: string;
     googleId: string;
+    role:string;
+    isVerified: boolean;
     createdAt: Date;
     updatedAt: Date
 }
