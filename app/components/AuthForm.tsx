@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { Button } from "@/app/components/ui/button"
-import { Form  } from "@/app/components/ui/form"
+import { Form } from "@/app/components/ui/form"
 
 import FormField from "./FormField"
 
@@ -30,7 +30,6 @@ const AuthForm = ({ type }: { type: FormType }) => {
     const router = useRouter();
 
     const formSchema = authFormSchema(type);
-
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -38,17 +37,19 @@ const AuthForm = ({ type }: { type: FormType }) => {
             email: "",
             password: "",
         },
-    })
+    });
 
     // 2. Define a submit handler.
     function onSubmit(data: z.infer<typeof formSchema>) {
         try {
             if (type === 'sign-up') {
-                const { name, email, password } = data;
+
+                console.log("Form submitted with data:", data);
 
                 toast.success("Account created successfully. Please sign in.");
                 router.push("/sign-in");
             } else {
+                console.log("Sign-in triggered", data);
                 toast.success("Signed in successfully.");
                 router.push("/");
             }
@@ -65,11 +66,14 @@ const AuthForm = ({ type }: { type: FormType }) => {
             <div className="flex flex-col gap-6 card py-14 px-10">
                 <div className="flex flex-row gap-2 justify-center ">
                     <Image src='/logo.svg' alt='logo' height={32} width={38} />
-                    <h2 className="text-primary-100">Prepwise</h2>
+                    <h2 className="text-primary-100">No Name</h2>
                 </div>
                 <h3>Pratice Job Interview with AI</h3>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 mt-4 form" >
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="w-full space-y-6 mt-4 form"
+                    >
                         {!isSignIn && (
                             <FormField
                                 control={form.control}
@@ -95,7 +99,10 @@ const AuthForm = ({ type }: { type: FormType }) => {
                             placeholder="Enter your password"
                             type="password"
                         />
-                        <Button className="btn" type="submit">{isSignIn ? 'Sign In' : 'Create an Acocunt'}</Button>
+
+                        <Button className="btn" type="submit">
+                            {isSignIn ? "Sign In" : "Create an Account"}
+                        </Button>
                     </form>
                 </Form>
                 <p className="text-center">
