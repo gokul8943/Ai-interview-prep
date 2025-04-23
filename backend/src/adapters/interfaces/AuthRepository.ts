@@ -1,5 +1,6 @@
 
 
 export interface AuthRepository {
-    signUp(): void
+    signUp(userData:any): Promise<any>
+    Login(email:string): Promise<any>
 }

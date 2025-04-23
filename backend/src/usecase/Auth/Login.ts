@@ -1,9 +1,9 @@
 import { AuthRepository } from "../../adapters/interfaces/AuthRepository";
 
-export class SignUp {
+export class Login {
   constructor(private authRepository: AuthRepository) {}
 
-  async execute(userData: any): Promise<any> {
-    return this.authRepository.signUp(userData);
+  async execute(email: string): Promise<any> {
+    return this.authRepository.Login(email);
   }
 }
