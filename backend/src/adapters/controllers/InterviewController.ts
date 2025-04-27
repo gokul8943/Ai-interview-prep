@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { CreateInterview } from "../../usecase/Interview/CreateInterview";
 import { GetInterview } from "../../usecase/Interview/GetInterview";
+import { GetInterviewById } from "../../usecase/Interview/GetInterviewById";
 
 
 export class InterviewController {
     constructor(
         private readonly createInterviewUseCase: CreateInterview,
         private readonly getInterviewUseCase: GetInterview,
-
+        private readonly getInterviewByIdUseCase: GetInterviewById
     ) { }
 
     async createInterview(req: Request, res: Response) {
@@ -30,4 +31,15 @@ export class InterviewController {
             res.status(500).json({ message: "Error getting interviews" });
         }
     }
+
+    async getInterviewById(req: Request, res: Response) {
+        try {
+            const interviewId = req.params.id;
+            const interview = await this.getInterviewByIdUseCase.execute(interviewId);
+            res.status(200).json(interview);
+        } catch (error) {
+            console.error("Error getting interview by ID:", error);
+            res.status(500).json({ message: "Error getting interview by ID" });
+        }
+    }   
 }

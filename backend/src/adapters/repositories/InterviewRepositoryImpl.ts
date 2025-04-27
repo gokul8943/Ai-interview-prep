@@ -29,4 +29,14 @@ export class InterviewRepositoryImpl implements InterviewRepository {
             return false;
         }
     }
+
+    async getInterviewById(interviewId: string): Promise<any> {
+        try {
+            const interview = await this.InterviewModel.findById(interviewId);
+            return interview;
+        } catch (error) {
+            console.error("An error occurred on interview repo", error);
+            return false;
+        }
+    }
 }

@@ -4,11 +4,14 @@ import { CreateInterview } from "../../usecase/Interview/CreateInterview";
 import { GetInterview } from "../../usecase/Interview/GetInterview";
 import { InterviewController } from "../controllers/InterviewController";
 import interviewModel from "../../framework/models/interviewModel";
+import { GetInterviewById } from "../../usecase/Interview/GetInterviewById";
+
 
 const interviewRepository = new InterviewRepositoryImpl(interviewModel);
 const createInterview = new CreateInterview(interviewRepository);
 const getInterview = new GetInterview(interviewRepository);
-const interviewController = new InterviewController( createInterview, getInterview);
+const getInterviewById = new GetInterviewById(interviewRepository);
+const interviewController = new InterviewController( createInterview, getInterview,getInterviewById);
 
 const router = Router();
 
@@ -24,6 +27,13 @@ router.post('/create-interview', async (req, res) => {
 router.get('/get-interviews', async (req, res) => { 
     try {
         interviewController.getInterviews(req, res)
+    } catch (error) {
+        res.status(500).json({ message: "Error in routes", error })
+    }
+})
+router.get('/get-interviews/:id', async (req, res) => { 
+    try {
+        interviewController.getInterviewById(req, res)
     } catch (error) {
         res.status(500).json({ message: "Error in routes", error })
     }
