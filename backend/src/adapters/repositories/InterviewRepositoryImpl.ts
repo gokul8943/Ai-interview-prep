@@ -39,4 +39,13 @@ export class InterviewRepositoryImpl implements InterviewRepository {
             return false;
         }
     }
+    async deleteInterview(interviewId: string): Promise<any> {
+        try {
+            const interview = await this.InterviewModel.findByIdAndDelete(interviewId);
+            return interview;
+        } catch (error) {
+            console.error("An error occurred on interview repo", error);
+            return false;
+        }
+    }
 }
