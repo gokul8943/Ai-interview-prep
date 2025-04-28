@@ -1,5 +1,3 @@
-
-
 export interface InterviewRepository {
     createInterview(interview: any): Promise<any>
     getInterviews(): Promise<any>

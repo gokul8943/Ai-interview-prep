@@ -4,6 +4,7 @@ import cors from "cors"
 import morgan from "morgan"
 import { dbConnection } from "./database/dbConnection"
 import authRouter from "../adapters/routes/AuthRoutes"
+import interviewRouter from '../adapters/routes/InterviewRoutes'
 
 dotenv.config()
 const app = express()
@@ -22,12 +23,10 @@ app.use(cors(
     corsOptions
 ))
 
-
 app.use('/auth',authRouter)
+app.use('/interview',interviewRouter)
 
 dbConnection()
-
-
 
 app.listen(Port, () => {
     console.log(`[server]: Server is running at http://localhost:${Port}`);;
