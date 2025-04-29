@@ -33,7 +33,7 @@ router.post('/sign-in', async(req, res) =>{
         res.status(500).json({ message: "Error in routes", error  })
     }
 });
-router.post('verify-otp', async (req, res) => {
+router.post('/verify-otp', async (req, res) => {
     try {
         authController.verifyOtp(req, res)
     } catch (error) {
