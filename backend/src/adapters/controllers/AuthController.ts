@@ -40,6 +40,11 @@ export class AuthController {
             return res.status(500).json({ message: "Internal server error" });
         }
     }
+ 
+    async  sendOtp(req: Request, res: Response) {
+            
+    }
+
 
     async Login(req: Request, res: Response) {
         try {
