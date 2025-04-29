@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 const Rootlayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div>
+    <div className='root-layout'>
       <nav>
         <Link href='/' className='flex item-center gap-2'>
           <Image src="/logo.svg" alt="logo" width={38} height={32} />
