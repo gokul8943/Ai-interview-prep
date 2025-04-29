@@ -5,6 +5,7 @@ import { SignUp } from "../../usecase/Auth/SignUp";
 import { Login } from "../../usecase/Auth/Login";
 import { GenerateOtp } from "../../usecase/Auth/GenerateOtp";
 import { VerifyOtp } from "../../usecase/Auth/VerifyOtp";
+import { generateOtp } from "../../utils/generateOtp";
 
 const jwtSecret: any = process.env.JWT_SECRET;
 
@@ -35,10 +36,10 @@ export class AuthController {
                 password: encryptedPassword,
             });
 
-            // Generate and send OTP
-            const otp = await this.generateOtpUseCase.execute(email);
+            const otp = generateOtp()
+            const generate = await this.generateOtpUseCase.execute(email,otp);
 
-            return res.status(201).json({ message: "User registered. Verify OTP sent to email.", user, otp });
+            return res.status(201).json({ message: "User registered. Verify OTP sent to email.", user, generate });
 
         } catch (error) {
             console.error("Signup Error:", error);

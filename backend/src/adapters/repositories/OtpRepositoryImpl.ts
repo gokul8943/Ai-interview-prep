@@ -10,8 +10,17 @@ export class OtpRepositoryImpl implements OtpRepository {
     }
 
     async createOtp(email: string, otp: string): Promise<any> {
-        await this.OtpModel.deleteMany({ email }); // Remove old OTPs
-        return this.OtpModel.create({ email, otp });
+        try {
+            const result = await this.OtpModel.findOneAndUpdate(
+                { email },
+                { otp, email, createdAt: new Date() },
+                { upsert: true, new: true }
+              );
+            return result
+        } catch (error) {
+            
+        }
+  
     }
 
     async verifyOtp(email: string, otp: string): Promise<any> {

@@ -1,11 +1,11 @@
-export class GenerateOtp {
-    constructor(private otpRepository: any) {}
+import { OtpRepository } from "../../adapters/interfaces/OtpRepository";
+import { sendOtpEmail } from "../../utils/sendOtpEmail";
 
-    async execute(email: string) {
-        const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
-        await this.otpRepository.createOtp(email, otp);
-        // Here you would actually send the OTP to the user's email.
-        console.log(`OTP for ${email}: ${otp}`); // For now, log it
-        return otp;
+export class GenerateOtp {
+    constructor(private otpRepository:OtpRepository) {}
+
+    async execute(email: string,otp:string): Promise<any> {
+        await sendOtpEmail(email, otp);
+        return this.otpRepository.createOtp(email,otp);
     }
 }

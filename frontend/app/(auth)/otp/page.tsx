@@ -7,7 +7,7 @@ import Image from 'next/image';
 type InputRef = HTMLInputElement | null;
 
 const Page: React.FC = () => {
-    const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
+    const [otp, setOtp] = useState<string[]>(Array(4).fill(''));
     const inputRefs = useRef<InputRef[]>([]);
 
     // Handle OTP input change
@@ -90,7 +90,7 @@ const Page: React.FC = () => {
 
                 <div className="mb-8">
                     <div className="flex justify-center space-x-2">
-                        {[...Array(6)].map((_, index) => (
+                        {[...Array(4)].map((_, index) => (
                             <input
                                 key={index}
                                 type="text"

@@ -4,13 +4,15 @@ import { AuthController } from "../controllers/AuthController";
 import { SignUp } from "../../usecase/Auth/SignUp";
 import userModel from "../../framework/models/userModel";
 import { Login } from "../../usecase/Auth/Login";
-import { verify } from "crypto";
 import { VerifyOtp } from "../../usecase/Auth/VerifyOtp";
 import { GenerateOtp } from "../../usecase/Auth/GenerateOtp";
-import otpRepository from "../../framework/models/otpModel";
+import otpModel from "../../framework/models/otpModel";
+import { OtpRepositoryImpl } from "../repositories/OtpRepositoryImpl";
+
 
 
 const authRepository = new AuthRepositoryImpl(userModel)
+const otpRepository = new OtpRepositoryImpl(otpModel)
 const signUp = new SignUp(authRepository);
 const login = new Login(authRepository);
 const generateOtp = new GenerateOtp(otpRepository);
