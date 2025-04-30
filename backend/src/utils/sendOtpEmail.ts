@@ -1,15 +1,8 @@
-import nodemailer from 'nodemailer';
+import { transporter } from '../framework/services/mailOptions';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.Email_User,
-    pass: process.env.Email_Pass,
-  },
-});
 
 export const sendOtpEmail = async (to: string, otp: string) => {
   const mailOptions = {
@@ -17,7 +10,23 @@ export const sendOtpEmail = async (to: string, otp: string) => {
     to,
     subject: 'Your OTP Code',
     text: `Your OTP is ${otp}. It is valid for 10 minutes.`,
+    html: `
+      <div style="font-family: Arial, sans-serif; padding: 20px;">
+        <h2>Welcome to Audionix!</h2>
+        <p>Your One-Time Password (OTP) is:</p>
+        <h1 style="color: #2b2b2b;">${otp}</h1>
+        <p>This OTP is valid for 10 minutes.</p>
+      </div>
+    `,
   };
 
-  await transporter.sendMail(mailOptions);
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent:', info.response);
+    return info;
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw error;
+  }
 };
+
