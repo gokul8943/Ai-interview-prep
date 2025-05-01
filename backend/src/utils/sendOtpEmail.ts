@@ -9,10 +9,10 @@ export const sendOtpEmail = async (to: string, otp: string) => {
     from: process.env.Email_User,
     to,
     subject: 'Your OTP Code',
-    text: `Your OTP is ${otp}. It is valid for 10 minutes.`,
+    text: `Your OTP is ${otp}. It is valid for 5 minutes.`,
     html: `
       <div style="font-family: Arial, sans-serif; padding: 20px;">
-        <h2>Welcome to Audionix!</h2>
+        <h2>Welcome to INTERVIEW_PREP!</h2>
         <p>Your One-Time Password (OTP) is:</p>
         <h1 style="color: #2b2b2b;">${otp}</h1>
         <p>This OTP is valid for 10 minutes.</p>

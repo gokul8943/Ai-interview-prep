@@ -18,7 +18,8 @@ export class OtpRepositoryImpl implements OtpRepository {
               );
             return result
         } catch (error) {
-            
+            console.error("An error occurred on otp repo", error);
+            return false;
         }
   
     }
