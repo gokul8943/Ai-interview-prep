@@ -27,7 +27,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Your Interview Section */}
-      <section className="flex flex-col gap-6 mt-8">
+      <section className="flex flex-col gap-6 mt-8 root-layout p-4">
         <h2>Your Interview</h2>
         <div className="interviews-section">
           {dummyInterviews.map((interview) => (
@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Take an Interview Section */}
-      <section className="flex flex-col gap-6 mt-8">
+      <section className="flex flex-col gap-6 mt-8 p-4">
         <h2>Take an Interview</h2>
         <div className="interviews-section">
           {dummyInterviews.map((interview) => (
