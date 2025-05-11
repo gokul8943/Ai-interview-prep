@@ -4,13 +4,16 @@ import { Button } from '@/components/ui/button';
 import { dummyInterviews } from '@/constants';
 import InterviewCard from '@/components/InterviewCard';
 
+
+import robotpng from '../public/robot.png'
+
 const HomePage: React.FC = () => {
   return (
     <>
       {/* CTA Section */}
-      <section className="card-cta flex justify-between items-center">
+      <section className=" flex justify-between items-center  px-16 py-6 max-sm:px-4">
         <div className="flex flex-col gap-6 max-w-lg">
-          <h2>GET Interview-Ready with AI-powered Practice & Feedback</h2>
+          <h2 className='text-white drop-shadow-fuchsia-700 drop-shadow-2xl text-4xl font-bold'>GET Interview-Ready with AI-powered Practice & Feedback</h2>
           <p className="text-lg">Practice on real interview questions & get instant feedback</p>
           <Link to="/interview">
             <Button className="btn-primary max-sm:w-full">Start an Interview</Button>
@@ -18,7 +21,7 @@ const HomePage: React.FC = () => {
         </div>
 
         <img
-          src="/robot.png"
+          src={robotpng}
           alt="Robo-dude"
           width={400}
           height={400}
