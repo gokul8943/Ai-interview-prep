@@ -2,9 +2,14 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 
-import { cn, getRandomInterviewCover } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import DisplayTechIcons from '@/components/DisplayIcons';
 import { Button } from './ui/button';
+
+import calendersvg from '@/public/calendar.svg'
+import  starsvg from '@/public/star.svg'
+import coverImg from '@/public/generated-image-removebg-preview.png'
+
 
 interface InterviewCardProps {
   interviewId: string;
@@ -31,6 +36,8 @@ const InterviewCard: React.FC<InterviewCardProps> = ({
 }) => {
   const feedback = null as Feedback | null;
 
+  console.log(userId);
+  
   const normalizedType = /mix/gi.test(type) ? 'Mixed' : type;
 
   const formattedDate = dayjs(feedback?.createdAt || createdAt || Date.now()).format(
@@ -49,14 +56,14 @@ const InterviewCard: React.FC<InterviewCardProps> = ({
       <div className="card-interview relative p-4">
         {/* Type Badge */}
         <div
-          className={cn('absolute top-0 right-0 w-fit px-4 py-2 rounded-bl-lg', badgeColor)}
+          className={cn('absolute top-0 right-0 w-fit px-4 py-2 rounded-bl-lg ', badgeColor)}
         >
           <p className="badge-text">{normalizedType}</p>
         </div>
 
         {/* Cover Image */}
         <img
-          src={getRandomInterviewCover()}
+          src={coverImg}
           alt="cover"
           width={90}
           height={90}
@@ -64,17 +71,17 @@ const InterviewCard: React.FC<InterviewCardProps> = ({
         />
 
         {/* Interview Role */}
-        <h3 className="mt-5 capitalize">{role} Interview</h3>
+        <h3 className="mt-5 capitalize text-white font-semibold">{role} Interview</h3>
 
         {/* Date & Score */}
         <div className="flex flex-row gap-5 mt-3">
           <div className="flex flex-row gap-2">
-            <img src="/calendar.svg" width={22} height={22} alt="calendar" />
+            <img src={calendersvg} width={22} height={22} alt="calendar" />
             <p>{formattedDate}</p>
           </div>
 
           <div className="flex flex-row gap-2 items-center">
-            <img src="/star.svg" width={22} height={22} alt="star" />
+            <img src={starsvg} width={22} height={22} alt="star" />
             <p>{feedback?.totalScore || '---'}/100</p>
           </div>
         </div>
