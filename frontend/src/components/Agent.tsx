@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
+import aiAvatar from '../public/ai-avatar.png';
 
 const CallStatus = {
   INACTIVE: "INACTIVE",
@@ -27,10 +28,10 @@ const Agent: React.FC<AgentProps> = ({ userName }) => {
 
   return (
     <>
-      <div className="call-view">
+      <div className="call-view gap-6 p-[40px]">
         <div className="card-interviewer">
           <div className="avatar">
-            <img src="/ai-avatar.png" alt="AI Avatar" width={65} height={54} className="object-cover" />
+            <img src={aiAvatar} alt="AI Avatar" width={65} height={54} className="object-cover" />
             {isSpeaking && <span className="animate-speak" />}
           </div>
           <h3>AI Interviewer</h3>
@@ -60,7 +61,7 @@ const Agent: React.FC<AgentProps> = ({ userName }) => {
         </div>
       )}
 
-      <div className="w-full flex justify-center">
+      <div className="w-full flex justify-center pt-4">
         {callStatus !== CallStatus.ACTIVE ? (
           <button className="relative btn-call">
             <span
