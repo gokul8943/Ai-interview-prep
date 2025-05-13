@@ -9,6 +9,7 @@ import FormField from "./FormField";
 
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { login, register } from "@/services/UserAPi/AuthApi";
 
 type FormType = "sign-in" | "sign-up";
 
@@ -33,14 +34,14 @@ const AuthForm = ({ type }: { type: FormType }) => {
     },
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       if (type === "sign-up") {
-        console.log("Form submitted with data:", data);
+        await register(data)
         toast.success("Account created successfully. Please sign in.");
         navigate("/sign-in");
       } else {
-        console.log("Sign-in triggered", data);
+       await login(data)
         toast.success("Signed in successfully.");
         navigate("/");
       }
