@@ -7,7 +7,7 @@ import DisplayTechIcons from '@/components/DisplayIcons';
 import { Button } from './ui/button';
 
 import calendersvg from '@/public/calendar.svg'
-import  starsvg from '@/public/star.svg'
+import starsvg from '@/public/star.svg'
 import coverImg from '@/public/generated-image-removebg-preview.png'
 
 
@@ -37,7 +37,7 @@ const InterviewCard: React.FC<InterviewCardProps> = ({
   const feedback = null as Feedback | null;
 
   console.log(userId);
-  
+
   const normalizedType = /mix/gi.test(type) ? 'Mixed' : type;
 
   const formattedDate = dayjs(feedback?.createdAt || createdAt || Date.now()).format(

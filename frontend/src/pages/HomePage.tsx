@@ -33,7 +33,7 @@ const HomePage: React.FC = () => {
         <h2 className='text-white font-bold '>Your Interview</h2>
         <div className="interviews-section">
           {dummyInterviews.map((interview) => (
-            <InterviewCard interviewId={''} {...interview} key={interview.id}/>
+            <InterviewCard interviewId={''} {...interview} key={interview.id} />
           ))}
         </div>
       </section>

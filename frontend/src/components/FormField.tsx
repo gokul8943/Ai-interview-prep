@@ -20,7 +20,7 @@ const FormField = <T extends FieldValues>({
     return (
         <Controller name={name} control={control} render={({ field }) => (
             <FormItem>
-                <FormLabel className='label'>{ label}</FormLabel>
+                <FormLabel className='label'>{label}</FormLabel>
                 <FormControl>
                     <Input
                         className="input"
