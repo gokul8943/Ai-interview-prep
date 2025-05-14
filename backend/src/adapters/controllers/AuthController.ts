@@ -37,16 +37,15 @@ export class AuthController {
                 password: encryptedPassword,
             });
 
-            const otp = generateOtp()
-            const sendOtp =  sendOtpEmail(email, otp)
-            const generate = await this.generateOtpUseCase.execute(email,otp);
-console.log('otpmail',sendOtp);
+//             const otp = generateOtp()
+//             const sendOtp =  sendOtpEmail(email, otp)
+//             const generate = await this.generateOtpUseCase.execute(email,otp);
 
-            return res.status(201).json({ message: "User registered. Verify OTP sent to email.", user, generate,sendOtp });
+            return res.status(201).json({ message: "User registered. Verify OTP sent to email.", user });
 
         } catch (error) {
             console.error("Signup Error:", error);
-            return res.status(500).json({ message: "Internal server error" });
+            return res.status(500).json({ message: "Internal server error in controller" });
         }
     }
 
