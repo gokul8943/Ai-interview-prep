@@ -11,6 +11,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { login, register } from "@/services/UserAPi/AuthApi";
 
+import LogoSvg from '@/public/logo.svg'
+
 type FormType = "sign-in" | "sign-up";
 
 const authFormSchema = (type: FormType) => {
@@ -42,7 +44,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         navigate("/sign-in");
       } else {
        await login(data)
-        toast.success("Signed in successfully.");
+        toast.success("Login in successfully.");
         navigate("/");
       }
     } catch (error) {
@@ -57,7 +59,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
     <div className="card-border lg:min-w-[566px]">
       <div className="flex flex-col gap-6 card py-14 px-10">
         <div className="flex flex-row gap-2 justify-center">
-          <img src="/logo.svg" alt="logo" height={32} width={38} />
+          <img src={LogoSvg} alt="logo" height={32} width={38} />
           <h2 className="text-primary-100">No Name</h2>
         </div>
         <h3 className="text-primary-100">Practice Job Interview with AI</h3>
