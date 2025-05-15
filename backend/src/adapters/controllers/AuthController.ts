@@ -37,11 +37,11 @@ export class AuthController {
                 password: encryptedPassword,
             });
 
-//             const otp = generateOtp()
-//             const sendOtp =  sendOtpEmail(email, otp)
-//             const generate = await this.generateOtpUseCase.execute(email,otp);
+            const otp = generateOtp()
+            const sendOtp =  sendOtpEmail(email, otp)
+            const generate = await this.generateOtpUseCase.execute(email,otp);
 
-            return res.status(201).json({ message: "User registered. Verify OTP sent to email.", user });
+            return res.status(201).json({ message: "User registered. Verify OTP sent to email.", user,sendOtp,generate });
 
         } catch (error) {
             console.error("Signup Error:", error);
