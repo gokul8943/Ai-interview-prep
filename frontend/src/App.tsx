@@ -3,7 +3,8 @@ import HomePage from "./pages/HomePage";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Navbar from "./components/Navbar";
-import  Interview from "./pages/Interview";
+import Interview from "./pages/Interview";
+import OtpPage from "./pages/Otp";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/otp-verify" element={<OtpPage />} />
             <Route path="/interview" element={<Interview />} />
           </Routes>
         </div>
