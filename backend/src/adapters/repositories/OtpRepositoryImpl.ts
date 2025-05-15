@@ -24,8 +24,8 @@ export class OtpRepositoryImpl implements OtpRepository {
   
     }
 
-    async verifyOtp(email: string, otp: string): Promise<any> {
-        const record = await this.OtpModel.findOne({ email, otp });
+    async verifyOtp(email: string, otp: number): Promise<any> {
+        const record = await this.OtpModel.findOne({ email:email, otp:otp });
         return record;
     }
 

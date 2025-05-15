@@ -65,7 +65,10 @@ const AuthForm = ({ type }: { type: FormType }) => {
       }
     }
   };
+  const mail = form.getValues('email')
 
+  console.log('mails',mail);
+  
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       if (isSignIn) {
@@ -120,7 +123,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               </div>
               {!isSignIn && (
                 <Button
-                  type="button"
+                  type="submit"
                   onClick={handleSendOtp}
                   className="h-[42px] rounded-2xl bg-blue-200 text-black"
                 >
@@ -157,18 +160,18 @@ const AuthForm = ({ type }: { type: FormType }) => {
       {/* OTP Dialog for Sign-Up only */}
       {!isSignIn && (
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="sm:max-w-[425px] bg-gradient-to-tl from-black to-blue-800">
             <DialogHeader>
-              <DialogTitle>Email Verification</DialogTitle>
-              <DialogDescription>
+              <DialogTitle className="text-primary-100">Email Verification</DialogTitle>
+              <DialogDescription className="text-primary-100">
                 Enter the OTP sent to your email address.
               </DialogDescription>
             </DialogHeader>
-            <div className="w-full flex justify-center">
-              <InputOtp
+            <div className="w-full flex justify-center text-primary-100">
+              <InputOtp 
                 setEmailVerified={setEmailVerified}
                 setOpen={setOpen}
-                email={form.getValues().email}
+                email={mail}
               />
             </div>
             <DialogFooter />

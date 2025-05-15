@@ -68,7 +68,7 @@ export class AuthController {
     async verifyOtp(req: Request, res: Response) {
         try {
             const { email, otp } = req.body;
-
+             
             if (!email || !otp) {
                 return res.status(400).json({ message: "Email and OTP are required" });
             }

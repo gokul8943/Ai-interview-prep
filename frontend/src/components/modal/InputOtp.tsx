@@ -2,11 +2,10 @@
 import {
   InputOTP,
   InputOTPGroup,
-  InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { verifyOtp } from '@/services/UserAPi/AuthApi';
-import React, { useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 interface inputOtpProps {
@@ -17,10 +16,10 @@ interface inputOtpProps {
 
 const InputOtp = ({ email, setOpen, setEmailVerified }: inputOtpProps) => {
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = useState("");
   const handleSubmit = () => {
     setLoading(true);
-    verifyOtp(value, email)
+    verifyOtp(email,value)
       .then((response) => {
         setLoading(false);
         toast.success(response.data.message);
@@ -44,9 +43,6 @@ const InputOtp = ({ email, setOpen, setEmailVerified }: inputOtpProps) => {
           <InputOTPSlot index={0} />
           <InputOTPSlot index={1} />
           <InputOTPSlot index={2} />
-        </InputOTPGroup>
-        <InputOTPSeparator />
-        <InputOTPGroup>
           <InputOTPSlot index={3} />
           <InputOTPSlot index={4} />
           <InputOTPSlot index={5} />

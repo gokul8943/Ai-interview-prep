@@ -7,9 +7,9 @@ export const login = (data:any) =>{
     return axios.post('/auth/sign-in',data)
 }
 export const sendOtp = (email:any) =>{
-    return axios.post('/auth/generate-otp',email)
+    return axios.post('/auth/generate-otp',{email})
 }
 
-export const verifyOtp = (email:any,otp:any) =>{
-    return axios.post('/auth/verify-otp',email,otp,)
+export const verifyOtp = (email:string,otp:any) =>{    
+    return axios.post('/auth/verify-otp',{email,otp})
 }
