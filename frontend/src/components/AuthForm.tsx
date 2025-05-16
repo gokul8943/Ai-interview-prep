@@ -19,9 +19,10 @@ import {
 import InputOtp from "./modal/InputOtp";
 
 import { login, register } from "@/services/UserAPi/AuthApi";
-import { sendOtp } from "@/services/UserAPi/AuthApi"; 
+import { sendOtp } from "@/services/UserAPi/AuthApi";
 
 import LogoSvg from '@/public/logo.svg';
+import useAuthStore from "@/store/AuthStrore";
 
 type FormType = "sign-in" | "sign-up";
 
@@ -67,14 +68,18 @@ const AuthForm = ({ type }: { type: FormType }) => {
   };
   const mail = form.getValues('email')
 
-  console.log('mails',mail);
-  
+  console.log('mails', mail);
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       if (isSignIn) {
-        await login(data);
-        toast.success("Logged in successfully.");
-        navigate("/");
+        const response = await login(data);
+        if (response.status === 200) {
+          const { accessToken, refreshToken, user } = response.data;
+          useAuthStore.getState().login(accessToken, user, refreshToken)
+          toast.success("Logged in successfully.");
+          navigate("/");
+        }
       } else {
         if (!emailVerified) {
           toast.error("Please verify your email before creating an account.");
@@ -168,7 +173,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               </DialogDescription>
             </DialogHeader>
             <div className="w-full flex justify-center text-primary-100">
-              <InputOtp 
+              <InputOtp
                 setEmailVerified={setEmailVerified}
                 setOpen={setOpen}
                 email={mail}
