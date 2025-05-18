@@ -1,7 +1,7 @@
 import { FeedbackRepository } from "../../adapters/interfaces/FeedbackRepository";
 
 
-export class getFeedback {
+export class GetFeedback {
     constructor(private feedbackRepository: FeedbackRepository) { }
 
     async execute(): Promise<any> {

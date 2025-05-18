@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import { createFeedback } from "../../usecase/Feedback/CreateFeedback";
-import { deleteFeedback } from "../../usecase/Feedback/DeleteFeedback";
-import { getFeedback } from "../../usecase/Feedback/GetFeedback";
-import { getFeedbackById } from "../../usecase/Feedback/GetFeedbackById";
+import { CreateFeedback } from "../../usecase/Feedback/CreateFeedback";
+import { DeleteFeedback } from "../../usecase/Feedback/DeleteFeedback";
+import { GetFeedback } from "../../usecase/Feedback/GetFeedback";
+import { GetFeedbackById } from "../../usecase/Feedback/GetFeedbackById";
 
 export class FeedbackController {
     constructor(
-        private readonly createFeedbackUseCase: createFeedback,
-        private readonly getFeedbackUseCase: getFeedback,
-        private readonly getFeedbackByIdUseCase: getFeedbackById,
-        private readonly deleteFeedbackUseCase: deleteFeedback
+        private readonly createFeedbackUseCase: CreateFeedback,
+        private readonly getFeedbackUseCase: GetFeedback,
+        private readonly getFeedbackByIdUseCase: GetFeedbackById,
+        private readonly deleteFeedbackUseCase: DeleteFeedback
     ) { }
 
     async createFeedback(req: Request, res: Response) {
