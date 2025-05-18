@@ -17,7 +17,7 @@ export class InterviewController {
         try {
             const interviewData = req.body;
             const newInterview = await this.createInterviewUseCase.execute(interviewData);
-            res.status(201).json(newInterview);
+            res.status(201).json({ message: "Interview created successfully", newInterview });
         } catch (error) {
             console.error("Error creating interview:", error);
             res.status(500).json({ message: "Error creating interview" });
@@ -27,7 +27,7 @@ export class InterviewController {
     async getInterviews(req: Request, res: Response) {
         try {
             const interviews = await this.getInterviewUseCase.execute();
-            res.status(200).json(interviews);
+            res.status(200).json({message:"Interviews fetched successfully",interviews});
         } catch (error) {
             console.error("Error getting interviews:", error);
             res.status(500).json({ message: "Error getting interviews" });
@@ -38,17 +38,17 @@ export class InterviewController {
         try {
             const interviewId = req.params.id;
             const interview = await this.getInterviewByIdUseCase.execute(interviewId);
-            res.status(200).json(interview);
+            res.status(200).json({message:"Interview fetched successfully",interview});
         } catch (error) {
             console.error("Error getting interview by ID:", error);
             res.status(500).json({ message: "Error getting interview by ID" });
         }
-    }   
- async deleteInterview(req: Request, res: Response) {
+    }
+    async deleteInterview(req: Request, res: Response) {
         try {
             const interviewId = req.params.id;
             const interview = await this.deleteInterviewUseCase.execute(interviewId);
-            res.status(200).json(interview);
+            res.status(200).json({message:"Interview deleted successfully",interview});
         } catch (error) {
             console.error("Error getting interview by ID:", error);
             res.status(500).json({ message: "Error getting interview by ID" });
