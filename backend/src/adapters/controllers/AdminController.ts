@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { GetUserById } from "../../usecase/Admin/GetUserById";
 import { GetUsers } from "../../usecase/Admin/Getusers";
-import { userAccess } from "../../usecase/Admin/UserAccess";
+import { UserAccess } from "../../usecase/Admin/UserAccess";
 
 
 export class AdminController {
     constructor(
-        private readonly userAccessUseCase: userAccess,
+        private readonly userAccessUseCase: UserAccess,
         private readonly getUserByIdUseCase: GetUserById,
         private readonly getUsersUseCase: GetUsers,
     ) { }
