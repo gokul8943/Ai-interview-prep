@@ -12,7 +12,7 @@ const adminRepository = new AdminRepositoryImpl(userModel)
 const userAccess = new UserAccess(adminRepository)
 const getUsers = new GetUsers(adminRepository)
 const getUserById = new GetUserById(adminRepository)
-const adminController = new AdminController(userAccess,getUserById,getUsers)
+const adminController = new AdminController(userAccess, getUserById, getUsers)
 
 const router = Router()
 
