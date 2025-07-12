@@ -11,7 +11,7 @@ interface Props {
 
 const DomainSelector: React.FC<Props> = ({ domains, selectedDomain, onSelect }) => (
   <Card className="shadow-lg border-0">
-    <CardHeader className="bg-gradient-to-r from-green-600 to-teal-600 text-white">
+    <CardHeader className="bg-gradient-to-r text-white">
       <CardTitle className="flex items-center gap-2">
         <Target className="w-5 h-5" />
         Select Domain
@@ -31,7 +31,7 @@ const DomainSelector: React.FC<Props> = ({ domains, selectedDomain, onSelect }) 
           >
             <div className="flex items-center gap-3">
               <span className="text-2xl">{domain.icon}</span>
-              <span className="font-medium text-gray-900">{domain.name}</span>
+              <span className="font-medium text-gray-400">{domain.name}</span>
             </div>
           </div>
         ))}

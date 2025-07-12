@@ -13,7 +13,7 @@ interface Props {
 
 const LevelSelector: React.FC<Props> = ({ selectedLevel, onChange, levels }) => (
   <Card className="shadow-lg border-0">
-    <CardHeader className="bg-gradient-to-r from-orange-600 to-red-600 text-white">
+    <CardHeader className="bg-gradient-to-r text-white">
       <CardTitle>Difficulty Level</CardTitle>
     </CardHeader>
     <CardContent className="p-6">
@@ -32,12 +32,12 @@ const LevelSelector: React.FC<Props> = ({ selectedLevel, onChange, levels }) => 
                 <RadioGroupItem value={level.id} id={level.id} />
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <Label htmlFor={level.id} className="font-medium cursor-pointer">
+                    <Label htmlFor={level.id} className="font-medium cursor-pointer text-white">
                       {level.name}
                     </Label>
                     <Badge className={level.color}>{level.name}</Badge>
                   </div>
-                  <p className="text-sm text-gray-600">{level.description}</p>
+                  <p className="text-sm text-gray-400">{level.description}</p>
                 </div>
               </div>
             </div>
