@@ -5,6 +5,7 @@ import SignUp from "./pages/SignUp";
 import Navbar from "./components/Navbar";
 import Interview from "./pages/Interview";
 import OtpPage from "./pages/Otp";
+import CreateInterview from "./pages/CreateInterview";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/otp-verify" element={<OtpPage />} />
             <Route path="/interview" element={<Interview />} />
+            <Route path="/create-interview" element={<CreateInterview />} />
           </Routes>
         </div>
       </div>
