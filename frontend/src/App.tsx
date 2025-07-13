@@ -3,7 +3,7 @@ import HomePage from "./pages/HomePage";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Navbar from "./components/Navbar";
-import Interview from "./pages/Interview";
+import Interview from "./pages/InterviewCard23";
 import OtpPage from "./pages/Otp";
 import CreateInterview from "./pages/CreateInterview";
 
