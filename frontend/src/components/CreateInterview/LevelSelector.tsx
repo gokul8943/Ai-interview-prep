@@ -28,7 +28,7 @@ const LevelSelector: React.FC<Props> = ({ selectedLevel, onChange, levels }) => 
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 md:space-x-1">
                 <RadioGroupItem value={level.id} id={level.id} />
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">

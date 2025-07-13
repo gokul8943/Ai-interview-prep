@@ -12,7 +12,7 @@ interface Props {
 
 const TopicsSelector: React.FC<Props> = ({ domainId, selectedTopics, onToggle }) => (
   <Card className="shadow-lg border-0">
-    <CardHeader className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+    <CardHeader className="bg-gradient-to-r  text-white">
       <CardTitle className="flex items-center gap-2">
         <Settings className="w-5 h-5" />
         Select Topics
