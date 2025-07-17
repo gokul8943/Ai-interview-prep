@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { dummyInterviews } from '@/constants';
 import InterviewCard from '@/components/InterviewCard';
 
 import robotpng from '../public/robot.png'
+import InstructionModal from '@/components/modal/InstructionModa';
 
 const HomePage: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <>
       {/* CTA Section */}
@@ -15,7 +18,9 @@ const HomePage: React.FC = () => {
           <h2 className='text-white drop-shadow-blue-700 drop-shadow-2xl text-4xl font-bold'>GET Interview-Ready with AI-powered Practice & Feedback</h2>
           <p className="text-lg">Practice on real interview questions & get instant feedback</p>
           <Link to="/create-interview">
-            <Button className="btn-primary max-sm:w-full">Start an Interview</Button>
+            <Button className="btn-primary max-sm:w-full"
+              onClick={() => setIsModalOpen(true)}
+            >Start an Interview</Button>
           </Link>
         </div>
 
@@ -47,6 +52,11 @@ const HomePage: React.FC = () => {
           ))}
         </div>
       </section>
+      {/* ✅ Instruction Modal */}
+      <InstructionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </>
   );
 };

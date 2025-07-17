@@ -7,6 +7,7 @@ import DomainSelector from '@/components/CreateInterview/DomainSelector'
 import TopicsSelector from '../components/CreateInterview/TopicSelector'
 import LevelSelector from '@/components/CreateInterview/LevelSelector'
 import QuestionsSlider from '@/components/CreateInterview/QuestionSelector'
+import { useNavigate } from 'react-router-dom'
 
 const CreateInterview: React.FC = () => {
   const [interviewTitle, setInterviewTitle] = useState('')
@@ -14,6 +15,8 @@ const CreateInterview: React.FC = () => {
   const [selectedTopics, setSelectedTopics] = useState<string[]>([])
   const [selectedLevel, setSelectedLevel] = useState('')
   const [numberOfQuestions, setNumberOfQuestions] = useState([10])
+
+  const navigate = useNavigate()
 
   const handleTopicToggle = (topic: string) => {
     setSelectedTopics(prev =>
@@ -31,7 +34,9 @@ const CreateInterview: React.FC = () => {
       topics: selectedTopics,
       numberOfQuestions: numberOfQuestions[0]
     }
-    console.log('Creating interview:', interviewData)
+    if(interviewData){
+      navigate('/interview')
+    }
   }
 
   return (

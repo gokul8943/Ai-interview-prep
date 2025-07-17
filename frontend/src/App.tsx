@@ -11,7 +11,7 @@ const App = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-tl from-black to-blue-950 pt-[44px]">
+      <div className="min-h-screen bg-gradient-to-tl from-black to-blue-950 pt-[50px]">
         <div>
           <Routes>
             <Route path="/" element={<HomePage />} />

@@ -110,7 +110,7 @@ const Interview: React.FC = () => {
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
-    <div className="min-h-screen p-4">
+    <div className="min-h-screen p-5">
       <div className="max-w-4xl mx-auto space-y-6">
         <QuestionCard
           currentQuestion={currentQuestion}
