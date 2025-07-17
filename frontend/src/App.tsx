@@ -3,7 +3,7 @@ import HomePage from "./pages/HomePage";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Navbar from "./components/Navbar";
-import Interview from "./pages/InterviewCard23";
+import Interview from "./pages/Interview";
 import OtpPage from "./pages/Otp";
 import CreateInterview from "./pages/CreateInterview";
 
@@ -18,8 +18,8 @@ const App = () => {
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/otp-verify" element={<OtpPage />} />
-            <Route path="/interview" element={<Interview />} />
             <Route path="/create-interview" element={<CreateInterview />} />
+            <Route path="/interview" element={<Interview/>} />
           </Routes>
         </div>
       </div>
