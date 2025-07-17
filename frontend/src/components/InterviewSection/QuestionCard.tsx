@@ -23,8 +23,8 @@ const getDifficultyColor = (difficulty: string) => {
 };
 
 const QuestionCard: React.FC<Props> = ({ currentQuestion, currentIndex, total, answers }) => (
-  <Card className="shadow-lg bg-white/60">
-    <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-300 text-white">
+  <Card className="shadow-lg bg-gradient-to-r from-white/60 to-white/30">
+    <CardHeader className="bg-gradient-to-r from-gray-600 to-indigo-400 text-white">
       <div className="flex items-center justify-between">
         <CardTitle className="text-xl">
           Question {currentIndex + 1} of {total}

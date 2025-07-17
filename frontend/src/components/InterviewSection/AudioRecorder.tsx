@@ -27,7 +27,7 @@ const AudioRecorder: React.FC<Props> = ({
   pauseAudio,
   formatTime
 }) => (
-  <Card className="shadow-lg bg-white/40">
+  <Card className="shadow-lg bg-gradient-to-r from-white/60 to-white/30">
     <CardHeader>
       <CardTitle className="flex items-center gap-2">
         <Mic className="w-5 h-5" />

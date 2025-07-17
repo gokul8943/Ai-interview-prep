@@ -1,9 +1,10 @@
 import React from 'react';
-import { Textarea } from '@/components/ui/textarea';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Save, FileText } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Textarea } from '../ui/textArea';
 
 interface Props {
   notes: string;
@@ -13,7 +14,7 @@ interface Props {
 }
 
 const NotesSection: React.FC<Props> = ({ notes, setNotes, saveAnswer, currentAnswer }) => (
-  <Card className="shadow-lg bg-white/45">
+  <Card className="shadow-lg bg-gradient-to-r from-white/60 to-white/30">
     <CardHeader>
       <CardTitle className="flex items-center gap-2">
         <FileText className="w-5 h-5" />
@@ -25,7 +26,7 @@ const NotesSection: React.FC<Props> = ({ notes, setNotes, saveAnswer, currentAns
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
         placeholder="Write your answer or notes here..."
-        className="min-h-32 resize-none"
+        className="min-h-32 resize-none text-black"
       />
       <div className="flex gap-2">
         <Button onClick={saveAnswer} disabled={!notes.trim()} className="flex items-center gap-2">
