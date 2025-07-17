@@ -61,8 +61,14 @@ const Interview: React.FC = () => {
     } else if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
-    return () => intervalRef.current && clearInterval(intervalRef.current);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, [isRecording]);
+
 
   const startRecording = () => {
     if (mediaRecorderRef.current) {

@@ -27,9 +27,9 @@ const AudioRecorder: React.FC<Props> = ({
   pauseAudio,
   formatTime
 }) => (
-  <Card className="shadow-lg bg-gradient-to-r from-white/60 to-white/30">
+  <Card className="shadow-lg ">
     <CardHeader>
-      <CardTitle className="flex items-center gap-2">
+      <CardTitle className="flex items-center gap-2 text-white">
         <Mic className="w-5 h-5" />
         Audio Recording
       </CardTitle>
@@ -38,7 +38,7 @@ const AudioRecorder: React.FC<Props> = ({
       <div className="flex items-center justify-center gap-4">
         <div className="flex items-center gap-2">
           <Clock className="w-4 h-4 text-gray-500" />
-          <span className="text-lg font-mono">{formatTime(recordingTime)}</span>
+          <span className="text-lg font-mono text-white">{formatTime(recordingTime)}</span>
         </div>
         <div className="flex gap-2">
           {!isRecording ? (

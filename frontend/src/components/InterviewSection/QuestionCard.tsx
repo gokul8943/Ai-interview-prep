@@ -23,7 +23,7 @@ const getDifficultyColor = (difficulty: string) => {
 };
 
 const QuestionCard: React.FC<Props> = ({ currentQuestion, currentIndex, total, answers }) => (
-  <Card className="shadow-lg bg-gradient-to-r from-white/60 to-white/30">
+  <Card className="shadow-lg">
     <CardHeader className="bg-gradient-to-r from-gray-600 to-indigo-400 text-white">
       <div className="flex items-center justify-between">
         <CardTitle className="text-xl">
@@ -40,7 +40,7 @@ const QuestionCard: React.FC<Props> = ({ currentQuestion, currentIndex, total, a
       </div>
     </CardHeader>
     <CardContent className="p-6">
-      <p className="text-lg text-gray-900 leading-relaxed mb-6">{currentQuestion.text}</p>
+      <p className="text-lg text-white leading-relaxed mb-6">{currentQuestion.text}</p>
       <div className="flex justify-center">
         <div className="flex gap-1">
           {Array.from({ length: total }, (_, i) => (

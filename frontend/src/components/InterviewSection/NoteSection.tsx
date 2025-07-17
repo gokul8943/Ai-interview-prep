@@ -14,9 +14,9 @@ interface Props {
 }
 
 const NotesSection: React.FC<Props> = ({ notes, setNotes, saveAnswer, currentAnswer }) => (
-  <Card className="shadow-lg bg-gradient-to-r from-white/60 to-white/30">
+  <Card className="shadow-lg ">
     <CardHeader>
-      <CardTitle className="flex items-center gap-2">
+      <CardTitle className="flex items-center gap-2 text-white">
         <FileText className="w-5 h-5" />
         Notes & Answer
       </CardTitle>
@@ -26,7 +26,7 @@ const NotesSection: React.FC<Props> = ({ notes, setNotes, saveAnswer, currentAns
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
         placeholder="Write your answer or notes here..."
-        className="min-h-32 resize-none text-black"
+        className="min-h-32 resize-none text-white"
       />
       <div className="flex gap-2">
         <Button onClick={saveAnswer} disabled={!notes.trim()} className="flex items-center gap-2">
