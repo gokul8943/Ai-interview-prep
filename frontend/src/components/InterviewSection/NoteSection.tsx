@@ -13,7 +13,7 @@ interface Props {
 }
 
 const NotesSection: React.FC<Props> = ({ notes, setNotes, saveAnswer, currentAnswer }) => (
-  <Card className="shadow-lg">
+  <Card className="shadow-lg bg-white/45">
     <CardHeader>
       <CardTitle className="flex items-center gap-2">
         <FileText className="w-5 h-5" />
