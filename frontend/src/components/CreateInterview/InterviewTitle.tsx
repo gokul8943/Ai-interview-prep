@@ -23,7 +23,7 @@ const InterviewTitle: React.FC<Props> = ({ title, onChange }) => (
         placeholder="e.g., Senior React Developer Interview"
         value={title}
         onChange={(e) => onChange(e.target.value)}
-        className="text-lg mt-2"
+        className="text-lg mt-2 text-white"
       />
     </CardContent>
   </Card>

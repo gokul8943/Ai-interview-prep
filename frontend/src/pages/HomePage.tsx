@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { dummyInterviews } from '@/constants';
 import InterviewCard from '@/components/InterviewCard';
@@ -17,11 +16,10 @@ const HomePage: React.FC = () => {
         <div className="flex flex-col gap-6 max-w-lg">
           <h2 className='text-white drop-shadow-blue-700 drop-shadow-2xl text-4xl font-bold'>GET Interview-Ready with AI-powered Practice & Feedback</h2>
           <p className="text-lg">Practice on real interview questions & get instant feedback</p>
-          <Link to="/create-interview">
-            <Button className="btn-primary max-sm:w-full"
-              onClick={() => setIsModalOpen(true)}
-            >Start an Interview</Button>
-          </Link>
+          {/* Remove Link wrapper, just use Button */}
+          <Button className="btn-primary max-sm:w-full"
+            onClick={() => setIsModalOpen(true)}
+          >Start an Interview</Button>
         </div>
 
         <img
