@@ -10,14 +10,14 @@ interface FinalRecommendationProps {
 const FinalRecommendation: React.FC<FinalRecommendationProps> = ({ name, position }) => (
   <Card>
     <CardHeader>
-      <CardTitle className="flex items-center gap-2">
+      <CardTitle className="flex items-center gap-2 text-white">
         <Star className="h-5 w-5" />
         Final Recommendation
       </CardTitle>
     </CardHeader>
     <CardContent>
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-gray-800 leading-relaxed">
+      <div className=" border border-blue-200 rounded-lg p-4">
+        <p className="text-white leading-relaxed">
           <strong>Recommendation:</strong> {name} demonstrates strong technical
           capabilities and shows good potential for the {position} role. While
           there are areas for improvement in communication and leadership, the

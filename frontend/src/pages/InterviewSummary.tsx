@@ -3,6 +3,7 @@ import PerformanceOverview from "@/components/InterviewSummary/PerformanceOvervi
 import StrengthsAndImprovements from "@/components/InterviewSummary/StrengthImprovements";
 import InterviewTimeline from "@/components/InterviewSummary/InterviewTimeline";
 import FinalRecommendation from "@/components/InterviewSummary/FinalRecommendation";
+import CandidateHeader from "@/components/InterviewSummary/CandiateHeader";
 
 
 const InterviewSummary = () => {
@@ -58,16 +59,17 @@ const InterviewSummary = () => {
     return "text-red-600";
   };
 
-//   const getScoreBadge = (score: number) => {
-//     if (score >= 80) return "bg-green-100 text-green-800";
-//     if (score >= 70) return "bg-yellow-100 text-yellow-800";
-//     return "bg-red-100 text-red-800";
-//   };
+  const getScoreBadge = (score: number) => {
+    if (score >= 80) return "bg-green-100 text-green-800";
+    if (score >= 70) return "bg-yellow-100 text-yellow-800";
+    return "bg-red-100 text-red-800";
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen p-3">
+        <h2 className="text-white font-bold shadow-2xl p-2.5">Summary</h2>
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* <CandidateHeader {...candidateData} getScoreBadge={getScoreBadge} /> */}
+        <CandidateHeader {...candidateData} getScoreBadge={getScoreBadge} />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <SkillsBreakdown skillScores={skillScores} getScoreColor={getScoreColor} />
           <PerformanceOverview performanceData={performanceData} />

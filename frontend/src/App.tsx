@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Interview from "./pages/Interview";
 import OtpPage from "./pages/Otp";
 import CreateInterview from "./pages/CreateInterview";
+import InterviewSummary from "./pages/InterviewSummary";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
             <Route path="/otp-verify" element={<OtpPage />} />
             <Route path="/create-interview" element={<CreateInterview />} />
             <Route path="/interview" element={<Interview/>} />
+            <Route path="/summary" element={<InterviewSummary />} />
           </Routes>
         </div>
       </div>

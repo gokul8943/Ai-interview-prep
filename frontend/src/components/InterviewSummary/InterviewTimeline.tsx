@@ -9,14 +9,14 @@ interface InterviewTimelineProps {
 const InterviewTimeline: React.FC<InterviewTimelineProps> = ({ timelineData }) => (
   <Card>
     <CardHeader>
-      <CardTitle>Interview Timeline Performance</CardTitle>
+      <CardTitle className="text-white">Interview Timeline Performance</CardTitle>
     </CardHeader>
     <CardContent>
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={timelineData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="phase" />
+            <XAxis className="text-white" dataKey="phase" />
             <YAxis domain={[0, 100]} />
             <Tooltip
               formatter={(value) => [value + "%", "Score"]}

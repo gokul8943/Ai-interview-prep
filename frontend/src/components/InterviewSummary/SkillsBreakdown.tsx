@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Target } from "lucide-react";
 
@@ -16,7 +16,7 @@ interface SkillsBreakdownProps {
 const SkillsBreakdown: React.FC<SkillsBreakdownProps> = ({ skillScores, getScoreColor }) => (
   <Card className="lg:col-span-2">
     <CardHeader>
-      <CardTitle className="flex items-center gap-2">
+      <CardTitle className="flex items-center gap-2 text-white">
         <Target className="h-5 w-5" />
         Skills Breakdown
       </CardTitle>
@@ -26,7 +26,7 @@ const SkillsBreakdown: React.FC<SkillsBreakdownProps> = ({ skillScores, getScore
         {skillScores.map((skill, index) => (
           <div key={index} className="space-y-2">
             <div className="flex justify-between items-center">
-              <span className="font-medium text-gray-700">{skill.skill}</span>
+              <span className="font-medium  text-white">{skill.skill}</span>
               <span className={`font-bold ${getScoreColor(skill.score)}`}>
                 {skill.score}%
               </span>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts";
 
 interface PerformanceOverviewProps {
@@ -9,7 +9,7 @@ interface PerformanceOverviewProps {
 const PerformanceOverview: React.FC<PerformanceOverviewProps> = ({ performanceData }) => (
   <Card>
     <CardHeader>
-      <CardTitle>Performance Overview</CardTitle>
+      <CardTitle className="text-white">Performance Overview</CardTitle>
     </CardHeader>
     <CardContent>
       <div className="h-64">
