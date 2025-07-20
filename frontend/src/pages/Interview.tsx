@@ -25,6 +25,8 @@ const Interview: React.FC = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
 
+  console.log(setCurrentQuestionIndex);
+  
   const questions: Question[] = [
     { id: 1, text: 'Tell me about yourself...', category: 'General', difficulty: 'Easy' },
     { id: 2, text: 'What is your experience with React...', category: 'Technical', difficulty: 'Medium' },
