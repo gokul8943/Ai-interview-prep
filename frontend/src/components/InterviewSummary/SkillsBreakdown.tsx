@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
-import { Progress } from "@/components/ui/alert";
+import { Progress } from "@/components/ui/progress";
 import { Target } from "lucide-react";
 
 interface Skill {
