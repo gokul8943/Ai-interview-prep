@@ -29,7 +29,7 @@ export default function FeaturesSection() {
     <section id="features" className="px-6 py-20 ">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-6">Why Choose InterviewAI?</h2>
+          <h2 className="text-4xl font-bold text-white mb-6">Why Choose IntelliPrep?</h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Our cutting-edge AI technology provides the most realistic interview experience, 
             helping you prepare better than ever before.

@@ -5,6 +5,7 @@ import robotpng from '../../public/robot.png'
 import InstructionModal from '@/components/modal/InstructionModa';
 import FeaturesSection from './Components/FeatureSection';
 import HowItWorks from './Components/HowItWorks';
+import Footer from './Components/Footer';
 
 const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,6 +55,8 @@ const HomePage: React.FC = () => {
       <FeaturesSection />
 
       <HowItWorks />
+
+      <Footer />
 
       {/* ✅ Instruction Modal */}
       <InstructionModal
