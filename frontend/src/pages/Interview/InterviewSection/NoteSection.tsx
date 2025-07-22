@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Save, FileText } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Textarea } from '../ui/textArea';
+import { Textarea } from '../../../components/ui/textArea';
 
 interface Props {
   notes: string;

@@ -1,6 +1,6 @@
-import AudioRecorder from '@/components/InterviewSection/AudioRecorder';
-import NotesSection from '@/components/InterviewSection/NoteSection';
-import QuestionCard from '@/components/InterviewSection/QuestionCard';
+import AudioRecorder from '@/pages/Interview/InterviewSection/AudioRecorder';
+import NotesSection from '@/pages/Interview/InterviewSection/NoteSection';
+import QuestionCard from '@/pages/Interview/InterviewSection/QuestionCard';
 import React, { useState, useRef, useEffect } from 'react';
 
 
@@ -26,7 +26,7 @@ const Interview: React.FC = () => {
   const audioChunksRef = useRef<Blob[]>([]);
 
   console.log(setCurrentQuestionIndex);
-  
+
   const questions: Question[] = [
     { id: 1, text: 'Tell me about yourself...', category: 'General', difficulty: 'Easy' },
     { id: 2, text: 'What is your experience with React...', category: 'Technical', difficulty: 'Medium' },

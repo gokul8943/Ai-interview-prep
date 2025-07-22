@@ -1,9 +1,9 @@
-import SkillsBreakdown from "@/components/InterviewSummary/SkillsBreakdown";
-import PerformanceOverview from "@/components/InterviewSummary/PerformanceOverview";
-import StrengthsAndImprovements from "@/components/InterviewSummary/StrengthImprovements";
-import InterviewTimeline from "@/components/InterviewSummary/InterviewTimeline";
-import FinalRecommendation from "@/components/InterviewSummary/FinalRecommendation";
-import CandidateHeader from "@/components/InterviewSummary/CandiateHeader";
+import SkillsBreakdown from "@/pages/Summary/Components/SkillsBreakdown";
+import PerformanceOverview from "@/pages/Summary/Components/PerformanceOverview";
+import StrengthsAndImprovements from "@/pages/Summary/Components/StrengthImprovements";
+import InterviewTimeline from "@/pages/Summary/Components/InterviewTimeline";
+import FinalRecommendation from "@/pages/Summary/Components/FinalRecommendation";
+import CandidateHeader from "@/pages/Summary/Components/CandiateHeader";
 
 
 const InterviewSummary = () => {
