@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { dummyInterviews } from '@/constants';
-import InterviewCard from '@/components/InterviewCard';
 
 import robotpng from '../../public/robot.png'
 import InstructionModal from '@/components/modal/InstructionModa';
+import FeaturesSection from './Components/FeatureSection';
+import HowItWorks from './Components/HowItWorks';
 
 const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,24 +32,29 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Your Interview Section */}
-      <section className="flex flex-col gap-6 mt-8 root-layout p-4">
+      {/* <section className="flex flex-col gap-6 mt-8 root-layout p-4">
         <h2 className='text-white font-bold '>Your Interview</h2>
         <div className="interviews-section">
           {dummyInterviews.map((interview) => (
             <InterviewCard interviewId={''} {...interview} key={interview.id} />
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Take an Interview Section */}
-      <section className="flex flex-col gap-6 mt-8 p-4">
+      {/* <section className="flex flex-col gap-6 mt-8 p-4">
         <h2 className='text-white font-bold'>Take an Interview</h2>
         <div className="interviews-section">
           {dummyInterviews.map((interview) => (
             <InterviewCard interviewId={''} {...interview} key={interview.id} />
           ))}
         </div>
-      </section>
+      </section> */}
+
+      <FeaturesSection />
+
+      <HowItWorks />
+
       {/* ✅ Instruction Modal */}
       <InstructionModal
         isOpen={isModalOpen}
