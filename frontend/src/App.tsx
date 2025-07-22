@@ -1,12 +1,14 @@
 import { Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Navbar from "./components/Navbar";
-import Interview from "./pages/Interview";
 import OtpPage from "./pages/Otp";
-import CreateInterview from "./pages/CreateInterview";
-import InterviewSummary from "./pages/InterviewSummary";
+import HomePage from "./pages/Home/HomePage";
+import CreateInterview from "./pages/CreateInterview/CreateInterview";
+import Interview from "./pages/Interview/Interview";
+import InterviewSummary from "./pages/Summary/InterviewSummary";
+
+
 
 const App = () => {
   return (

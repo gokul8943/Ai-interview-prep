@@ -4,10 +4,11 @@ import { PlayCircle } from 'lucide-react'
 import { domains, levels, type DomainId } from '@/helpers/InterviewData'
 import InterviewTitle from '@/pages/CreateInterview/Components/InterviewTitle'
 import DomainSelector from '@/pages/CreateInterview/Components/DomainSelector'
-import TopicsSelector from '../components/CreateInterview/TopicSelector'
+
 import LevelSelector from '@/pages/CreateInterview/Components/LevelSelector'
 import QuestionsSlider from '@/pages/CreateInterview/Components/QuestionSelector'
 import { useNavigate } from 'react-router-dom'
+import TopicsSelector from './Components/TopicSelector'
 
 const CreateInterview: React.FC = () => {
   const [interviewTitle, setInterviewTitle] = useState('')

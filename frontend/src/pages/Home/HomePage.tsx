@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { dummyInterviews } from '@/constants';
 import InterviewCard from '@/components/InterviewCard';
 
-import robotpng from '../public/robot.png'
+import robotpng from '../../public/robot.png'
 import InstructionModal from '@/components/modal/InstructionModa';
 
 const HomePage: React.FC = () => {
