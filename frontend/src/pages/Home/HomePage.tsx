@@ -13,7 +13,7 @@ const HomePage: React.FC = () => {
   return (
     <>
       {/* CTA Section */}
-      <section className=" flex justify-between items-center  px-16 py-6 max-sm:px-4">
+      <section className=" flex justify-between items-center  px-16 py-4 max-sm:px-4">
         <div className="flex flex-col gap-6 max-w-lg">
           <h2 className='text-white drop-shadow-blue-700 drop-shadow-2xl text-4xl font-bold'>GET Interview-Ready with AI-powered Practice & Feedback</h2>
           <p className="text-lg">Practice on real interview questions & get instant feedback</p>
