@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logoSvg from '../public/logo.svg';
 import { User } from 'lucide-react';
 import { useState } from 'react';
@@ -6,7 +6,13 @@ import { Button } from './ui/button';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate()
 console.log(setIsLoggedIn);
+
+const handleNavigate = () =>{
+  navigate('/sign-in')
+}
 
   return (
     <div className="bg-white/5 z-10 fixed top-0 left-0 w-full p-3">
@@ -24,7 +30,9 @@ console.log(setIsLoggedIn);
           </div>
         ) : (
           <div>
-            <Button className='bg-gradient-to-r from-violet-600 to-pink-500 font-bold '>Sign</Button>
+            <Button 
+            onClick={handleNavigate}
+            className='bg-gradient-to-r from-violet-400 to-slate-500 font-bold '>Login</Button>
           </div>
         )}
       </nav>

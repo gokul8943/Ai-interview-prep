@@ -24,7 +24,7 @@ const LevelSelector: React.FC<Props> = ({ selectedLevel, onChange, levels }) => 
               key={level.id}
               className={`p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
                 selectedLevel === level.id
-                  ? 'border-blue-500 bg-blue-50'
+                  ? 'border-blue-500 bg-slate-600'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
@@ -37,7 +37,7 @@ const LevelSelector: React.FC<Props> = ({ selectedLevel, onChange, levels }) => 
                     </Label>
                     <Badge className={level.color}>{level.name}</Badge>
                   </div>
-                  <p className="text-sm text-gray-400">{level.description}</p>
+                  <p className="text-sm text-gray-200">{level.description}</p>
                 </div>
               </div>
             </div>
