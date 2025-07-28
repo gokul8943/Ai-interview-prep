@@ -4,6 +4,7 @@ import { z, ZodError } from "zod";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { FcGoogle } from "react-icons/fc";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -150,7 +151,6 @@ const AuthForm = ({ type }: { type: FormType }) => {
             </Button>
           </form>
         </Form>
-
         <p className="text-center">
           {isSignIn ? "No account yet?" : "Have an account already?"}
           <Link
@@ -160,6 +160,11 @@ const AuthForm = ({ type }: { type: FormType }) => {
             {isSignIn ? "Sign Up" : "Sign In"}
           </Link>
         </p>
+        <h1 className="flex justify-center text-slate-300 font-base">OR</h1>
+        <div className="flex justify-center">
+          <Button className="border"> <FcGoogle />Login with Google</Button>
+        </div>
+
       </div>
 
       {/* OTP Dialog for Sign-Up only */}
