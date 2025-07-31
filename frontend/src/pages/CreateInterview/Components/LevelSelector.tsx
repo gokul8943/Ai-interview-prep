@@ -1,7 +1,6 @@
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import type { Level } from '@/helpers/InterviewData'
 
@@ -30,11 +29,8 @@ const LevelSelector: React.FC<Props> = ({ selectedLevel, onChange, levels }) => 
             >
               <div className="flex items-center space-x-3 md:space-x-1">
                 <RadioGroupItem value={level.id} id={level.id} />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Label htmlFor={level.id} className="font-medium cursor-pointer text-white">
-                      {level.name}
-                    </Label>
+                <div className="flex-1 pl-2">
+                  <div className="flex items-center gap-2 mb-1 ">
                     <Badge className={level.color}>{level.name}</Badge>
                   </div>
                   <p className="text-sm text-gray-200">{level.description}</p>
