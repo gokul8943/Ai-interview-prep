@@ -10,6 +10,8 @@ import Footer from './Components/Footer';
 const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleClose = () => setIsModalOpen(false); // ✅ Add this
+
   return (
     <>
       {/* CTA Section */}
@@ -61,8 +63,10 @@ const HomePage: React.FC = () => {
       {/* ✅ Instruction Modal */}
       <InstructionModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleClose}
+        type="create-interview" // You can pass "pre-interview" here if needed elsewhere
       />
+
     </>
   );
 };
