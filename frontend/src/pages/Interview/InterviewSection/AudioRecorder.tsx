@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mic, Square, Play, Pause, FileText, Clock } from 'lucide-react';
+import { Mic, Square, FileText, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -10,22 +10,15 @@ interface Props {
   stopRecording: () => void;
   recordingTime: number;
   audioBlob: Blob | null;
-  isPlaying: boolean;
-  playAudio: () => void;
-  pauseAudio: () => void;
-  formatTime: (seconds: number) => string;
+  transcribe: () => void;
 }
 
 const AudioRecorder: React.FC<Props> = ({
   isRecording,
   startRecording,
   stopRecording,
-  recordingTime,
   audioBlob,
-  isPlaying,
-  playAudio,
-  pauseAudio,
-  formatTime
+
 }) => (
   <Card className="shadow-lg ">
     <CardHeader>
@@ -38,7 +31,6 @@ const AudioRecorder: React.FC<Props> = ({
       <div className="flex items-center justify-center gap-4">
         <div className="flex items-center gap-2">
           <Clock className="w-4 h-4 text-gray-500" />
-          <span className="text-lg font-mono text-white">{formatTime(recordingTime)}</span>
         </div>
         <div className="flex gap-2">
           {!isRecording ? (
@@ -52,7 +44,7 @@ const AudioRecorder: React.FC<Props> = ({
               Stop Recording
             </Button>
           )}
-          {audioBlob && (
+          {/* {audioBlob && (
             <Button onClick={isPlaying ? pauseAudio : playAudio} variant="outline">
               {isPlaying ? (
                 <>
@@ -66,7 +58,7 @@ const AudioRecorder: React.FC<Props> = ({
                 </>
               )}
             </Button>
-          )}
+          )} */}
         </div>
       </div>
 

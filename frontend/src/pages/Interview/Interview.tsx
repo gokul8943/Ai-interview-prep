@@ -1,7 +1,9 @@
+import { transcribeAudio } from '@/helpers/Transcribe';
 import AudioRecorder from '@/pages/Interview/InterviewSection/AudioRecorder';
 import NotesSection from '@/pages/Interview/InterviewSection/NoteSection';
 import QuestionCard from '@/pages/Interview/InterviewSection/QuestionCard';
 import React, { useState, useRef, useEffect } from 'react';
+import NavigationButtons from './InterviewSection/NavigationButton';
 
 
 interface Question {
@@ -14,14 +16,12 @@ interface Question {
 const Interview: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  const [recordingTime, setRecordingTime] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [recordingTime, setRecordingTime] = useState(0);;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [notes, setNotes] = useState('');
   const [answers, setAnswers] = useState<Record<number, string>>({});
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
 
@@ -87,27 +87,41 @@ const Interview: React.FC = () => {
     setIsRecording(false);
   };
 
-  const playAudio = () => {
-    if (audioBlob) {
-      const url = URL.createObjectURL(audioBlob);
-      audioRef.current = new Audio(url);
-      audioRef.current.play();
-      setIsPlaying(true);
-      audioRef.current.onended = () => setIsPlaying(false);
+
+  const saveAnswer = () => {
+    if (notes.trim() !== '') {
+      setAnswers((prev) => ({
+        ...prev,
+        [questions[currentQuestionIndex].id]: notes.trim(),
+      }));
+      setNotes('');
     }
   };
 
-  const pauseAudio = () => {
-    audioRef.current?.pause();
-    setIsPlaying(false);
+  const nextQuestion = () => {
+    saveAnswer();
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+    }
   };
 
-  const formatTime = (sec: number) => `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
-
-  const saveAnswer = () => {
-    setAnswers((prev) => ({ ...prev, [currentQuestionIndex]: notes }));
-    setNotes('');
+  const prevQuestion = () => {
+    saveAnswer();
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prev) => prev - 1);
+    }
   };
+
+  const transcribe = () => {
+    if (!audioBlob) {
+      console.warn("No audio to transcribe.");
+      return;
+    }
+    transcribeAudio(audioBlob as any)
+      .then((response) => setNotes(response))
+      .catch((err) => console.error("Transcription failed:", err));
+  };
+
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -126,10 +140,7 @@ const Interview: React.FC = () => {
           stopRecording={stopRecording}
           recordingTime={recordingTime}
           audioBlob={audioBlob}
-          isPlaying={isPlaying}
-          playAudio={playAudio}
-          pauseAudio={pauseAudio}
-          formatTime={formatTime}
+          transcribe={transcribe}
         />
         <NotesSection
           notes={notes}
@@ -137,11 +148,12 @@ const Interview: React.FC = () => {
           saveAnswer={saveAnswer}
           currentAnswer={answers[currentQuestionIndex]}
         />
-        {/* <NavigationButtons
+        <NavigationButtons
           currentIndex={currentQuestionIndex}
           total={questions.length}
-          setCurrentIndex={setCurrentQuestionIndex}
-        /> */}
+          onNext={nextQuestion}
+          onPrev={prevQuestion}
+        />
       </div>
     </div>
   );
