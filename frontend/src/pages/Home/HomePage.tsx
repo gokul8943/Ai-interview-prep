@@ -6,10 +6,15 @@ import InstructionModal from '@/components/modal/InstructionModa';
 import FeaturesSection from './Components/FeatureSection';
 import HowItWorks from './Components/HowItWorks';
 import Footer from './Components/Footer';
+import useAuthStore from '@/store/AuthStrore';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
+  const { authState } = useAuthStore()
+  const user = authState.user
   const handleClose = () => setIsModalOpen(false); // ✅ Add this
 
   return (
@@ -19,10 +24,14 @@ const HomePage: React.FC = () => {
         <div className="flex flex-col gap-6 max-w-lg">
           <h2 className='text-white drop-shadow-blue-700 drop-shadow-2xl text-4xl font-bold'>GET Interview-Ready with AI-powered Practice & Feedback</h2>
           <p className="text-lg">Practice on real interview questions & get instant feedback</p>
-          {/* Remove Link wrapper, just use Button */}
-          <Button className="btn-primary max-sm:w-full"
-            onClick={() => setIsModalOpen(true)}
-          >Start an Interview</Button>
+
+          <Button
+            className="btn-primary max-sm:w-full"
+            onClick={user ? () => setIsModalOpen(true) : () => navigate('/sign-in')}
+          >
+            Start an Interview
+          </Button>
+
         </div>
 
         <img
