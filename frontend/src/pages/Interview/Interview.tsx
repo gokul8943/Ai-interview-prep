@@ -42,13 +42,32 @@ const Interview: React.FC = () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const recorder = new MediaRecorder(stream);
         recorder.ondataavailable = (e) => {
-          if (e.data.size > 0) audioChunksRef.current.push(e.data);
+          if (e.data.size > 0) {
+            console.log("Audio chunk received:", e.data);
+            audioChunksRef.current.push(e.data);
+          }
         };
+        // inside recorder.onstop (auto-transcribe after recording stops)
         recorder.onstop = () => {
           const blob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+          console.log("Final audio blob:", blob);
+
           setAudioBlob(blob);
           audioChunksRef.current = [];
+
+          // 🔥 Call transcribe automatically when blob is ready
+          if (blob.size > 0) {
+            transcribeAudio(blob as any)
+              .then((response) => {
+                console.log("Transcription result:", response);
+                setNotes(response); // 👈 shows directly in NotesSection
+              })
+              .catch((err) => console.error("Transcription failed:", err));
+          } else {
+            console.warn("Empty audio blob, nothing to transcribe.");
+          }
         };
+
         mediaRecorderRef.current = recorder;
       } catch (err) {
         console.error('Mic access error:', err);
@@ -118,7 +137,10 @@ const Interview: React.FC = () => {
       return;
     }
     transcribeAudio(audioBlob as any)
-      .then((response) => setNotes(response))
+      .then((response) => {
+        console.log("Transcription result:", response);
+        setNotes(response);
+      })
       .catch((err) => console.error("Transcription failed:", err));
   };
 

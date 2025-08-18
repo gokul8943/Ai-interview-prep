@@ -43,37 +43,15 @@ const HomePage: React.FC = () => {
         />
       </section>
 
-      {/* Your Interview Section */}
-      {/* <section className="flex flex-col gap-6 mt-8 root-layout p-4">
-        <h2 className='text-white font-bold '>Your Interview</h2>
-        <div className="interviews-section">
-          {dummyInterviews.map((interview) => (
-            <InterviewCard interviewId={''} {...interview} key={interview.id} />
-          ))}
-        </div>
-      </section> */}
-
-      {/* Take an Interview Section */}
-      {/* <section className="flex flex-col gap-6 mt-8 p-4">
-        <h2 className='text-white font-bold'>Take an Interview</h2>
-        <div className="interviews-section">
-          {dummyInterviews.map((interview) => (
-            <InterviewCard interviewId={''} {...interview} key={interview.id} />
-          ))}
-        </div>
-      </section> */}
-
       <FeaturesSection />
 
       <HowItWorks />
 
       <Footer />
-
-      {/* ✅ Instruction Modal */}
       <InstructionModal
         isOpen={isModalOpen}
         onClose={handleClose}
-        type="create-interview" // You can pass "pre-interview" here if needed elsewhere
+        type="create-interview"
       />
 
     </>
