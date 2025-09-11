@@ -1,22 +1,21 @@
-import React from 'react';
-
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Save, FileText } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Textarea } from '../../../components/ui/textArea';
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Save, FileText } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Textarea } from "../../../components/ui/textArea";
 
 interface Props {
   notes: string;
-  setNotes: (value: string) => void;
+  setNotes: React.Dispatch<React.SetStateAction<string>>; // ✅ correct typing
   saveAnswer: () => void;
   currentAnswer?: string;
 }
 
 const NotesSection: React.FC<Props> = ({ notes, setNotes, saveAnswer, currentAnswer }) => (
-  <Card className="shadow-lg ">
+  <Card className="shadow-lg">
     <CardHeader>
-      <CardTitle className="flex items-center gap-2 text-white">
+      <CardTitle className="flex items-center gap-2">
         <FileText className="w-5 h-5" />
         Notes & Answer
       </CardTitle>
@@ -24,19 +23,28 @@ const NotesSection: React.FC<Props> = ({ notes, setNotes, saveAnswer, currentAns
     <CardContent className="space-y-4">
       <Textarea
         value={notes}
-        onChange={(e) => setNotes(e.target.value)}
+        onChange={(e) => setNotes(e.target.value)} // ✅ safe typing
         placeholder="Write your answer or notes here..."
-        className="min-h-32 resize-none text-white"
+        className="min-h-32 resize-none"
       />
       <div className="flex gap-2">
-        <Button onClick={saveAnswer} disabled={!notes.trim()} className="flex items-center gap-2">
+        <Button
+          onClick={saveAnswer}
+          disabled={!notes.trim()}
+          className="flex items-center gap-2"
+        >
           <Save className="w-4 h-4" />
           Save Answer
         </Button>
-        <Button onClick={() => setNotes('')} variant="outline">
+        <Button
+          onClick={() => setNotes("")}
+          variant="outline"
+          disabled={!notes.trim()} // ✅ avoid clearing when already empty
+        >
           Clear Notes
         </Button>
       </div>
+
       {currentAnswer && (
         <Alert>
           <AlertDescription>

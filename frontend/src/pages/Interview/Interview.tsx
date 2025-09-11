@@ -1,10 +1,9 @@
-import { transcribeAudio } from '@/helpers/Transcribe';
 import AudioRecorder from '@/pages/Interview/InterviewSection/AudioRecorder';
 import NotesSection from '@/pages/Interview/InterviewSection/NoteSection';
 import QuestionCard from '@/pages/Interview/InterviewSection/QuestionCard';
 import React, { useState, useRef, useEffect } from 'react';
 import NavigationButtons from './InterviewSection/NavigationButton';
-
+import { useSpeechToText } from '@/hooks/useSpeechToText';
 
 interface Question {
   id: number;
@@ -15,59 +14,38 @@ interface Question {
 
 const Interview: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  const [recordingTime, setRecordingTime] = useState(0);;
+  const [recordingTime, setRecordingTime] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [notes, setNotes] = useState('');
   const [answers, setAnswers] = useState<Record<number, string>>({});
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
 
-  console.log(setCurrentQuestionIndex);
+  // 👇 speech-to-text hook
+  const {
+    transcript,
+    interimTranscript,
+    startListening,
+    stopListening,
+    reset,
+    error,
+  } = useSpeechToText();
 
   const questions: Question[] = [
     { id: 1, text: 'Tell me about yourself...', category: 'General', difficulty: 'Easy' },
     { id: 2, text: 'What is your experience with React...', category: 'Technical', difficulty: 'Medium' },
     { id: 3, text: 'Describe a challenging project...', category: 'Behavioral', difficulty: 'Medium' },
     { id: 4, text: 'How would you optimize performance...', category: 'Technical', difficulty: 'Hard' },
-    { id: 5, text: 'Where do you see yourself...', category: 'General', difficulty: 'Easy' }
+    { id: 5, text: 'Where do you see yourself...', category: 'General', difficulty: 'Easy' },
   ];
 
-  // Recorder init + timer logic
+  // Recorder setup (only once)
   useEffect(() => {
     const setupRecorder = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const recorder = new MediaRecorder(stream);
-        recorder.ondataavailable = (e) => {
-          if (e.data.size > 0) {
-            console.log("Audio chunk received:", e.data);
-            audioChunksRef.current.push(e.data);
-          }
-        };
-        // inside recorder.onstop (auto-transcribe after recording stops)
-        recorder.onstop = () => {
-          const blob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
-          console.log("Final audio blob:", blob);
-
-          setAudioBlob(blob);
-          audioChunksRef.current = [];
-
-          // 🔥 Call transcribe automatically when blob is ready
-          if (blob.size > 0) {
-            transcribeAudio(blob as any)
-              .then((response) => {
-                console.log("Transcription result:", response);
-                setNotes(response); // 👈 shows directly in NotesSection
-              })
-              .catch((err) => console.error("Transcription failed:", err));
-          } else {
-            console.warn("Empty audio blob, nothing to transcribe.");
-          }
-        };
-
         mediaRecorderRef.current = recorder;
       } catch (err) {
         console.error('Mic access error:', err);
@@ -76,44 +54,48 @@ const Interview: React.FC = () => {
     setupRecorder();
   }, []);
 
+  // Timer handling
   useEffect(() => {
     if (isRecording) {
       intervalRef.current = setInterval(() => setRecordingTime((prev) => prev + 1), 1000);
     } else if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
-
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [isRecording]);
-
 
   const startRecording = () => {
     if (mediaRecorderRef.current) {
       setRecordingTime(0);
-      audioChunksRef.current = [];
-      setAudioBlob(null);
+      setNotes(''); // clear previous notes
       mediaRecorderRef.current.start();
       setIsRecording(true);
+      startListening(); // 👈 start speech recognition
     }
   };
 
   const stopRecording = () => {
     mediaRecorderRef.current?.stop();
     setIsRecording(false);
+    stopListening(); // 👈 stop speech recognition
+
+    // persist transcript as notes
+    if (transcript.trim()) {
+      setNotes(transcript);
+    }
   };
 
-
   const saveAnswer = () => {
-    if (notes.trim() !== '') {
+    const textToSave = (notes || transcript).trim();
+    if (textToSave) {
       setAnswers((prev) => ({
         ...prev,
-        [questions[currentQuestionIndex].id]: notes.trim(),
+        [questions[currentQuestionIndex].id]: textToSave,
       }));
       setNotes('');
+      reset(); // ✅ clear transcript after saving
     }
   };
 
@@ -131,20 +113,6 @@ const Interview: React.FC = () => {
     }
   };
 
-  const transcribe = () => {
-    if (!audioBlob) {
-      console.warn("No audio to transcribe.");
-      return;
-    }
-    transcribeAudio(audioBlob as any)
-      .then((response) => {
-        console.log("Transcription result:", response);
-        setNotes(response);
-      })
-      .catch((err) => console.error("Transcription failed:", err));
-  };
-
-
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
@@ -156,20 +124,23 @@ const Interview: React.FC = () => {
           total={questions.length}
           answers={answers}
         />
+
         <AudioRecorder
           isRecording={isRecording}
           startRecording={startRecording}
           stopRecording={stopRecording}
           recordingTime={recordingTime}
-          audioBlob={audioBlob}
-          transcribe={transcribe}
         />
+
         <NotesSection
-          notes={notes}
+          notes={notes || transcript || interimTranscript} // 👈 live speech shows here
           setNotes={setNotes}
           saveAnswer={saveAnswer}
           currentAnswer={answers[currentQuestionIndex]}
         />
+
+        {error && <p className="text-red-500">{error}</p>}
+
         <NavigationButtons
           currentIndex={currentQuestionIndex}
           total={questions.length}
