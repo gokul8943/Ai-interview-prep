@@ -4,6 +4,8 @@ import { GetInterview } from "../../usecase/Interview/GetInterview";
 import { GetInterviewById } from "../../usecase/Interview/GetInterviewById";
 import { DeleteInterview } from "../../usecase/Interview/DeleteInterview";
 
+import { generateInterviewQuestions } from "../../framework/services/GeminiAiService";
+
 
 export class InterviewController {
     constructor(
@@ -52,6 +54,17 @@ export class InterviewController {
         } catch (error) {
             console.error("Error getting interview by ID:", error);
             res.status(500).json({ message: "Error getting interview by ID" });
+        }
+    }
+
+    async generateInterviewQuestions(req: Request, res: Response) {
+        try {
+            const { interviewId, domain, level, questionCount } = req.body;
+            const questions = await generateInterviewQuestions( domain, level, questionCount);
+            res.status(200).json({ message: "Interview questions generated successfully", questions });
+        } catch (error) {
+            console.error("Error generating interview questions:", error);
+            res.status(500).json({ message: "Error generating interview questions" });
         }
     }
 }

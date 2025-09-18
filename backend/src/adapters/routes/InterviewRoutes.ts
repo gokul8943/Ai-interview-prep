@@ -49,4 +49,12 @@ router.post('/delete/:id',async (req,res) =>{
     }
 })
 
+router.post('/generate-questions', async (req, res) => {
+    try {
+        interviewController.generateInterviewQuestions(req, res)
+    } catch (error) {
+        res.status(500).json({ message: "Error in routes", error })
+    }
+})
+
 export default router
