@@ -3,6 +3,7 @@ import { CreateInterview } from "../../usecase/Interview/CreateInterview";
 import { GetInterview } from "../../usecase/Interview/GetInterview";
 import { GetInterviewById } from "../../usecase/Interview/GetInterviewById";
 import { DeleteInterview } from "../../usecase/Interview/DeleteInterview";
+import { GenerateQuestions } from "../../usecase/Interview/GenerateQuestions";
 
 import { generateInterviewQuestions } from "../../framework/services/GeminiAiService";
 
@@ -12,7 +13,8 @@ export class InterviewController {
         private readonly createInterviewUseCase: CreateInterview,
         private readonly getInterviewUseCase: GetInterview,
         private readonly getInterviewByIdUseCase: GetInterviewById,
-        private readonly deleteInterviewUseCase: DeleteInterview
+        private readonly deleteInterviewUseCase: DeleteInterview,
+        private readonly generateQuestionsUseCase: GenerateQuestions
     ) { }
 
     async createInterview(req: Request, res: Response) {
@@ -57,11 +59,12 @@ export class InterviewController {
         }
     }
 
-    async generateInterviewQuestions(req: Request, res: Response) {
+    async generateQuestions(req: Request, res: Response) {
         try {
             const { interviewId, domain, level, questionCount } = req.body;
             const questions = await generateInterviewQuestions( domain, level, questionCount);
-            res.status(200).json({ message: "Interview questions generated successfully", questions });
+            const interview = await this.createInterviewUseCase.execute({interviewId,interviewQuestions:questions});
+            res.status(200).json({ message: "Interview questions generated successfully", questions,interview });
         } catch (error) {
             console.error("Error generating interview questions:", error);
             res.status(500).json({ message: "Error generating interview questions" });

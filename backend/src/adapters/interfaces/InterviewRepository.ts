@@ -3,4 +3,5 @@ export interface InterviewRepository {
     getInterviews(): Promise<any>
     getInterviewById(interviewId: string): Promise<any>
     deleteInterview(interviewId: string): Promise<any>
+    generateInterviewQuestions(interviewId: string,interviewQuestions: any): Promise<any>
 }
