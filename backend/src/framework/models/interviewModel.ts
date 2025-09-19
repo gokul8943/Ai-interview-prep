@@ -3,12 +3,12 @@ import { IInterviewSchema } from "../../adapters/interfaces/IInterviewSchema";
 
 
 const interviewSchema = new mongoose.Schema<IInterviewSchema>({
-    userId: { type: Schema.Types.ObjectId, ref: "User" },
-    role: { type: String },
+    userId: { type: Schema.Types.ObjectId, ref: "User",required: true },
+    role: { type: String,required: true },
     type: { type: String },
     experience: { type: Number },
-    techstack: { type: String },
-    level: { type: String },
+    techstack: { type: String,required: true },
+    level: { type: String,required: true },
     questions: [{ type: Schema.Types.ObjectId, ref: "Question" }],
     finalized: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },

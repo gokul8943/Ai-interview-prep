@@ -10,8 +10,8 @@ export class InterviewRepositoryImpl implements InterviewRepository {
     private readonly QuestionModel: Model<IQuestionSchema>
 
     constructor(
-        interviewModel: Model<IInterviewSchema>
-        , questionModel: Model<IQuestionSchema>
+        interviewModel: Model<IInterviewSchema>,
+        questionModel: Model<IQuestionSchema>
     ) {
         this.InterviewModel = interviewModel
         this.QuestionModel = questionModel
