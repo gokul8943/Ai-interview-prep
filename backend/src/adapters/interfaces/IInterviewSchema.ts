@@ -8,7 +8,7 @@ export interface IInterviewSchema extends Document {
     experience: number;
     techstack: string;
     level: string;
-    questions: mongoose.Types.ObjectId;
+    questions: mongoose.Types.ObjectId[];
     finalized: boolean;
     createdAt: Date;
     updatedAt: Date;

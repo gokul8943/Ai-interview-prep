@@ -3,7 +3,12 @@ import { IQuestionSchema } from "../../adapters/interfaces/IQuestionSchema";
 
 
 const questionSchema = new mongoose.Schema<IQuestionSchema>({
-    questions: [{ type: String }],
+    questions: [
+        {
+            id: { type: Number },
+            question: { type: String, required: true },
+        },
+    ],
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
 });

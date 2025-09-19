@@ -62,9 +62,9 @@ export class InterviewController {
     async generateQuestions(req: Request, res: Response) {
         try {
             const { interviewId, domain, level, questionCount } = req.body;
-            const questions = await generateInterviewQuestions( domain, level, questionCount);
-            const interview = await this.createInterviewUseCase.execute({interviewId,interviewQuestions:questions});
-            res.status(200).json({ message: "Interview questions generated successfully", questions,interview });
+            const interviewQuestions = await generateInterviewQuestions( domain, level, questionCount);
+            const interview = await this.generateQuestionsUseCase.execute(interviewId,interviewQuestions);
+            res.status(200).json({ message: "Interview questions generated successfully", interviewQuestions,interview });
         } catch (error) {
             console.error("Error generating interview questions:", error);
             res.status(500).json({ message: "Error generating interview questions" });

@@ -6,10 +6,10 @@ import { IQuestionSchema } from "../interfaces/IQuestionSchema";
 
 
 export class InterviewRepositoryImpl implements InterviewRepository {
-     private readonly InterviewModel: Model<IInterviewSchema>
-     private readonly QuestionModel: Model<IQuestionSchema>
+    private readonly InterviewModel: Model<IInterviewSchema>
+    private readonly QuestionModel: Model<IQuestionSchema>
 
-     constructor(
+    constructor(
         interviewModel: Model<IInterviewSchema>
         , questionModel: Model<IQuestionSchema>
     ) {
@@ -56,15 +56,25 @@ export class InterviewRepositoryImpl implements InterviewRepository {
         }
     }
 
-    async generateInterviewQuestions(interviewId: string,interviewQuestions: any): Promise<any> {
+    async generateInterviewQuestions(interviewId: string, interviewQuestions: any): Promise<any> {
         try {
             const interview = await this.InterviewModel.findById(interviewId);
-             const question = await this.QuestionModel.create(interviewQuestions);
-        
-            return {...interview,questions:question};
+            if (!interview) {
+                return null;
+            }
+
+            const questionDoc = await this.QuestionModel.create({
+                questions: interviewQuestions, 
+            });
+
+            interview.questions.push(questionDoc._id);
+            await interview.save();
+
+            return { interview, question: questionDoc };
         } catch (error) {
             console.error("An error occurred on interview repo", error);
             return false;
         }
-    }   
+    }
+
 }
