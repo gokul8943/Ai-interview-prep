@@ -4,7 +4,6 @@ import { CreateInterview } from "../../usecase/Interview/CreateInterview";
 import { GetInterview } from "../../usecase/Interview/GetInterview";
 import { GetInterviewById } from "../../usecase/Interview/GetInterviewById";
 import { DeleteInterview } from "../../usecase/Interview/DeleteInterview"
-import { GenerateQuestions } from "../../usecase/Interview/GenerateQuestions";
 import { InterviewController } from "../controllers/InterviewController";
 
 import interviewModel from "../../framework/models/interviewModel";
@@ -16,8 +15,7 @@ const createInterview = new CreateInterview(interviewRepository);
 const getInterview = new GetInterview(interviewRepository);
 const getInterviewById = new GetInterviewById(interviewRepository);
 const deleteInterview = new DeleteInterview(interviewRepository);
-const generateQuestions = new GenerateQuestions(interviewRepository);
-const interviewController = new InterviewController( createInterview, getInterview,getInterviewById,deleteInterview,generateQuestions);
+const interviewController = new InterviewController( createInterview, getInterview,getInterviewById,deleteInterview);
 
 const router = Router();
 
@@ -53,12 +51,5 @@ router.post('/delete/:id',async (req,res) =>{
     }
 })
 
-router.post('/generate-questions', async (req, res) => {
-    try {
-        interviewController.generateQuestions(req, res)
-    } catch (error) {
-        res.status(500).json({ message: "Error in routes", error })
-    }
-})
 
 export default router

@@ -67,25 +67,4 @@ export class InterviewRepositoryImpl implements InterviewRepository {
         }
     }
 
-    async generateInterviewQuestions(interviewId: string, interviewQuestions: any): Promise<any> {
-        try {
-            const interview = await this.InterviewModel.findById(interviewId);
-            if (!interview) {
-                return null;
-            }
-
-            const questionDoc = await this.QuestionModel.create({
-                questions: interviewQuestions,
-            });
-
-            interview.questions.push(questionDoc._id);
-            await interview.save();
-
-            return { interview, question: questionDoc };
-        } catch (error) {
-            console.error("An error occurred on interview repo", error);
-            return false;
-        }
-    }
-
 }

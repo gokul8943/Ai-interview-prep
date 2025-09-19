@@ -3,7 +3,7 @@ import { CreateInterview } from "../../usecase/Interview/CreateInterview";
 import { GetInterview } from "../../usecase/Interview/GetInterview";
 import { GetInterviewById } from "../../usecase/Interview/GetInterviewById";
 import { DeleteInterview } from "../../usecase/Interview/DeleteInterview";
-import { GenerateQuestions } from "../../usecase/Interview/GenerateQuestions";
+
 
 import { generateInterviewQuestions } from "../../framework/services/GeminiAiService";
 
@@ -14,7 +14,6 @@ export class InterviewController {
         private readonly getInterviewUseCase: GetInterview,
         private readonly getInterviewByIdUseCase: GetInterviewById,
         private readonly deleteInterviewUseCase: DeleteInterview,
-        private readonly generateQuestionsUseCase: GenerateQuestions
     ) { }
 
     async createInterview(req: Request, res: Response) {
@@ -22,7 +21,7 @@ export class InterviewController {
             const interviewData = req.body;
             const questions = await generateInterviewQuestions(interviewData.domain, interviewData.level, interviewData.questionCount);
             console.log("Generated Questions:", questions);
-            
+
             
             const newInterview = await this.createInterviewUseCase.execute(interviewData,questions);
             res.status(201).json({ message: "Interview created successfully", newInterview });
@@ -63,15 +62,4 @@ export class InterviewController {
         }
     }
 
-    async generateQuestions(req: Request, res: Response) {
-        try {
-            const { interviewId, domain, level, questionCount } = req.body;
-            const interviewQuestions = await generateInterviewQuestions( domain, level, questionCount);
-            const interview = await this.generateQuestionsUseCase.execute(interviewId,interviewQuestions);
-            res.status(200).json({ message: "Interview questions generated successfully", interviewQuestions,interview });
-        } catch (error) {
-            console.error("Error generating interview questions:", error);
-            res.status(500).json({ message: "Error generating interview questions" });
-        }
-    }
 }
