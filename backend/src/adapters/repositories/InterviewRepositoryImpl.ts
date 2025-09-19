@@ -17,15 +17,26 @@ export class InterviewRepositoryImpl implements InterviewRepository {
         this.QuestionModel = questionModel
     }
 
-    async createInterview(interviewData: any): Promise<any> {
+    async createInterview(interviewData: any, questions: any): Promise<any> {
         try {
-            const newInterview = await this.InterviewModel.create(interviewData);
+          
+            const questionDoc = await this.QuestionModel.create({
+                questions: questions,  
+            });
+
+            const newInterview = await this.InterviewModel.create({
+                ...interviewData,
+                questions: [questionDoc._id],
+            });
+
             return newInterview;
         } catch (error) {
             console.error("An error occurred on interview repo", error);
             return false;
         }
     }
+
+
 
     async getInterviews(): Promise<any> {
         try {
@@ -64,7 +75,7 @@ export class InterviewRepositoryImpl implements InterviewRepository {
             }
 
             const questionDoc = await this.QuestionModel.create({
-                questions: interviewQuestions, 
+                questions: interviewQuestions,
             });
 
             interview.questions.push(questionDoc._id);
