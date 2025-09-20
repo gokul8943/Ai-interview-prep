@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { PlayCircle } from 'lucide-react'
+import { PlayCircle, Loader2,Loader } from 'lucide-react'
 import { domains, levels, type DomainId } from '@/helpers/InterviewData'
 import InterviewTitle from '@/pages/CreateInterview/Components/InterviewTitle'
 import DomainSelector from '@/pages/CreateInterview/Components/DomainSelector'
@@ -21,6 +21,8 @@ const CreateInterview: React.FC = () => {
   const [selectedLevel, setSelectedLevel] = useState('')
   const [numberOfQuestions, setNumberOfQuestions] = useState([10])
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [loading, setLoading] = useState(false)   // 👈 loading state
+
 
 
   const { authState } = useAuthStore()
@@ -43,6 +45,7 @@ const CreateInterview: React.FC = () => {
 
   const handleCreateInterview = async () => {
     try {
+      setLoading(true)
       const payload = {
         userId: userId,
         title: interviewTitle,
@@ -63,10 +66,18 @@ const CreateInterview: React.FC = () => {
     } catch (error) {
       console.error('Error creating interview:', error)
     }
+    finally {
+      setLoading(false)
+    }
   }
 
   return (
     <div className="min-h-screen p-4">
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <Loader className="w-12 h-12 text-white animate-spin" />
+        </div>
+      )}
       <div className="max-w-4xl mx-auto grid gap-6">
         <div className="text-center mb-4">
           <h1 className="text-4xl font-bold text-white">Create New Interview</h1>
@@ -101,8 +112,17 @@ const CreateInterview: React.FC = () => {
             onClick={handleCreateInterview}
             className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 text-lg font-medium rounded-lg shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <PlayCircle className="w-5 h-5 mr-2" />
-            Create Interview
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" /> {/* 👈 spinner */}
+                Creating...
+              </>
+            ) : (
+              <>
+                <PlayCircle className="w-5 h-5 mr-2" />
+                Create Interview
+              </>
+            )}
           </Button>
         </div>
       </div>
