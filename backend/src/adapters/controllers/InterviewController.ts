@@ -19,8 +19,9 @@ export class InterviewController {
     async createInterview(req: Request, res: Response) {
         try {
             const interviewData = req.body;
+            console.log("Interview Data Received:", interviewData);
             const questions = await generateInterviewQuestions(interviewData.domain, interviewData.level, interviewData.questionCount,interviewData.topics);
-            console.log("Generated Questions:", questions);
+            // console.log("Generated Questions:", questions);
 
             
             const newInterview = await this.createInterviewUseCase.execute(interviewData,questions);

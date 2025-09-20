@@ -3,10 +3,11 @@ import mongoose, { mongo } from "mongoose";
 
 export interface IInterviewSchema extends Document {
     userId: mongoose.Types.ObjectId;
-    role: string;
+    title: string;
+    domain: string;
     type: string;
     experience: number;
-    techstack: string;
+    topics: string[];
     level: string;
     questions: mongoose.Types.ObjectId[];
     finalized: boolean;

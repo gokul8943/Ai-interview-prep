@@ -4,11 +4,14 @@ import { PlayCircle } from 'lucide-react'
 import { domains, levels, type DomainId } from '@/helpers/InterviewData'
 import InterviewTitle from '@/pages/CreateInterview/Components/InterviewTitle'
 import DomainSelector from '@/pages/CreateInterview/Components/DomainSelector'
-
 import LevelSelector from '@/pages/CreateInterview/Components/LevelSelector'
 import QuestionsSlider from '@/pages/CreateInterview/Components/QuestionSelector'
 import TopicsSelector from './Components/TopicSelector'
 import InstructionModal from '@/components/modal/InstructionModa'
+
+import useAuthStore from '@/store/AuthStrore';
+
+import { createInterview } from '../../services/InterviewApi/CreateInterviewApi'
 
 const CreateInterview: React.FC = () => {
   const [interviewTitle, setInterviewTitle] = useState('')
@@ -16,9 +19,14 @@ const CreateInterview: React.FC = () => {
   const [selectedTopics, setSelectedTopics] = useState<string[]>([])
   const [selectedLevel, setSelectedLevel] = useState('')
   const [numberOfQuestions, setNumberOfQuestions] = useState([10])
-   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-    const handleClose = () => setIsModalOpen(false); // ✅ Add this
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+
+  const { authState } = useAuthStore()
+  const userId = authState.user?._id
+
+
+  const handleClose = () => setIsModalOpen(false)
 
   const handleTopicToggle = (topic: string) => {
     setSelectedTopics(prev =>
@@ -26,19 +34,50 @@ const CreateInterview: React.FC = () => {
     )
   }
 
-  const isFormValid = Boolean(interviewTitle && selectedDomain && selectedLevel && selectedTopics.length > 0)
+  const isFormValid = Boolean(
+    interviewTitle && selectedDomain && selectedLevel && selectedTopics.length > 0
+  )
 
+  const handleCreateInterview = async () => {
+    try {
+      const payload = {
+        userId: userId,
+        title: interviewTitle,
+        domain: selectedDomain,
+        topics: selectedTopics,
+        level: selectedLevel,
+        questionCount: numberOfQuestions[0], // since slider gives an array
+      }
+
+      const response = await createInterview(payload)
+
+      if (response) {
+        // ✅ open modal only after successful API call
+        setIsModalOpen(true)
+      } else {
+        console.error('Interview creation failed:', response)
+      }
+    } catch (error) {
+      console.error('Error creating interview:', error)
+    }
+  }
 
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-4xl mx-auto grid gap-6">
         <div className="text-center mb-4">
           <h1 className="text-4xl font-bold text-white">Create New Interview</h1>
-          <p className="text-gray-600 text-lg">Design your perfect technical interview experience</p>
+          <p className="text-gray-600 text-lg">
+            Design your perfect technical interview experience
+          </p>
         </div>
 
         <InterviewTitle title={interviewTitle} onChange={setInterviewTitle} />
-        <DomainSelector domains={domains} selectedDomain={selectedDomain} onSelect={setSelectedDomain} />
+        <DomainSelector
+          domains={domains}
+          selectedDomain={selectedDomain}
+          onSelect={setSelectedDomain}
+        />
         {selectedDomain && (
           <TopicsSelector
             domainId={selectedDomain as DomainId}
@@ -46,13 +85,17 @@ const CreateInterview: React.FC = () => {
             onToggle={handleTopicToggle}
           />
         )}
-        <LevelSelector selectedLevel={selectedLevel} onChange={setSelectedLevel} levels={levels} />
+        <LevelSelector
+          selectedLevel={selectedLevel}
+          onChange={setSelectedLevel}
+          levels={levels}
+        />
         <QuestionsSlider value={numberOfQuestions} onChange={setNumberOfQuestions} />
 
         <div className="flex justify-center pt-4">
           <Button
             disabled={!isFormValid}
-             onClick={() => setIsModalOpen(true)}
+            onClick={handleCreateInterview}
             className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 text-lg font-medium rounded-lg shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <PlayCircle className="w-5 h-5 mr-2" />
@@ -60,8 +103,12 @@ const CreateInterview: React.FC = () => {
           </Button>
         </div>
       </div>
-      <InstructionModal isOpen={isModalOpen} onClose={handleClose} type="pre-interview" />
 
+      <InstructionModal
+        isOpen={isModalOpen}
+        onClose={handleClose}
+        type="pre-interview"
+      />
     </div>
   )
 }
