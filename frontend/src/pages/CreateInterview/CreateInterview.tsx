@@ -12,6 +12,7 @@ import InstructionModal from '@/components/modal/InstructionModa'
 import useAuthStore from '@/store/AuthStrore';
 
 import { createInterview } from '../../services/InterviewApi/CreateInterviewApi'
+import { useNavigate } from 'react-router-dom'
 
 const CreateInterview: React.FC = () => {
   const [interviewTitle, setInterviewTitle] = useState('')
@@ -24,6 +25,8 @@ const CreateInterview: React.FC = () => {
 
   const { authState } = useAuthStore()
   const userId = authState.user?._id
+
+  const navigate = useNavigate()
 
 
   const handleClose = () => setIsModalOpen(false)
@@ -46,16 +49,16 @@ const CreateInterview: React.FC = () => {
         domain: selectedDomain,
         topics: selectedTopics,
         level: selectedLevel,
-        questionCount: numberOfQuestions[0], // since slider gives an array
+        questionCount: numberOfQuestions[0],
       }
 
       const response = await createInterview(payload)
 
-      if (response) {
-        // ✅ open modal only after successful API call
-        setIsModalOpen(true)
+      const interviewId = response?.data?.newInterview?._id;
+      if (interviewId) {
+        navigate(`/interview/${interviewId}`);
       } else {
-        console.error('Interview creation failed:', response)
+        console.error("Interview ID missing in response", response?.data);
       }
     } catch (error) {
       console.error('Error creating interview:', error)
