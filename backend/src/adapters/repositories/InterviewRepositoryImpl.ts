@@ -26,7 +26,7 @@ export class InterviewRepositoryImpl implements InterviewRepository {
 
             const newInterview = await this.InterviewModel.create({
                 ...interviewData,
-                questions: [questionDoc._id],
+                questions: questionDoc._id,
             });
 
             return newInterview;

@@ -9,7 +9,7 @@ export interface IInterviewSchema extends Document {
     experience: number;
     topics: string[];
     level: string;
-    questions: mongoose.Types.ObjectId[];
+    question: mongoose.Types.ObjectId;
     finalized: boolean;
     createdAt: Date;
     updatedAt: Date;

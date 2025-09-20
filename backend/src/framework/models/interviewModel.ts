@@ -10,7 +10,7 @@ const interviewSchema = new mongoose.Schema<IInterviewSchema>({
     experience: { type: Number },
     topics: [{ type: String}],
     level: { type: String,required: true },
-    questions: [{ type: Schema.Types.ObjectId, ref: "Question" }],
+    question: { type: Schema.Types.ObjectId, ref: "Question" },
     finalized: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
