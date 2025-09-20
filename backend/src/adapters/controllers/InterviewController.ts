@@ -19,7 +19,7 @@ export class InterviewController {
     async createInterview(req: Request, res: Response) {
         try {
             const interviewData = req.body;
-            const questions = await generateInterviewQuestions(interviewData.domain, interviewData.level, interviewData.questionCount);
+            const questions = await generateInterviewQuestions(interviewData.domain, interviewData.level, interviewData.questionCount,interviewData.topics);
             console.log("Generated Questions:", questions);
 
             

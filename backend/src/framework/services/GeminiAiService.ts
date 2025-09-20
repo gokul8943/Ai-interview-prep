@@ -5,13 +5,15 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 export const generateInterviewQuestions = async (
     domain: string,
     level: string,
-    questionCount: number
+    topics: string[],
+    questionCount: number,
 ) => {
     const prompt = `
 You are an expert interviewer.
 Generate ${questionCount} unique, domain-specific interview questions.
 
 Domain: ${domain}
+Topics: ${topics}
 Difficulty: ${level}
 
 Return ONLY valid JSON in the following format (no explanations, no extra text):
@@ -23,7 +25,7 @@ Return ONLY valid JSON in the following format (no explanations, no extra text):
 `;;
 
     try {
-        // ✅ use genAI.getGenerativeModel instead
+        
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const result = await model.generateContent(prompt);
