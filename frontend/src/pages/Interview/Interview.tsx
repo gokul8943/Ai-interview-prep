@@ -4,12 +4,13 @@ import QuestionCard from '@/pages/Interview/InterviewSection/QuestionCard';
 import React, { useState, useRef, useEffect } from 'react';
 import NavigationButtons from './InterviewSection/NavigationButton';
 import { useSpeechToText } from '@/hooks/useSpeechToText';
+import { getInterviewQuestionsById } from '@/services/InterviewApi/CreateInterviewApi';
+import { useParams } from 'react-router-dom';
 
 interface Question {
   id: number;
-  text: string;
-  category: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
+  question: string;
+
 }
 
 const Interview: React.FC = () => {
@@ -18,9 +19,40 @@ const Interview: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [notes, setNotes] = useState('');
   const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  console.log(loading);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const params = useParams<{ id: string }>();
+
+  const interviewId = params?.id;
+  console.log(interviewId);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      if (!interviewId) return;
+
+      try {
+        setLoading(true);
+        const response = await getInterviewQuestionsById(interviewId);
+      
+        console.log('reponse', response.data.interviewQuestions.questions);
+
+        setQuestions(response.data.interviewQuestions.questions || []);
+        setLoading(false);
+      } catch (err: any) {
+        console.error('Error fetching questions:', err);
+        setLoading(false);
+      }
+    };
+
+    fetchQuestions();
+  }, [interviewId]);
+
 
   // 👇 speech-to-text hook
   const {
@@ -32,15 +64,8 @@ const Interview: React.FC = () => {
     error,
   } = useSpeechToText();
 
-  const questions: Question[] = [
-    { id: 1, text: 'Tell me about yourself...', category: 'General', difficulty: 'Easy' },
-    { id: 2, text: 'What is your experience with React...', category: 'Technical', difficulty: 'Medium' },
-    { id: 3, text: 'Describe a challenging project...', category: 'Behavioral', difficulty: 'Medium' },
-    { id: 4, text: 'How would you optimize performance...', category: 'Technical', difficulty: 'Hard' },
-    { id: 5, text: 'Where do you see yourself...', category: 'General', difficulty: 'Easy' },
-  ];
 
-  // Recorder setup (only once)
+
   useEffect(() => {
     const setupRecorder = async () => {
       try {
@@ -113,13 +138,13 @@ const Interview: React.FC = () => {
     }
   };
 
-  const currentQuestion = questions[currentQuestionIndex];
+
 
   return (
     <div className="min-h-screen p-5">
       <div className="max-w-4xl mx-auto space-y-6">
         <QuestionCard
-          currentQuestion={currentQuestion}
+          currentQuestion={questions[currentQuestionIndex]}
           currentIndex={currentQuestionIndex}
           total={questions.length}
           answers={answers}
