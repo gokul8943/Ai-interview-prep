@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { CreateInterview } from "../../usecase/Interview/CreateInterview";
 import { GetInterview } from "../../usecase/Interview/GetInterview";
-import { GetInterviewById } from "../../usecase/Interview/GetInterviewById";
+import { GetInterviewQuestionsById } from "../../usecase/Interview/GetInterviewQuestionsById";
 import { DeleteInterview } from "../../usecase/Interview/DeleteInterview";
 
 
@@ -12,7 +12,7 @@ export class InterviewController {
     constructor(
         private readonly createInterviewUseCase: CreateInterview,
         private readonly getInterviewUseCase: GetInterview,
-        private readonly getInterviewByIdUseCase: GetInterviewById,
+        private readonly getInterviewByIdUseCase: GetInterviewQuestionsById,
         private readonly deleteInterviewUseCase: DeleteInterview,
     ) { }
 
@@ -45,11 +45,11 @@ export class InterviewController {
         }
     }
 
-    async getInterviewById(req: Request, res: Response) {
+    async getInterviewQuestionsById(req: Request, res: Response) {
         try {
             const interviewId = req.params.id;
-            const interview = await this.getInterviewByIdUseCase.execute(interviewId);
-            res.status(200).json({ message: "Interview fetched successfully", interview });
+            const interviewQuestions = await this.getInterviewByIdUseCase.execute(interviewId);
+            res.status(200).json({ message: "Interview fetched successfully", interviewQuestions });
         } catch (error) {
             console.error("Error getting interview by ID:", error);
             res.status(500).json({ message: "Error getting interview by ID" });

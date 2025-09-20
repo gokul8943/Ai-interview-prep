@@ -19,14 +19,14 @@ export class InterviewRepositoryImpl implements InterviewRepository {
 
     async createInterview(interviewData: any, questions: any): Promise<any> {
         try {
-          
+
             const questionDoc = await this.QuestionModel.create({
-                questions: questions,  
+                questions: questions,
             });
 
             const newInterview = await this.InterviewModel.create({
                 ...interviewData,
-                questions: questionDoc._id,
+                question: questionDoc._id,
             });
 
             return newInterview;
@@ -48,10 +48,13 @@ export class InterviewRepositoryImpl implements InterviewRepository {
         }
     }
 
-    async getInterviewById(interviewId: string): Promise<any> {
+    async getInterviewQuestionsById(interviewId: string): Promise<any> {
         try {
-            const interview = await this.InterviewModel.findById(interviewId);
-            return interview;
+            const interview = await this.InterviewModel.findById(interviewId).populate("question");
+                if(!interview){
+                    throw new Error("Interview not found");
+                }
+            return interview.question;
         } catch (error) {
             console.error("An error occurred on interview repo", error);
             return false;
