@@ -39,7 +39,7 @@ const Interview: React.FC = () => {
       try {
         setLoading(true);
         const response = await getInterviewQuestionsById(interviewId);
-      
+
         console.log('reponse', response.data.interviewQuestions.questions);
 
         setQuestions(response.data.interviewQuestions.questions || []);
