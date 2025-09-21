@@ -21,7 +21,7 @@ const CreateInterview: React.FC = () => {
   const [selectedLevel, setSelectedLevel] = useState('')
   const [numberOfQuestions, setNumberOfQuestions] = useState([10])
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [loading, setLoading] = useState(false)   // 👈 loading state
+  const [loading, setLoading] = useState(false)  
 
 
 

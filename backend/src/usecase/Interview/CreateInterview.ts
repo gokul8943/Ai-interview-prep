@@ -2,9 +2,9 @@ import { InterviewRepository } from "../../adapters/interfaces/InterviewReposito
 
 
 export class CreateInterview {
-  constructor(private authRepository: InterviewRepository) { }
+  constructor(private interviewRepository: InterviewRepository) { }
 
   async execute(interViewData: any,questions: any): Promise<any> {
-    return this.authRepository.createInterview(interViewData,questions);
+    return this.interviewRepository.createInterview(interViewData,questions);
   }
 }

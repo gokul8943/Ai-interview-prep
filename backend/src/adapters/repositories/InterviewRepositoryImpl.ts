@@ -70,4 +70,14 @@ export class InterviewRepositoryImpl implements InterviewRepository {
         }
     }
 
+    async saveAnswer(interviewId: string, answer: string): Promise<any> {
+        try {
+            const interview = await this.InterviewModel.findByIdAndUpdate(interviewId, { answer: answer }, { new: true });
+            return interview;
+        } catch (error) {
+            console.error("An error occurred on interview repo", error);
+            return false;
+        }
+    }
+
 }

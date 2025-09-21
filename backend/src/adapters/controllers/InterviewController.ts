@@ -3,6 +3,7 @@ import { CreateInterview } from "../../usecase/Interview/CreateInterview";
 import { GetInterview } from "../../usecase/Interview/GetInterview";
 import { GetInterviewQuestionsById } from "../../usecase/Interview/GetInterviewQuestionsById";
 import { DeleteInterview } from "../../usecase/Interview/DeleteInterview";
+import { SaveAnswer } from "../../usecase/Interview/SaveAnswer";
 
 
 import { generateInterviewQuestions } from "../../framework/services/GeminiAiService";
@@ -14,6 +15,7 @@ export class InterviewController {
         private readonly getInterviewUseCase: GetInterview,
         private readonly getInterviewByIdUseCase: GetInterviewQuestionsById,
         private readonly deleteInterviewUseCase: DeleteInterview,
+        private readonly saveAnswersUseCase: SaveAnswer,
     ) { }
 
     async createInterview(req: Request, res: Response) {
@@ -65,5 +67,17 @@ export class InterviewController {
             res.status(500).json({ message: "Error getting interview by ID" });
         }
     }
+
+    async saveAnswer(req: Request, res: Response) {
+        try {
+            const interviewId = req.params.id;
+            const answer = req.body.answers; 
+            const savedAnswers = await this.saveAnswersUseCase.execute(interviewId, answer);
+            res.status(200).json({ message: "Answers saved successfully", savedAnswers });
+        } catch (error) {
+            console.error("Error saving answers:", error);
+            res.status(500).json({ message: "Error saving answers" });
+        }
+    }   
 
 }

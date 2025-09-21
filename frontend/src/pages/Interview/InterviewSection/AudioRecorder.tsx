@@ -28,7 +28,7 @@ const AudioRecorder: React.FC<Props> = ({
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-white">
           <Mic className="w-5 h-5" />
           Audio Recording
         </CardTitle>

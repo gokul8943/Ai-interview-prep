@@ -1,6 +1,6 @@
 
 export interface IQuestionSchema extends Document {
-     questions: { id: number; question: string }[];
+     questions: { id: number; question: string ,answer: string}[];
     createdAt: Date;
     updatedAt: Date;
 }

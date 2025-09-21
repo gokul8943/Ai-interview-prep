@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Save, FileText } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Textarea } from "../../../components/ui/textArea";
+import { Textarea } from "@/components/ui/textArea";
 
 interface Props {
   notes: string;
@@ -15,9 +15,9 @@ interface Props {
 const NotesSection: React.FC<Props> = ({ notes, setNotes, saveAnswer, currentAnswer }) => (
   <Card className="shadow-lg">
     <CardHeader>
-      <CardTitle className="flex items-center gap-2">
+      <CardTitle className="flex items-center gap-2 text-white">
         <FileText className="w-5 h-5" />
-        Notes & Answer
+         Answer
       </CardTitle>
     </CardHeader>
     <CardContent className="space-y-4">
@@ -25,7 +25,7 @@ const NotesSection: React.FC<Props> = ({ notes, setNotes, saveAnswer, currentAns
         value={notes}
         onChange={(e) => setNotes(e.target.value)} // ✅ safe typing
         placeholder="Write your answer or notes here..."
-        className="min-h-32 resize-none"
+        className="min-h-32 resize-none text-white"
       />
       <div className="flex gap-2">
         <Button
