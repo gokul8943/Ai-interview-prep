@@ -51,9 +51,9 @@ export class InterviewRepositoryImpl implements InterviewRepository {
     async getInterviewQuestionsById(interviewId: string): Promise<any> {
         try {
             const interview = await this.InterviewModel.findById(interviewId).populate("question");
-                if(!interview){
-                    throw new Error("Interview not found");
-                }
+            if (!interview) {
+                throw new Error("Interview not found");
+            }
             return interview.question;
         } catch (error) {
             console.error("An error occurred on interview repo", error);
@@ -70,14 +70,27 @@ export class InterviewRepositoryImpl implements InterviewRepository {
         }
     }
 
-    async saveAnswer(interviewId: string, answer: string): Promise<any> {
+    async saveAnswer(interviewId: string, questionId: number, answer: string): Promise<any> {
         try {
-            const interview = await this.InterviewModel.findByIdAndUpdate(interviewId, { answer: answer }, { new: true });
-            return interview;
+            // 1. Find the interview to get linked Question document
+            const interview = await this.InterviewModel.findById(interviewId).populate("question");
+            if (!interview) {
+                throw new Error("Interview not found");
+            }
+
+            // 2. Update the specific question answer inside Question model
+            const updatedQuestionDoc = await this.QuestionModel.findOneAndUpdate(
+                { _id: interview.question, "questions.id": questionId },
+                { $set: { "questions.$.answer": answer } },
+                { new: true }
+            );
+
+            return updatedQuestionDoc;
         } catch (error) {
             console.error("An error occurred on interview repo", error);
             return false;
         }
     }
+
 
 }

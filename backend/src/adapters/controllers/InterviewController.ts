@@ -71,13 +71,13 @@ export class InterviewController {
     async saveAnswer(req: Request, res: Response) {
         try {
             const interviewId = req.params.id;
-            const answer = req.body.answers; 
-            const savedAnswers = await this.saveAnswersUseCase.execute(interviewId, answer);
+            const { questionId, answer } = req.body
+            const savedAnswers = await this.saveAnswersUseCase.execute(interviewId, questionId, answer);
             res.status(200).json({ message: "Answers saved successfully", savedAnswers });
         } catch (error) {
             console.error("Error saving answers:", error);
             res.status(500).json({ message: "Error saving answers" });
         }
-    }   
+    }
 
 }

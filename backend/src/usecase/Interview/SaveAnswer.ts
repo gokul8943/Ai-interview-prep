@@ -4,7 +4,7 @@ import { InterviewRepository } from "../../adapters/interfaces/InterviewReposito
 export class SaveAnswer {
   constructor(private interviewRepository: InterviewRepository) { }
 
-  async execute(interviewId: any,answer: any): Promise<any> {
-    return this.interviewRepository.createInterview(interviewId,answer);
+  async execute(interviewId: string, questionId: number,answer: any): Promise<any> {
+    return this.interviewRepository.saveAnswer(interviewId,questionId,answer);
   }
 }
