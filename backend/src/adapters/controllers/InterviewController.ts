@@ -7,6 +7,7 @@ import { SaveAnswer } from "../../usecase/Interview/SaveAnswer";
 
 
 import { generateInterviewQuestions } from "../../framework/services/GeminiAiService";
+import { GetSummary } from "../../usecase/Interview/GetSummary";
 
 
 export class InterviewController {
@@ -16,6 +17,7 @@ export class InterviewController {
         private readonly getInterviewByIdUseCase: GetInterviewQuestionsById,
         private readonly deleteInterviewUseCase: DeleteInterview,
         private readonly saveAnswersUseCase: SaveAnswer,
+        private readonly getSummaryUseCase: GetSummary
     ) { }
 
     async createInterview(req: Request, res: Response) {
@@ -37,7 +39,7 @@ export class InterviewController {
         }
     }
 
-    async getInterviews(req: Request, res: Response) {
+    async getInterview(req: Request, res: Response) {
         try {
             const interviews = await this.getInterviewUseCase.execute();
             res.status(200).json({ message: "Interviews fetched successfully", interviews });
@@ -77,6 +79,18 @@ export class InterviewController {
         } catch (error) {
             console.error("Error saving answers:", error);
             res.status(500).json({ message: "Error saving answers" });
+        }
+    }
+
+   async getSummary(req: Request, res: Response) {
+        try {
+            const interviewId = req.params.id;
+            const summary = await this.getSummaryUseCase.execute(interviewId);
+            res.status(200).json({ message: "Summary fetch successfully", summary });
+        } catch (error) {
+            console.error("Error generating summary:", error);
+            res.
+            status(500).json({ message: "Error generating summary" });
         }
     }
 

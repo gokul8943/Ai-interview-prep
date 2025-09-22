@@ -5,5 +5,5 @@ export const createInterview = (data: any) => {
 }
 
 export const getInterviewQuestionsById = (interviewId: string,) => {
-    return axios.get(`/interview/get/${interviewId}`)
+    return axios.get(`/interview/get-question/${interviewId}`)
 }

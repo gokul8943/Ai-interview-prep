@@ -91,6 +91,17 @@ export class InterviewRepositoryImpl implements InterviewRepository {
             return false;
         }
     }
-
+async getSummary(interviewId: string): Promise<any> {
+    try {
+        const interview = await this.InterviewModel.findById(interviewId).populate("summary");
+        if (!interview) {
+            throw new Error("Interview not found");
+        }
+        return interview.summary;
+    } catch (error) {
+        console.error("An error occurred on interview repo", error);
+        return false;
+    }
+}
 
 }

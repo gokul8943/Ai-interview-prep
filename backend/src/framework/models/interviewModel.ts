@@ -11,6 +11,7 @@ const interviewSchema = new mongoose.Schema<IInterviewSchema>({
     topics: [{ type: String}],
     level: { type: String,required: true },
     question: { type: Schema.Types.ObjectId, ref: "Question" },
+    summary: { type: Schema.Types.ObjectId, ref: "Summary" },
     finalized: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },

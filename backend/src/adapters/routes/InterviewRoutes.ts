@@ -5,6 +5,7 @@ import { GetInterview } from "../../usecase/Interview/GetInterview";
 import { GetInterviewQuestionsById } from "../../usecase/Interview/GetInterviewQuestionsById";
 import { DeleteInterview } from "../../usecase/Interview/DeleteInterview"
 import { SaveAnswer } from "../../usecase/Interview/SaveAnswer";
+import { GetSummary } from "../../usecase/Interview/GetSummary";
 import { InterviewController } from "../controllers/InterviewController";
 
 import interviewModel from "../../framework/models/interviewModel";
@@ -17,7 +18,8 @@ const getInterview = new GetInterview(interviewRepository);
 const getInterviewQuestionsById = new GetInterviewQuestionsById(interviewRepository);
 const deleteInterview = new DeleteInterview(interviewRepository);
 const saveAnswer = new SaveAnswer(interviewRepository);
-const interviewController = new InterviewController( createInterview, getInterview,getInterviewQuestionsById,deleteInterview,saveAnswer);
+const getSummary = new GetSummary(interviewRepository);
+const interviewController = new InterviewController( createInterview, getInterview,getInterviewQuestionsById,deleteInterview,saveAnswer,getSummary);
 
 const router = Router();
 
@@ -32,12 +34,12 @@ router.post('/create', async (req, res) => {
 
 router.get('/get', async (req, res) => { 
     try {
-        interviewController.getInterviews(req, res)
+        interviewController.getInterview(req, res)
     } catch (error) {
         res.status(500).json({ message: "Error in routes", error })
     }
 })
-router.get('/get/:id', async (req, res) => { 
+router.get('/get-question/:id', async (req, res) => { 
     try {
         interviewController.getInterviewQuestionsById(req, res)
     } catch (error) {
@@ -56,6 +58,14 @@ router.post('/delete/:id',async (req,res) =>{
 router.post('/save-answer/:id',async (req,res) =>{
     try {
         interviewController.saveAnswer(req,res)
+    } catch (error) {
+        res.status(500).json({message:"error in routes",error})
+    }
+})
+
+router.post('/get-summary',async(req,res)=>{
+    try {
+        interviewController.getSummary(req,res)
     } catch (error) {
         res.status(500).json({message:"error in routes",error})
     }

@@ -10,6 +10,7 @@ export interface IInterviewSchema extends Document {
     topics: string[];
     level: string;
     question: mongoose.Types.ObjectId;
+    summary: mongoose.Types.ObjectId;
     finalized: boolean;
     createdAt: Date;
     updatedAt: Date;
