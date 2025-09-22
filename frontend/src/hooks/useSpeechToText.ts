@@ -13,20 +13,19 @@ export function useSpeechToText() {
     isMicrophoneAvailable,
   } = useSpeechRecognition();
 
+
+
   const [error, setError] = useState<string | null>(null);
 
-  const startListening = useCallback(() => {
-    if (!browserSupportsSpeechRecognition) {
-      setError("Your browser does not support speech recognition.");
-      return;
-    }
-    if (!isMicrophoneAvailable) {
-      setError("Microphone is not available.");
-      return;
-    }
-    setError(null);
-    SpeechRecognition.startListening({ continuous: true, language: "en-US" });
-  }, [browserSupportsSpeechRecognition, isMicrophoneAvailable]);
+ const startListening = useCallback(() => {
+  console.log("🎤 Starting listening...");
+  SpeechRecognition.startListening({
+    continuous: true,
+    interimResults: true,
+    language: "en-US",
+  });
+}, []);
+  ;
 
   const stopListening = useCallback(() => {
     SpeechRecognition.stopListening();
@@ -35,6 +34,9 @@ export function useSpeechToText() {
   const reset = useCallback(() => {
     resetTranscript();
   }, [resetTranscript]);
+
+  console.log("Browser supports SR:", browserSupportsSpeechRecognition);
+  console.log("Mic available:", isMicrophoneAvailable);
 
   return {
     transcript,        // full transcript

@@ -7,6 +7,7 @@ import HomePage from "./pages/Home/HomePage";
 import CreateInterview from "./pages/CreateInterview/CreateInterview";
 import Interview from "./pages/Interview/Interview";
 import InterviewSummary from "./pages/Summary/InterviewSummary";
+import SpeechTest from "./pages/Speeech";
 
 
 
@@ -24,6 +25,7 @@ const App = () => {
             <Route path="/create-interview" element={<CreateInterview />} />
             <Route path="/interview/:id" element={<Interview/>} />
             <Route path="/summary" element={<InterviewSummary />} />
+            <Route path="/speech" element={<SpeechTest />} />
           </Routes>
         </div>
       </div>

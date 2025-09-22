@@ -7,7 +7,7 @@ const questionSchema = new mongoose.Schema<IQuestionSchema>({
         {
             id: { type: Number },
             question: { type: String, required: true },
-            answer: { type: String, required: true },
+            answer: { type: String },
         },
     ],
     createdAt: { type: Date, default: Date.now },
