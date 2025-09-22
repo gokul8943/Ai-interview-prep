@@ -25,7 +25,7 @@ Return ONLY valid JSON in the following format (no explanations, no extra text):
 `;;
 
     try {
-        
+
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const result = await model.generateContent(prompt);
@@ -49,3 +49,34 @@ Return ONLY valid JSON in the following format (no explanations, no extra text):
         return [];
     }
 };
+
+
+export const generateSummaryService = async (interviewData: any) => {
+    const prompt = `
+You are an expert interviewer.
+Generate a concise summary of the interview based on the provided data.
+
+Interview Data: ${JSON.stringify(interviewData)}
+
+Return ONLY valid JSON in the following format (no explanations, no extra text):
+
+{
+    "summary": "...",
+    "recommendation": "..."
+}
+`;;
+    try {
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+        const result = await model.generateContent(prompt);
+
+        // get plain text
+        let text = result.response.text();
+
+        // Clean up possible markdown formatting
+        text = text.replace(/```json|```/g, "").trim();
+    } catch (err) {
+        console.error("Error parsing Gemini response:", err);
+        return {};
+    }
+}

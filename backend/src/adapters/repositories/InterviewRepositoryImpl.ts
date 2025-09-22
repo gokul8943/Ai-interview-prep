@@ -2,19 +2,24 @@ import { Model } from "mongoose";
 import { IInterviewSchema } from "../interfaces/IInterviewSchema";
 import { InterviewRepository } from "../interfaces/InterviewRepository";
 import { IQuestionSchema } from "../interfaces/IQuestionSchema";
+import { generateSummaryService } from "../../framework/services/GeminiAiService";
+import { ISummarySchema } from "../interfaces/ISummarySchema";
 
 
 
 export class InterviewRepositoryImpl implements InterviewRepository {
     private readonly InterviewModel: Model<IInterviewSchema>
     private readonly QuestionModel: Model<IQuestionSchema>
+    private readonly SummaryModel: Model<ISummarySchema>
 
     constructor(
         interviewModel: Model<IInterviewSchema>,
-        questionModel: Model<IQuestionSchema>
+        questionModel: Model<IQuestionSchema>,
+        summaryModel: Model<ISummarySchema>
     ) {
         this.InterviewModel = interviewModel
         this.QuestionModel = questionModel
+        this.SummaryModel = summaryModel
     }
 
     async createInterview(interviewData: any, questions: any): Promise<any> {
@@ -91,17 +96,51 @@ export class InterviewRepositoryImpl implements InterviewRepository {
             return false;
         }
     }
-async getSummary(interviewId: string): Promise<any> {
-    try {
-        const interview = await this.InterviewModel.findById(interviewId).populate("summary");
-        if (!interview) {
-            throw new Error("Interview not found");
+    async getSummary(interviewId: string): Promise<any> {
+        try {
+            const interview = await this.InterviewModel.findById(interviewId).populate("summary");
+            if (!interview) {
+                throw new Error("Interview not found");
+            }
+            return interview.summary;
+        } catch (error) {
+            console.error("An error occurred on interview repo", error);
+            return false;
         }
-        return interview.summary;
-    } catch (error) {
-        console.error("An error occurred on interview repo", error);
-        return false;
     }
-}
 
+    async generateSummary(interviewId: string): Promise<any> {
+        try {
+            const interview = await this.InterviewModel.findById(interviewId).populate("question");
+            if (!interview) {
+                throw new Error("Interview not found");
+            }
+            const interviewData = {
+                title: interview.title,
+                domain: interview.domain,
+                type: interview.type,
+                topics: interview.topics,
+                level: interview.level,
+                questions: interview.question.questions.map((q: any) => ({
+                    question: q.question,
+                    answer: q.answer,
+                })),
+            };
+            const generate = await generateSummaryService(interviewData as any);
+
+            const summaryDoc = await this.SummaryModel.create({
+                summary: generate.summary,
+            });
+            await summaryDoc.save();
+
+            // Link to interview
+            interview.summary = summaryDoc._id;
+            await interview.save();
+
+            return summaryDoc
+        } catch (error) {
+            console.error("An error occurred on interview repo", error);
+            return false;
+        }
+    }
 }

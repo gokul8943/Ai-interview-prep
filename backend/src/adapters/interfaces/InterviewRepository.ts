@@ -5,4 +5,5 @@ export interface InterviewRepository {
     deleteInterview(interviewId: string): Promise<any>
     saveAnswer(interviewId: string,questionId: number, answer: string): Promise<any>
     getSummary(interviewId: string): Promise<any>
+    generateSummary(interviewId: string): Promise<any>
 }

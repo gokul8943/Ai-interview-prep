@@ -6,6 +6,7 @@ import { GetInterviewQuestionsById } from "../../usecase/Interview/GetInterviewQ
 import { DeleteInterview } from "../../usecase/Interview/DeleteInterview"
 import { SaveAnswer } from "../../usecase/Interview/SaveAnswer";
 import { GetSummary } from "../../usecase/Interview/GetSummary";
+import { GenerateSummary } from "../../usecase/Interview/GenerateSummary";
 import { InterviewController } from "../controllers/InterviewController";
 
 import interviewModel from "../../framework/models/interviewModel";
@@ -18,8 +19,9 @@ const getInterview = new GetInterview(interviewRepository);
 const getInterviewQuestionsById = new GetInterviewQuestionsById(interviewRepository);
 const deleteInterview = new DeleteInterview(interviewRepository);
 const saveAnswer = new SaveAnswer(interviewRepository);
+const generateSummary = new GenerateSummary(interviewRepository);
 const getSummary = new GetSummary(interviewRepository);
-const interviewController = new InterviewController( createInterview, getInterview,getInterviewQuestionsById,deleteInterview,saveAnswer,getSummary);
+const interviewController = new InterviewController( createInterview, getInterview,getInterviewQuestionsById,deleteInterview,saveAnswer,getSummary,generateSummary);
 
 const router = Router();
 
@@ -58,6 +60,13 @@ router.post('/delete/:id',async (req,res) =>{
 router.post('/save-answer/:id',async (req,res) =>{
     try {
         interviewController.saveAnswer(req,res)
+    } catch (error) {
+        res.status(500).json({message:"error in routes",error})
+    }
+})
+router.post('/generate-summary',async(req,res)=>{
+    try {
+        interviewController.generateSummary(req,res)
     } catch (error) {
         res.status(500).json({message:"error in routes",error})
     }

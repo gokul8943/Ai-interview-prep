@@ -4,6 +4,7 @@ import { GetInterview } from "../../usecase/Interview/GetInterview";
 import { GetInterviewQuestionsById } from "../../usecase/Interview/GetInterviewQuestionsById";
 import { DeleteInterview } from "../../usecase/Interview/DeleteInterview";
 import { SaveAnswer } from "../../usecase/Interview/SaveAnswer";
+import { GenerateSummary } from "../../usecase/Interview/GenerateSummary";
 
 
 import { generateInterviewQuestions } from "../../framework/services/GeminiAiService";
@@ -17,7 +18,8 @@ export class InterviewController {
         private readonly getInterviewByIdUseCase: GetInterviewQuestionsById,
         private readonly deleteInterviewUseCase: DeleteInterview,
         private readonly saveAnswersUseCase: SaveAnswer,
-        private readonly getSummaryUseCase: GetSummary
+        private readonly getSummaryUseCase: GetSummary,
+        private readonly generateSummaryUseCase: GenerateSummary
     ) { }
 
     async createInterview(req: Request, res: Response) {
@@ -82,7 +84,19 @@ export class InterviewController {
         }
     }
 
-   async getSummary(req: Request, res: Response) {
+    async generateSummary(req: Request, res: Response) {
+        try {
+            const interviewId = req.params.interviewId;
+            const summary = await this.generateSummaryUseCase.execute(interviewId)
+            res.status(200).json({ message: "Summary generated successfully", summary });
+        } catch (error) {
+            console.error("Error generating summary:", error);
+            res.status(500).json({ message: "Error generating summary" });
+        }
+    }
+
+
+    async getSummary(req: Request, res: Response) {
         try {
             const interviewId = req.params.id;
             const summary = await this.getSummaryUseCase.execute(interviewId);
@@ -90,8 +104,9 @@ export class InterviewController {
         } catch (error) {
             console.error("Error generating summary:", error);
             res.
-            status(500).json({ message: "Error generating summary" });
+                status(500).json({ message: "Error generating summary" });
         }
     }
+
 
 }
