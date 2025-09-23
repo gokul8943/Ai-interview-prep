@@ -1,6 +1,9 @@
 
 export interface ISummarySchema extends Document {
-    summary: { text: string; score: number}[];
+    communication: number;
+    strengths: string[];
+    areasForImprovement: string[];
+    finalRecommendation: string;
     createdAt: Date;
     updatedAt: Date;
 }

@@ -11,9 +11,10 @@ import { InterviewController } from "../controllers/InterviewController";
 
 import interviewModel from "../../framework/models/interviewModel";
 import questiomModel from "../../framework/models/questionModel";
+import summaryModel from "../../framework/models/summaryModel";
 
 
-const interviewRepository = new InterviewRepositoryImpl(interviewModel,questiomModel);
+const interviewRepository = new InterviewRepositoryImpl(interviewModel,questiomModel,summaryModel);
 const createInterview = new CreateInterview(interviewRepository);
 const getInterview = new GetInterview(interviewRepository);
 const getInterviewQuestionsById = new GetInterviewQuestionsById(interviewRepository);
