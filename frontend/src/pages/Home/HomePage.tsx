@@ -27,13 +27,18 @@ const HomePage: React.FC = () => {
 
           <Button
             className="btn-primary max-sm:w-full"
-            onClick={user ? () => setIsModalOpen(true) : () => navigate('/sign-in')}
+            onClick={() => {
+              if (user) {
+                navigate('/create-interview')
+              } else {
+                navigate('/sign-in')
+              }
+            }}
           >
             Start an Interview
           </Button>
 
         </div>
-
         <img
           src={robotpng}
           alt="Robo-dude"

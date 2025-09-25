@@ -37,13 +37,13 @@ export function useSpeechToText() {
   }, [resetTranscript]);
 
   return {
-    transcript,        // full transcript
-    interimTranscript, // partial transcript while speaking
-    finalTranscript,   // finalized part of speech
-    listening,         // is mic active
-    startListening,    // start speech recognition
-    stopListening,     // stop speech recognition
-    reset,             // clear transcript
-    error,             // error messages if any
+    transcript,        
+    interimTranscript,
+    finalTranscript,   
+    listening,        
+    startListening,    
+    stopListening,     
+    reset,            
+    error,             
   };
 }
