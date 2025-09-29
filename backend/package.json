@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "babel src -d dist",
     "dev": "nodemon src/framework/index.ts",
     "start": "nodemon src/framework/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -26,6 +27,9 @@
     "openai": "^5.21.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.28.3",
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",

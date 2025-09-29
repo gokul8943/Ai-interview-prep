@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { BASE_URL } from "@/constants/baseUrl";
+import { BASE_URL } from "@/constants/BaseUrl";
 import axios from "axios";
 
 

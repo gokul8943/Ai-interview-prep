@@ -10,50 +10,45 @@ import { verifyOtp } from '@/services/UserAPi/AuthApi';
 type InputRef = HTMLInputElement | null;
 
 const OtpPage: React.FC = () => {
-    const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
+    const [otps, setOtps] = useState<string[]>(Array(6).fill(''));
     const inputRefs = useRef<InputRef[]>([]);
 
-    // Handle OTP input change
     const handleChange = (element: HTMLInputElement, index: number): void => {
         const value = element.value;
 
-        // Allow only numbers
         if (isNaN(Number(value))) return;
-
-        // Update the OTP array
-        const newOtp = [...otp];
+        const newOtp = [...otps];
         newOtp[index] = value.substring(0, 1);
-        setOtp(newOtp);
+        setOtps(newOtp);
 
-        // Move to next input if current field is filled
         if (value && index < 5) {
             inputRefs.current[index + 1]?.focus();
         }
     };
 
-    // Handle backspace and delete keys
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number): void => {
-        if (e.key === 'Backspace' && !otp[index] && index > 0) {
+        if (e.key === 'Backspace' && !otps[index] && index > 0) {
             inputRefs.current[index - 1]?.focus();
         }
     };
 
-    // Handle paste event
+
     const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>): void => {
         e.preventDefault();
         const pastedData = e.clipboardData.getData('text/plain').trim();
 
         if (/^\d+$/.test(pastedData) && pastedData.length === 6) {
             const digits = pastedData.slice(0, 6).split('');
-            setOtp(digits);
+            setOtps(digits);
             inputRefs.current[5]?.focus();
         }
     };
 
     const handleSubmit = (): void => {
-        const otpValue = otp.join('');
-        if (otpValue.length === 6) {
-            verifyOtp({email, otp: otpValue})
+        const otp = otps.join('');
+        const email = localStorage.getItem("email") || "";
+        if (otp.length === 6 && email) {
+            verifyOtp(email, otp)
         }
     };
 
@@ -89,7 +84,7 @@ const OtpPage: React.FC = () => {
                                 type="text"
                                 maxLength={1}
                                 className="h-14 w-12 rounded-lg bg-zinc-800 text-center text-xl font-bold text-white focus:border-2 focus:border-purple-400 focus:outline-none"
-                                value={otp[index] || ''}
+                                value={otps[index] || ''}
                                 onChange={(e) => handleChange(e.target as HTMLInputElement, index)}
                                 onKeyDown={(e) => handleKeyDown(e, index)}
                                 onPaste={index === 0 ? handlePaste : undefined}
