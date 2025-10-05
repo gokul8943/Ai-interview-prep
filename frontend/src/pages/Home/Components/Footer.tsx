@@ -5,10 +5,9 @@ import { Link } from 'react-router-dom';
 export default function Footer() {
     return (
         <footer className="text-gray-300">
-            {/* Main Footer */}
+
             <div className="max-w-7xl mx-auto px-4 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {/* Company Info */}
                     <div>
                         <div>
                             <Link to="/" className="flex items-center gap-2">
@@ -33,11 +32,9 @@ export default function Footer() {
                             </a>
                         </div>
                     </div>
-
-                    {/* Quick Links */}
                     <div>
                         <h4 className="text-white font-semibold mb-4">Platform</h4>
-                        <ul className="space-y-2 text-sm">
+                        <ul className="space-y-1 text-sm">
                             <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
                             {/* <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li> */}
                             {/* <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li> */}
@@ -45,7 +42,6 @@ export default function Footer() {
                         </ul>
                     </div>
 
-                    {/* Resources */}
                     <div>
                         <h4 className="text-white font-semibold mb-4">Resources</h4>
                         <ul className="space-y-2 text-sm">
@@ -56,7 +52,6 @@ export default function Footer() {
                 </div>
             </div>
 
-            {/* Bottom Bar */}
             <div className="border-t border-gray-800">
                 <div className="max-w-7xl mx-auto px-4 py-6">
                     <div className="flex flex-col md:flex-row justify-between items-center text-sm">

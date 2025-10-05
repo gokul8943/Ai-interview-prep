@@ -7,3 +7,7 @@ export const createInterview = (data: any) => {
 export const getInterviewQuestionsById = (interviewId: string,) => {
     return axios.get(`/interview/get-question/${interviewId}`)
 }
+
+export const saveAnswer = (data: any) => {
+    return axios.post('/interview/save-answer', data)
+}
