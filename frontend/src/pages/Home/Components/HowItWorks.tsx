@@ -1,7 +1,14 @@
+import { Button } from "@/components/ui/button";
+import useAuthStore from "@/store/AuthStrore";
+import { useNavigate } from "react-router-dom";
 
 export default function HowItWorks() {
+    const navigate = useNavigate();
 
-   const steps = [
+    const { authState } = useAuthStore()
+    const user = authState.user
+
+    const steps = [
         {
             step: "1",
             title: "Create Your AI Interview",
@@ -38,6 +45,20 @@ export default function HowItWorks() {
                             <p className="text-gray-400 leading-relaxed">{item.description}</p>
                         </div>
                     ))}
+                </div>
+                <div className="flex justify-center mt-12">
+                    <Button
+                        className="btn-primary max-sm:w-full"
+                        onClick={() => {
+                            if (user) {
+                                navigate('/create-interview')
+                            } else {
+                                navigate('/sign-in')
+                            }
+                        }}
+                    >
+                        Start an Interview
+                    </Button>
                 </div>
             </div>
         </section>

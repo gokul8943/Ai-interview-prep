@@ -15,7 +15,7 @@ const HomePage: React.FC = () => {
 
   const { authState } = useAuthStore()
   const user = authState.user
-  const handleClose = () => setIsModalOpen(false); // ✅ Add this
+  const handleClose = () => setIsModalOpen(false); 
 
   return (
     <>

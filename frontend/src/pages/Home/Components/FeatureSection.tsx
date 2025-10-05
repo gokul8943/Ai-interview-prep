@@ -31,15 +31,15 @@ export default function FeaturesSection() {
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-white mb-6">Why Choose IntelliPrep?</h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Our cutting-edge AI technology provides the most realistic interview experience, 
+            Our cutting-edge AI technology provides the most realistic interview experience,
             helping you prepare better than ever before.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
-            <Card 
-              key={index} 
+            <Card
+              key={index}
               className="bg-slate-800/50 border-slate-700 hover:bg-slate-800/70 transition-all duration-300 group shadow-2xl"
             >
               <CardContent className="p-6">

@@ -12,7 +12,7 @@ export default function Footer() {
                         <div>
                             <Link to="/" className="flex items-center gap-2">
                                 <img src={logoSvg} alt="logo" width={38} height={32} />
-                                <h2 className="text-primary-100">IntelliPrep</h2>
+                                <h2 className="text-primary-100 font-bold text-xl">IntelliPrep</h2>
                             </Link>
                         </div>
                         <p className="text-sm mb-4">
@@ -32,23 +32,23 @@ export default function Footer() {
                             </a>
                         </div>
                     </div>
-                    <div>
+                    {/* <div>
                         <h4 className="text-white font-semibold mb-4">Platform</h4>
-                        <ul className="space-y-1 text-sm">
-                            <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-                            {/* <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li> */}
-                            {/* <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li> */}
-                            {/* <li><a href="#" className="hover:text-white transition-colors">Security</a></li> */}
-                        </ul>
-                    </div>
-
+                        <ul className="space-y-1 text-sm"> */}
+                    {/* <li><a href="#" className="hover:text-white transition-colors">Features</a></li> */}
+                    {/* <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li> */}
+                    {/* <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li> */}
+                    {/* <li><a href="#" className="hover:text-white transition-colors">Security</a></li> */}
+                    {/* </ul>
+                    </div> */}
+                    {/* 
                     <div>
                         <h4 className="text-white font-semibold mb-4">Resources</h4>
                         <ul className="space-y-2 text-sm">
                             <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
                             <li><a href="#" className="hover:text-white transition-colors">Interview Guides</a></li>
                         </ul>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
