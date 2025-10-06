@@ -11,7 +11,7 @@ const app = express()
 const Port = process.env.PORT || 8000
 
 const corsOptions = {
-    origin: ['https://localhost:5173','https://localhost:5174'],
+    origin: ['https://localhost:5173','https://localhost:5174','https://intelliprep-kw3t.onrender.com'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 };
