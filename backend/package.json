@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src -d dist",
-    "dev":  "nodemon --exec ts-node src/index.ts",
+    "dev": "nodemon --exec ts-node src/index.ts",
     "start": "nodemon src/framework/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,7 +24,8 @@
     "morgan": "^1.10.0",
     "nodemailer": "^6.10.1",
     "nodemon": "^3.1.9",
-    "openai": "^5.21.0"
+    "openai": "^5.21.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.28.3",
