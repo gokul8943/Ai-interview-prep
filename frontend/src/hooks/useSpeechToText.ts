@@ -14,20 +14,35 @@ export function useSpeechToText() {
 
   const [error, setError] = useState<string | null>(null);
 
-  const startListening = useCallback(() => {
+  const startListening = useCallback(async () => {
     if (!browserSupportsSpeechRecognition) {
       setError("Your browser does not support speech recognition.");
+      console.error("❌ SpeechRecognition not supported.");
       return;
     }
     if (!isMicrophoneAvailable) {
       setError("Microphone is not available.");
+      console.error("❌ Microphone unavailable.");
       return;
     }
+
     setError(null);
-    SpeechRecognition.startListening({ continuous: true, language: "en-US" });
+    try {
+      console.log("🎙 Starting speech recognition...");
+      await SpeechRecognition.startListening({
+        continuous: false, // try false first
+        interimResults: true,
+        language: "en-US",
+      });
+      console.log("✅ Speech recognition started.");
+    } catch (err) {
+      console.error("❌ Error starting listening:", err);
+      setError("Failed to start listening. Check permissions.");
+    }
   }, [browserSupportsSpeechRecognition, isMicrophoneAvailable]);
 
   const stopListening = useCallback(() => {
+    console.log("🛑 Stopping speech recognition...");
     SpeechRecognition.stopListening();
   }, []);
 
@@ -36,13 +51,13 @@ export function useSpeechToText() {
   }, [resetTranscript]);
 
   return {
-    transcript,        
+    transcript,
     interimTranscript,
-    finalTranscript,   
-    listening,        
-    startListening,    
-    stopListening,     
-    reset,            
-    error,             
+    finalTranscript,
+    listening,
+    startListening,
+    stopListening,
+    reset,
+    error,
   };
 }

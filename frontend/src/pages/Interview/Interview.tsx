@@ -21,7 +21,7 @@ const Interview: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  // const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const params = useParams<{ id: string }>();
@@ -68,19 +68,19 @@ const Interview: React.FC = () => {
   }, [transcript, interimTranscript, isRecording]);
 
   // Setup MediaRecorder
-  useEffect(() => {
-    const setupRecorder = async () => {
-      try {
-        console.log('🎙 Requesting microphone access...');
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorderRef.current = new MediaRecorder(stream);
-        console.log('✅ Microphone access granted.');
-      } catch (err) {
-        console.error('❌ Mic access error:', err);
-      }
-    };
-    setupRecorder();
-  }, []);
+  // useEffect(() => {
+  //   const setupRecorder = async () => {
+  //     try {
+  //       console.log('🎙 Requesting microphone access...');
+  //       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  //       mediaRecorderRef.current = new MediaRecorder(stream);
+  //       console.log('✅ Microphone access granted.');
+  //     } catch (err) {
+  //       console.error('❌ Mic access error:', err);
+  //     }
+  //   };
+  //   setupRecorder();
+  // }, []);
 
   // Handle timer
   useEffect(() => {
@@ -101,25 +101,18 @@ const Interview: React.FC = () => {
       : notes;
 
   const startRecording = () => {
-    if (mediaRecorderRef.current) {
-      console.log('▶️ Starting recording...');
-      setRecordingTime(0);
-      reset();
-      setIsRecording(true);
-      mediaRecorderRef.current.start();
-      startListening();
-    } else {
-      console.warn('⚠️ MediaRecorder not initialized.');
-    }
+    console.log('▶️ Starting recording...');
+    setRecordingTime(0);
+    reset();
+    setIsRecording(true);
+    startListening(); // only speech recognition
   };
 
   const stopRecording = () => {
     console.log('⏹️ Stopping recording...');
-    mediaRecorderRef.current?.stop();
     stopListening();
     setIsRecording(false);
 
-    // Final speech result
     console.log('📝 Final Transcript:', finalTranscript);
     console.log('📝 Current Transcript:', transcript);
 
@@ -134,6 +127,7 @@ const Interview: React.FC = () => {
       console.warn('⚠️ No speech captured to add.');
     }
   };
+
 
   const saveAnswer = () => {
     console.log('💾 Saving answer...');
