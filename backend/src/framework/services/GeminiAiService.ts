@@ -26,14 +26,12 @@ Return ONLY valid JSON in the following format (no explanations, no extra text):
 
     try {
 
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
         const result = await model.generateContent(prompt);
 
-        // get plain text
         let text = result.response.text();
 
-        // Clean up possible markdown formatting
         text = text.replace(/```json|```/g, "").trim();
 
         let questions: { id: number; question: string }[] = [];
