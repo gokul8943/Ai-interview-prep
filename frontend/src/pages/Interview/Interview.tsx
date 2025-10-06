@@ -10,7 +10,6 @@ import { useParams } from 'react-router-dom';
 interface Question {
   id: number;
   question: string;
-
 }
 
 const Interview: React.FC = () => {
@@ -22,64 +21,68 @@ const Interview: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(false);
 
-  console.log(loading);
-
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const params = useParams<{ id: string }>();
-
   const interviewId = params?.id;
-  console.log(interviewId);
 
+  loading && <p>Loading questions...</p>;
+  // Fetch interview questions
   useEffect(() => {
     const fetchQuestions = async () => {
       if (!interviewId) return;
-
       try {
         setLoading(true);
+        console.log('Fetching questions for interview:', interviewId);
         const response = await getInterviewQuestionsById(interviewId);
-
-        console.log('reponse', response.data.interviewQuestions.questions);
-
+        console.log('✅ Questions fetched:', response.data.interviewQuestions.questions);
         setQuestions(response.data.interviewQuestions.questions || []);
-        setLoading(false);
       } catch (err: any) {
-        console.error('Error fetching questions:', err);
+        console.error('❌ Error fetching questions:', err);
+      } finally {
         setLoading(false);
       }
     };
-
     fetchQuestions();
   }, [interviewId]);
 
-
-  // 👇 speech-to-text hook
+  // Speech-to-text hook
   const {
     transcript,
     interimTranscript,
+    finalTranscript,
     startListening,
     stopListening,
     reset,
     error,
   } = useSpeechToText();
 
+  // Watch speech updates
+  useEffect(() => {
+    if (isRecording) {
+      console.log('🎤 Listening...');
+      console.log('🟡 Interim Transcript:', interimTranscript);
+      console.log('🟢 Transcript:', transcript);
+    }
+  }, [transcript, interimTranscript, isRecording]);
 
-
+  // Setup MediaRecorder
   useEffect(() => {
     const setupRecorder = async () => {
       try {
+        console.log('🎙 Requesting microphone access...');
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const recorder = new MediaRecorder(stream);
-        mediaRecorderRef.current = recorder;
+        mediaRecorderRef.current = new MediaRecorder(stream);
+        console.log('✅ Microphone access granted.');
       } catch (err) {
-        console.error('Mic access error:', err);
+        console.error('❌ Mic access error:', err);
       }
     };
     setupRecorder();
   }, []);
 
-  // Timer handling
+  // Handle timer
   useEffect(() => {
     if (isRecording) {
       intervalRef.current = setInterval(() => setRecordingTime((prev) => prev + 1), 1000);
@@ -91,54 +94,85 @@ const Interview: React.FC = () => {
     };
   }, [isRecording]);
 
+  // Combine speech and manual notes
+  const combinedNotes =
+    isRecording && (transcript || interimTranscript)
+      ? `${notes ? notes + '\n' : ''}${transcript || interimTranscript}`
+      : notes;
+
   const startRecording = () => {
     if (mediaRecorderRef.current) {
+      console.log('▶️ Starting recording...');
       setRecordingTime(0);
-      setNotes(''); // clear previous notes
-      mediaRecorderRef.current.start();
+      reset();
       setIsRecording(true);
-      startListening(); // 👈 start speech recognition
+      mediaRecorderRef.current.start();
+      startListening();
+    } else {
+      console.warn('⚠️ MediaRecorder not initialized.');
     }
   };
 
   const stopRecording = () => {
+    console.log('⏹️ Stopping recording...');
     mediaRecorderRef.current?.stop();
+    stopListening();
     setIsRecording(false);
-    stopListening(); // 👈 stop speech recognition
 
-    // persist transcript as notes
-    if (transcript.trim()) {
-      setNotes(transcript);
+    // Final speech result
+    console.log('📝 Final Transcript:', finalTranscript);
+    console.log('📝 Current Transcript:', transcript);
+
+    const finalText = finalTranscript || transcript;
+    if (finalText?.trim()) {
+      setNotes((prev) => {
+        const updated = `${prev ? prev + '\n' : ''}${finalText}`;
+        console.log('✅ Final Notes updated:', updated);
+        return updated;
+      });
+    } else {
+      console.warn('⚠️ No speech captured to add.');
     }
   };
 
   const saveAnswer = () => {
-    const textToSave = (notes || transcript).trim();
-    if (textToSave) {
-      setAnswers((prev) => ({
-        ...prev,
-        [questions[currentQuestionIndex].id]: textToSave,
-      }));
+    console.log('💾 Saving answer...');
+    const textToSave = notes.trim();
+    if (textToSave && questions[currentQuestionIndex]) {
+      setAnswers((prev) => {
+        const updated = {
+          ...prev,
+          [questions[currentQuestionIndex].id]: textToSave,
+        };
+        console.log('✅ Answer saved:', updated);
+        return updated;
+      });
       setNotes('');
-      reset(); // ✅ clear transcript after saving
+      reset();
+    } else {
+      console.warn('⚠️ Nothing to save (empty notes or invalid question).');
     }
   };
 
   const nextQuestion = () => {
+    console.log('➡️ Next question...');
     saveAnswer();
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
+    } else {
+      console.log('🚫 No more questions.');
     }
   };
 
   const prevQuestion = () => {
+    console.log('⬅️ Previous question...');
     saveAnswer();
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex((prev) => prev - 1);
+    } else {
+      console.log('🚫 Already at first question.');
     }
   };
-
-
 
   return (
     <div className="min-h-screen p-5">
@@ -157,8 +191,9 @@ const Interview: React.FC = () => {
           recordingTime={recordingTime}
         />
 
+        {/* ✅ Combined live + manual text */}
         <NotesSection
-          notes={notes || transcript || interimTranscript} // 👈 live speech shows here
+          notes={combinedNotes}
           setNotes={setNotes}
           saveAnswer={saveAnswer}
           currentAnswer={answers[currentQuestionIndex]}

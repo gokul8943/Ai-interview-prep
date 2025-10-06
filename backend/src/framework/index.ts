@@ -11,7 +11,7 @@ const app = express()
 const Port = process.env.PORT || 8000
 
 const corsOptions = {
-    origin: ['http://localhost:5173','http://localhost:5174'],
+    origin: ['https://localhost:5173','https://localhost:5174'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 };
