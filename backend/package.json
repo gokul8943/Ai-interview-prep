@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src -d dist",
-    "dev": "nodemon src/framework/index.ts",
+    "dev":  "nodemon --exec ts-node src/index.ts",
     "start": "nodemon src/framework/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
