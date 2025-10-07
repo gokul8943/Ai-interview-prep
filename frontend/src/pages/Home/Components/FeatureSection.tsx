@@ -26,7 +26,7 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <section id="features" className="px-6 py-20 ">
+    <section id="features" className="px-6 py-10">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-white mb-6">Why Choose IntelliPrep?</h2>
