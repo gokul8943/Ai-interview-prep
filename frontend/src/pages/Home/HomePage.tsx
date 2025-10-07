@@ -22,7 +22,7 @@ const HomePage: React.FC = () => {
       {/* CTA Section */}
       <section className=" flex justify-between items-center px-16 py-4 max-sm:px-4">
         <div className="flex flex-col gap-6 max-w-lg">
-          <h2 className='text-white drop-shadow-blue-700 drop-shadow-2xl mt-7 md:mt-0.5  font-semibold md:font-bold text-2xl md:text-4xl sm:text-xl'>Get Interview-Ready with AI-powered Practice & Feedback</h2>
+          <h2 className='text-white drop-shadow-blue-700 drop-shadow-2xl mt-7 md:mt-0.5  font-bold text-2xl md:text-4xl sm:text-xl'>Get Interview-Ready with AI-powered Practice & Feedback</h2>
           <p className="text-lg">Practice on real interview questions & get instant feedback</p>
 
           <Button
