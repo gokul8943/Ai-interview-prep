@@ -9,11 +9,19 @@ import interviewRouter from '../adapters/routes/InterviewRoutes'
 dotenv.config()
 const app = express()
 const Port = process.env.PORT || 8000
+const allowedOrigins = ['https://localhost:5173', 'https://intelliprep-kw3t.onrender.com']
 
-const corsOptions = {
-    origin: ['https://localhost:5173','https://localhost:5174','https://intelliprep-kw3t.onrender.com'],
+const corsOptions: cors.CorsOptions = {
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(express.json());
@@ -23,8 +31,8 @@ app.use(cors(
     corsOptions
 ))
 
-app.use('/auth',authRouter)
-app.use('/interview',interviewRouter)
+app.use('/auth', authRouter)
+app.use('/interview', interviewRouter)
 
 dbConnection()
 
