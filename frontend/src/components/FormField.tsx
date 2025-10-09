@@ -3,36 +3,43 @@ import { Input } from './ui/input'
 import { type Control, Controller, type FieldValues, type Path } from 'react-hook-form'
 
 interface FormFieldProps<T extends FieldValues> {
-    control: Control<T>;
-    name: Path<T>;
-    label: string;
-    placeholder?: string;
-    type?: "text" | "email" | "password";
+  control: Control<T>;
+  name: Path<T>;
+  label: string;
+  placeholder?: string;
+  type?: "text" | "email" | "password";
+  disabled?: boolean; // ✅ Added disabled support
 }
 
 const FormField = <T extends FieldValues>({
-    control,
-    name,
-    label,
-    placeholder,
-    type,
+  control,
+  name,
+  label,
+  placeholder,
+  type = "text",
+  disabled = false, // ✅ Default false
 }: FormFieldProps<T>) => {
-    return (
-        <Controller name={name} control={control} render={({ field }) => (
-            <FormItem>
-                <FormLabel className='label'>{label}</FormLabel>
-                <FormControl>
-                    <Input
-                        className="input text-white"
-                        type={type}
-                        placeholder={placeholder}
-                        {...field}
-                    />
-                </FormControl>
-                <FormMessage />
-            </FormItem>
-        )} />
-    )
-}
+  return (
+    <Controller
+      name={name}
+      control={control}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className="label">{label}</FormLabel>
+          <FormControl>
+            <Input
+              className={`input text-white ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+              type={type}
+              placeholder={placeholder}
+              disabled={disabled} // ✅ Pass disabled to input
+              {...field}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
 
-export default FormField
+export default FormField;

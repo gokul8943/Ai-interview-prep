@@ -19,10 +19,8 @@ import {
 } from "@/components/ui/dialog";
 import InputOtp from "./modal/InputOtp";
 
-import { login, register } from "@/services/UserAPi/AuthApi";
-import { sendOtp } from "@/services/UserAPi/AuthApi";
-
-import LogoSvg from '@/public/logo.svg';
+import { login, register, sendOtp } from "@/services/UserAPi/AuthApi";
+import LogoSvg from "@/public/logo.svg";
 import useAuthStore from "@/store/AuthStrore";
 
 type FormType = "sign-in" | "sign-up";
@@ -30,15 +28,17 @@ type FormType = "sign-in" | "sign-up";
 const authFormSchema = (type: FormType) =>
   z.object({
     name: type === "sign-up" ? z.string().min(1, "Name is required") : z.string().optional(),
-    email: z.string().email(),
-    password: z.string().min(6),
+    email: z.string().email("Enter a valid email"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
   });
 
 const AuthForm = ({ type }: { type: FormType }) => {
   const navigate = useNavigate();
   const formSchema = authFormSchema(type);
+
   const [open, setOpen] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
+  const [sendingOtp, setSendingOtp] = useState(false); // prevent multiple OTP requests
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,25 +51,36 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
   const isSignIn = type === "sign-in";
 
-  const handleSendOtp = async (e: any) => {
+  const handleSendOtp = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const email = form.getValues().email;
+
+    // Prevent multiple OTP sends
+    if (sendingOtp) return;
+
+    const email = form.getValues("email");
+
     try {
       z.string().email().parse(email);
-      await sendOtp(email);
-      toast.success("OTP sent successfully");
-      setOpen(true);
+
+      setSendingOtp(true);
+      const response = await sendOtp(email);
+
+      if (response.status === 200) {
+        toast.success("OTP sent successfully");
+        setOpen(true);
+      } else {
+        toast.error("Failed to send OTP. Try again later.");
+      }
     } catch (error) {
       if (error instanceof ZodError) {
         toast.error(error.errors[0].message);
       } else {
         toast.error("Failed to send OTP. Please try again.");
       }
+    } finally {
+      setSendingOtp(false);
     }
   };
-  const mail = form.getValues('email')
-
-  console.log('mails', mail);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
@@ -77,7 +88,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         const response = await login(data);
         if (response.status === 200) {
           const { accessToken, refreshToken, user } = response.data;
-          useAuthStore.getState().login(accessToken, user, refreshToken)
+          useAuthStore.getState().login(accessToken, user, refreshToken);
           toast.success("Logged in successfully.");
           navigate("/");
         }
@@ -86,15 +97,18 @@ const AuthForm = ({ type }: { type: FormType }) => {
           toast.error("Please verify your email before creating an account.");
           return;
         }
+
         await register(data);
         toast.success("Account created successfully. Please sign in.");
         navigate("/sign-in");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      toast.error(`There was an error: ${error}`);
+      toast.error(`There was an error: ${error?.response?.data?.message || error.message}`);
     }
   };
+
+  const mail = form.getValues("email");
 
   return (
     <div className="card-border lg:min-w-[566px]">
@@ -125,15 +139,24 @@ const AuthForm = ({ type }: { type: FormType }) => {
                   label="Email"
                   placeholder="Your email address"
                   type="email"
+                  disabled={emailVerified} // disable after verification
                 />
               </div>
+
               {!isSignIn && (
                 <Button
-                  type="submit"
+                  type="button"
                   onClick={handleSendOtp}
-                  className="h-[42px] rounded-2xl bg-blue-200 text-black"
+                  className={`h-[42px] rounded-2xl ${
+                    emailVerified ? "bg-green-500 text-white" : "bg-blue-200 text-black"
+                  }`}
+                  disabled={sendingOtp || emailVerified}
                 >
-                  {emailVerified ? "Verified" : "Verify"}
+                  {sendingOtp
+                    ? "Sending..."
+                    : emailVerified
+                    ? "Verified"
+                    : "Verify"}
                 </Button>
               )}
             </div>
@@ -144,6 +167,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               label="Password"
               placeholder="Enter your password"
               type="password"
+              disabled={!emailVerified && !isSignIn} // disable until email is verified
             />
 
             <Button className="btn" type="submit">
@@ -151,6 +175,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
             </Button>
           </form>
         </Form>
+
         <p className="text-center">
           {isSignIn ? "No account yet?" : "Have an account already?"}
           <Link
@@ -160,11 +185,14 @@ const AuthForm = ({ type }: { type: FormType }) => {
             {isSignIn ? "Sign Up" : "Sign In"}
           </Link>
         </p>
+
         <h1 className="flex justify-center text-slate-300 font-base">OR</h1>
         <div className="flex justify-center">
-          <Button className="border"> <FcGoogle />Login with Google</Button>
+          <Button className="border">
+            <FcGoogle />
+            Login with Google
+          </Button>
         </div>
-
       </div>
 
       {/* OTP Dialog for Sign-Up only */}
