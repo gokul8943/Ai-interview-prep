@@ -1,32 +1,37 @@
-import { transporter } from '../framework/services/mailOptions';
+import formData from 'form-data';
+import Mailgun from 'mailgun.js';
 import dotenv from 'dotenv';
-
 dotenv.config();
 
+const mg = new Mailgun(formData);
 
-export const sendOtpEmail = async (to: string, otp: string) => {
-  const mailOptions = {
-    from: process.env.Email_User,
-    to,
-    subject: 'Your OTP Code',
-    text: `Your OTP is ${otp}. It is valid for 5 minutes.`,
-    html: `
-      <div style="font-family: Arial, sans-serif; padding: 20px;">
-        <h2>Welcome to INTERVIEW_PREP!</h2>
-        <p>Your One-Time Password (OTP) is:</p>
-        <h1 style="color: #2b2b2b;">${otp}</h1>
-        <p>This OTP is valid for 10 minutes.</p>
-      </div>
-    `,
-  };
+const mailgun = mg.client({
+  username: 'api',
+  key: process.env.MAILGUN_API_KEY || '',
+});
 
+export async function sendOtpEmail(to: string, otp: string) {
   try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent:', info.response);
-    return info;
-  } catch (error) {
-    console.error('Error sending email:', error);
-    throw error;
-  }
-};
+    const domain = process.env.MAILGUN_DOMAIN || 'sandboxXXXX.mailgun.org'; // put your sandbox domain here
 
+    const result = await mailgun.messages.create(domain, {
+      from: `IntelliPrep <mailgun@${domain}>`,
+      to: [to],
+      subject: 'Your OTP Code',
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px;">
+          <h2>Welcome to IntelliPrep!</h2>
+          <p>Your One-Time Password (OTP) is:</p>
+          <h1 style="color: #2b2b2b;">${otp}</h1>
+          <p>This OTP is valid for 10 minutes.</p>
+        </div>
+      `,
+    });
+
+    console.log('✅ Mailgun send result:', result);
+    return result;
+  } catch (err) {
+    console.error('❌ Mailgun send error:', err);
+    throw err;
+  }
+}
