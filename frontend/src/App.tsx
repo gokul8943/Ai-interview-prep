@@ -23,7 +23,7 @@ const App = () => {
             <Route path="/otp-verify" element={<OtpPage />} />
             <Route path="/create-interview" element={<CreateInterview />} />
             <Route path="/interview/:id" element={<Interview/>} />
-            <Route path="/summary" element={<InterviewSummary />} />
+            <Route path="/summary/:id" element={<InterviewSummary />} />
           </Routes>
         </div>
       </div>

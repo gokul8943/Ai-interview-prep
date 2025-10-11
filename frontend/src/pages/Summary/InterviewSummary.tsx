@@ -6,7 +6,7 @@ import StrengthsAndImprovements from "@/pages/Summary/Components/StrengthImprove
 import InterviewTimeline from "@/pages/Summary/Components/InterviewTimeline";
 import FinalRecommendation from "@/pages/Summary/Components/FinalRecommendation";
 import CandidateHeader from "@/pages/Summary/Components/CandiateHeader";
-import { getSummaryByInterviewId } from "@/services/SummaryApi/SummaryApi"; 
+import { getSummaryByInterviewId } from "@/services/SummaryApi/SummaryApi";
 
 interface SummaryData {
   communication: number;
@@ -21,6 +21,8 @@ const InterviewSummary = () => {
   const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const interviewId = id; 
+  
   const candidateData = {
     name: "Candidate",
     position: "Frontend Developer",
@@ -30,9 +32,9 @@ const InterviewSummary = () => {
     overallRating:
       summaryData?.communication && summaryData.communication >= 80
         ? "Excellent"
-        : summaryData?.communication >= 70
-        ? "Good"
-        : "Needs Improvement",
+        : summaryData?.communication && summaryData.communication >= 70
+          ? "Good"
+          : "Needs Improvement",
   };
 
   const getScoreColor = (score: number) => {
@@ -49,13 +51,15 @@ const InterviewSummary = () => {
 
   useEffect(() => {
     const fetchSummary = async () => {
-      if (!id) return;
+      if (!interviewId) return;
       try {
         setLoading(true);
-        const res = await getSummaryByInterviewId(id);
-        console.log('res',res);
+        console.log(interviewId);
         
-        setSummaryData(res.data);
+        const res = await getSummaryByInterviewId(interviewId);
+        console.log('res', res);
+
+        setSummaryData(res.data?.data || res.data)
       } catch (err) {
         console.error("❌ Failed to fetch summary:", err);
       } finally {
@@ -63,7 +67,7 @@ const InterviewSummary = () => {
       }
     };
     fetchSummary();
-  }, [id]);
+  }, [interviewId]);
 
   if (loading) {
     return (
@@ -82,51 +86,53 @@ const InterviewSummary = () => {
   }
 
   return (
-    <div className="min-h-screen p-3">
-      <h2 className="text-white font-bold shadow-2xl p-2.5">Summary</h2>
-      <div className="max-w-7xl mx-auto space-y-6">
-        <CandidateHeader {...candidateData} getScoreBadge={getScoreBadge} />
+    <>
+      <div className="min-h-screen p-3">
+        <h2 className="text-white font-bold shadow-2xl p-2.5">Summary</h2>
+        <div className="max-w-7xl mx-auto space-y-6">
+          <CandidateHeader {...candidateData} getScoreBadge={getScoreBadge} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <SkillsBreakdown
-            skillScores={[
-              { skill: "Communication", score: summaryData.communication },
-              { skill: "Technical Skills", score: 80 },
-              { skill: "Problem Solving", score: 75 },
-              { skill: "Confidence", score: 70 },
-            ]}
-            getScoreColor={getScoreColor}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <SkillsBreakdown
+              skillScores={[
+                { skill: "Communication", score: summaryData.communication },
+                { skill: "Technical Skills", score: 80 },
+                { skill: "Problem Solving", score: 75 },
+                { skill: "Confidence", score: 70 },
+              ]}
+              getScoreColor={getScoreColor}
+            />
+            <PerformanceOverview
+              performanceData={[
+                { category: "Technical", score: 80 },
+                { category: "Problem Solving", score: 75 },
+                { category: "Communication", score: summaryData.communication },
+                { category: "Confidence", score: 70 },
+              ]}
+            />
+          </div>
+
+          <StrengthsAndImprovements
+            strengths={summaryData.strengths || []}
+            improvements={summaryData.areasForImprovement || []}
           />
-          <PerformanceOverview
-            performanceData={[
-              { category: "Technical", score: 80 },
-              { category: "Problem Solving", score: 75 },
-              { category: "Communication", score: summaryData.communication },
-              { category: "Confidence", score: 70 },
+
+          <InterviewTimeline
+            timelineData={[
+              { phase: "Introduction", score: 75, time: "0–5 min" },
+              { phase: "Q&A Session", score: 80, time: "5–25 min" },
+              { phase: "Wrap-up", score: 70, time: "25–45 min" },
             ]}
+          />
+
+          <FinalRecommendation
+            name={candidateData.name}
+            position={candidateData.position}
+            recommendationText={summaryData.finalRecommendation}
           />
         </div>
-
-        <StrengthsAndImprovements
-          strengths={summaryData.strengths || []}
-          improvements={summaryData.areasForImprovement || []}
-        />
-
-        <InterviewTimeline
-          timelineData={[
-            { phase: "Introduction", score: 75, time: "0–5 min" },
-            { phase: "Q&A Session", score: 80, time: "5–25 min" },
-            { phase: "Wrap-up", score: 70, time: "25–45 min" },
-          ]}
-        />
-
-        <FinalRecommendation
-          name={candidateData.name}
-          position={candidateData.position}
-          recommendationText={summaryData.finalRecommendation}
-        />
       </div>
-    </div>
+    </>
   );
 };
 

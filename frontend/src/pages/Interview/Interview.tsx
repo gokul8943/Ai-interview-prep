@@ -6,7 +6,7 @@ import NavigationButtons from './InterviewSection/NavigationButton';
 import { useSpeechToText } from '@/hooks/useSpeechToText';
 import { getInterviewQuestionsById, saveAnswer } from '@/services/InterviewApi/CreateInterviewApi';
 import { generateSummary } from '@/services/SummaryApi/SummaryApi';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface Question {
   id: number;
@@ -28,6 +28,7 @@ const Interview: React.FC = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const params = useParams<{ id: string }>();
   const interviewId = params?.id;
+  const navigate = useNavigate();
 
   const {
     transcript,
@@ -150,6 +151,7 @@ const Interview: React.FC = () => {
     try {
       setIsGeneratingSummary(true);
       const res = await generateSummary(interviewId);
+      navigate(`/summary/${interviewId}`);
       setSummary(res.data.summary);
       console.log('✅ Summary generated:', res.data.summary);
     } catch (err) {
