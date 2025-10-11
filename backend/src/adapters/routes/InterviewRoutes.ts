@@ -65,7 +65,7 @@ router.post('/save-answer/:id',async (req,res) =>{
         res.status(500).json({message:"error in routes",error})
     }
 })
-router.post('/generate-summary',async(req,res)=>{
+router.post('/generate-summary/:interviewId',async(req,res)=>{
     try {
         interviewController.generateSummary(req,res)
     } catch (error) {
