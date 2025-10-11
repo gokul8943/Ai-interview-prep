@@ -49,7 +49,7 @@ const Interview: React.FC = () => {
         const data = response.data?.interviewQuestions?.questions || [];
         setQuestions(data);
       } catch (err) {
-        console.error('❌ Error fetching questions:', err);
+        console.error(' Error fetching questions:', err);
       } finally {
         setLoading(false);
       }
@@ -70,7 +70,6 @@ const Interview: React.FC = () => {
     setupRecorder();
   }, []);
 
-  /** ⏱ Timer logic */
   useEffect(() => {
     if (isRecording) {
       intervalRef.current = setInterval(() => setRecordingTime((t) => t + 1), 1000);
@@ -82,7 +81,6 @@ const Interview: React.FC = () => {
     };
   }, [isRecording]);
 
-  /** 📝 Combine live transcript + notes */
   const combinedNotes =
     isRecording && (transcript || interimTranscript)
       ? `${notes ? notes + '\n' : ''}${transcript || interimTranscript}`
@@ -108,7 +106,7 @@ const Interview: React.FC = () => {
     }
   };
 
-  /** 💾 Save answer */
+
   const handleSave = async () => {
     const textToSave = notes.trim();
     const currentQuestion = questions[currentQuestionIndex];
@@ -118,14 +116,11 @@ const Interview: React.FC = () => {
       const questionId = currentQuestion.id;
       const updatedAnswers = { ...answers, [questionId]: textToSave };
       setAnswers(updatedAnswers);
-
-      console.log('💾 Saving to backend...', { interviewId, questionId, answer: textToSave });
       await saveAnswer(interviewId, { questionId, answer: textToSave });
-      console.log('✅ Answer saved successfully');
       setNotes('');
       reset();
     } catch (err) {
-      console.error('❌ Failed to save answer:', err);
+      console.error(' Failed to save answer:', err);
     }
   };
 
@@ -135,7 +130,6 @@ const Interview: React.FC = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((i) => i + 1);
     } else {
-      // 🧠 Finished interview → generate summary
       await handleFinishInterview();
     }
   };
@@ -150,6 +144,8 @@ const Interview: React.FC = () => {
 
   /** 🧾 Generate Summary after interview ends */
   const handleFinishInterview = async () => {
+    console.log('id',interviewId);
+    
     if (!interviewId) return;
     try {
       setIsGeneratingSummary(true);
@@ -157,7 +153,7 @@ const Interview: React.FC = () => {
       setSummary(res.data.summary);
       console.log('✅ Summary generated:', res.data.summary);
     } catch (err) {
-      console.error('❌ Failed to generate summary:', err);
+      console.error('Failed to generate summary:', err);
     } finally {
       setIsGeneratingSummary(false);
     }
@@ -203,6 +199,7 @@ const Interview: React.FC = () => {
               total={questions.length}
               onNext={nextQuestion}
               onPrev={prevQuestion}
+              onFinish={handleFinishInterview}
             />
           </>
         )}

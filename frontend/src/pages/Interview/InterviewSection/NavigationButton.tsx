@@ -6,6 +6,7 @@ interface NavigationButtonsProps {
   total: number;
   onNext: () => void;
   onPrev: () => void;
+  onFinish?: () => void;
 }
 
 const NavigationButtons: React.FC<NavigationButtonsProps> = ({
@@ -13,7 +14,10 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
   total,
   onNext,
   onPrev,
+  onFinish
 }) => {
+  const isLastQuestion = currentIndex === total - 1;
+
   return (
     <div className="flex justify-between mt-6">
       <Button
@@ -23,12 +27,14 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
       >
         Previous
       </Button>
+
       <Button
-        onClick={onNext}
-        disabled={currentIndex === total - 1}
-        className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+        onClick={isLastQuestion ? onFinish : onNext} // ✅ key fix here
+        className={`px-4 py-2 rounded text-white ${
+          isLastQuestion ? 'bg-green-600' : 'bg-blue-500'
+        }`}
       >
-        {currentIndex === total - 1 ? 'Finish' : 'Next'}
+        {isLastQuestion ? 'Finish' : 'Next'}
       </Button>
     </div>
   );
