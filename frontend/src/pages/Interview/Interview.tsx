@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import NavigationButtons from './InterviewSection/NavigationButton';
 import { useSpeechToText } from '@/hooks/useSpeechToText';
 import { getInterviewQuestionsById, saveAnswer } from '@/services/InterviewApi/CreateInterviewApi';
+import { generateSummary } from '@/services/SummaryApi/SummaryApi';
 import { useParams } from 'react-router-dom';
 
 interface Question {
@@ -20,6 +21,8 @@ const Interview: React.FC = () => {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
+  const [summary, setSummary] = useState<string | null>(null);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -36,7 +39,7 @@ const Interview: React.FC = () => {
     error,
   } = useSpeechToText();
 
-  // Fetch interview questions
+ 
   useEffect(() => {
     const fetchQuestions = async () => {
       if (!interviewId) return;
@@ -54,7 +57,7 @@ const Interview: React.FC = () => {
     fetchQuestions();
   }, [interviewId]);
 
-  // Setup mic
+  /** 🎤 Setup mic */
   useEffect(() => {
     const setupRecorder = async () => {
       try {
@@ -67,7 +70,7 @@ const Interview: React.FC = () => {
     setupRecorder();
   }, []);
 
-  // Timer
+  /** ⏱ Timer logic */
   useEffect(() => {
     if (isRecording) {
       intervalRef.current = setInterval(() => setRecordingTime((t) => t + 1), 1000);
@@ -79,7 +82,7 @@ const Interview: React.FC = () => {
     };
   }, [isRecording]);
 
-  // Combine notes + live transcript
+  /** 📝 Combine live transcript + notes */
   const combinedNotes =
     isRecording && (transcript || interimTranscript)
       ? `${notes ? notes + '\n' : ''}${transcript || interimTranscript}`
@@ -105,7 +108,7 @@ const Interview: React.FC = () => {
     }
   };
 
-  /** ✅ Save the current answer to backend */
+  /** 💾 Save answer */
   const handleSave = async () => {
     const textToSave = notes.trim();
     const currentQuestion = questions[currentQuestionIndex];
@@ -113,10 +116,7 @@ const Interview: React.FC = () => {
 
     try {
       const questionId = currentQuestion.id;
-      const updatedAnswers = {
-        ...answers,
-        [questionId]: textToSave,
-      };
+      const updatedAnswers = { ...answers, [questionId]: textToSave };
       setAnswers(updatedAnswers);
 
       console.log('💾 Saving to backend...', { interviewId, questionId, answer: textToSave });
@@ -129,19 +129,37 @@ const Interview: React.FC = () => {
     }
   };
 
-  /** ✅ Next question handler */
+  /** ⏭ Next question */
   const nextQuestion = async () => {
     await handleSave();
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((i) => i + 1);
+    } else {
+      // 🧠 Finished interview → generate summary
+      await handleFinishInterview();
     }
   };
 
-  /** ✅ Previous question handler */
+  /** ⏮ Previous question */
   const prevQuestion = async () => {
     await handleSave();
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex((i) => i - 1);
+    }
+  };
+
+  /** 🧾 Generate Summary after interview ends */
+  const handleFinishInterview = async () => {
+    if (!interviewId) return;
+    try {
+      setIsGeneratingSummary(true);
+      const res = await generateSummary(interviewId);
+      setSummary(res.data.summary);
+      console.log('✅ Summary generated:', res.data.summary);
+    } catch (err) {
+      console.error('❌ Failed to generate summary:', err);
+    } finally {
+      setIsGeneratingSummary(false);
     }
   };
 
@@ -150,35 +168,48 @@ const Interview: React.FC = () => {
   return (
     <div className="min-h-screen p-5">
       <div className="max-w-4xl mx-auto space-y-6">
-        <QuestionCard
-          currentQuestion={questions[currentQuestionIndex]}
-          currentIndex={currentQuestionIndex}
-          total={questions.length}
-          answers={answers}
-        />
+        {summary ? (
+          <div className="bg-gray-50 border rounded-2xl p-6 shadow-md">
+            <h2 className="text-xl font-semibold mb-3">Interview Summary</h2>
+            <p className="text-gray-700 whitespace-pre-line">{summary}</p>
+          </div>
+        ) : (
+          <>
+            <QuestionCard
+              currentQuestion={questions[currentQuestionIndex]}
+              currentIndex={currentQuestionIndex}
+              total={questions.length}
+              answers={answers}
+            />
 
-        <AudioRecorder
-          isRecording={isRecording}
-          startRecording={startRecording}
-          stopRecording={stopRecording}
-          recordingTime={recordingTime}
-        />
+            <AudioRecorder
+              isRecording={isRecording}
+              startRecording={startRecording}
+              stopRecording={stopRecording}
+              recordingTime={recordingTime}
+            />
 
-        <NotesSection
-          notes={combinedNotes}
-          setNotes={setNotes}
-          saveAnswer={handleSave}
-          currentAnswer={answers[questions[currentQuestionIndex]?.id]}
-        />
+            <NotesSection
+              notes={combinedNotes}
+              setNotes={setNotes}
+              saveAnswer={handleSave}
+              currentAnswer={answers[questions[currentQuestionIndex]?.id]}
+            />
 
-        {error && <p className="text-red-500">{error}</p>}
+            {error && <p className="text-red-500">{error}</p>}
 
-        <NavigationButtons
-          currentIndex={currentQuestionIndex}
-          total={questions.length}
-          onNext={nextQuestion}
-          onPrev={prevQuestion}
-        />
+            <NavigationButtons
+              currentIndex={currentQuestionIndex}
+              total={questions.length}
+              onNext={nextQuestion}
+              onPrev={prevQuestion}
+            />
+          </>
+        )}
+
+        {isGeneratingSummary && (
+          <p className="text-center text-blue-500">⏳ Generating summary, please wait...</p>
+        )}
       </div>
     </div>
   );
