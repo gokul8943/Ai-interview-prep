@@ -5,6 +5,7 @@ import { Star } from "lucide-react";
 interface FinalRecommendationProps {
   name: string;
   position: string;
+  recommendationText: string;
 }
 
 const FinalRecommendation: React.FC<FinalRecommendationProps> = ({ name, position }) => (

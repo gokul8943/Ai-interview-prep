@@ -98,7 +98,7 @@ export class InterviewController {
 
     async getSummary(req: Request, res: Response) {
         try {
-            const interviewId = req.params.id;
+            const interviewId = req.params.interviewId;
             const summary = await this.getSummaryUseCase.execute(interviewId);
             res.status(200).json({ message: "Summary fetch successfully", summary });
         } catch (error) {

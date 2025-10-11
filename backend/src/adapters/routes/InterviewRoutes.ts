@@ -73,7 +73,7 @@ router.post('/generate-summary/:interviewId',async(req,res)=>{
     }
 })
 
-router.post('/get-summary',async(req,res)=>{
+router.get('/get-summary/:interviewId',async(req,res)=>{
     try {
         interviewController.getSummary(req,res)
     } catch (error) {

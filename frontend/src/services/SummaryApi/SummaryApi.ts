@@ -1,6 +1,6 @@
 import axios from '@/constants/Axios'
 
-export const getSummary = (data: any) => {
+export const getSummaryByInterviewId = (data: any) => {
     return axios.post('interview/get-summary', data)
 }
 export const generateSummary = (interviewId: string) => {
