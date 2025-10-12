@@ -21,11 +21,11 @@ const QuestionsSlider: React.FC<Props> = ({ value, onChange }) => (
             Estimated time: {Math.ceil(value[0] * 2.5)} minutes
           </span>
         </div>
-        <Slider value={value} onValueChange={onChange} max={50} min={5} step={5} className="w-full bg-primary-100 " />
+        <Slider value={value} onValueChange={onChange} max={20} min={5} step={1} className="w-full bg-primary-100 " />
         <div className="flex justify-between text-xs text-gray-400">
           <span>5</span>
-          <span>25</span>
-          <span>50</span>
+          <span>15</span>
+          <span>20</span>
         </div>
       </div>
     </CardContent>
