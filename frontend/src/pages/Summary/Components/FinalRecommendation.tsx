@@ -17,7 +17,7 @@ const FinalRecommendation: React.FC<FinalRecommendationProps> = ({recommendation
     <CardContent>
       <div className=" border border-blue-200 rounded-lg p-4">
         <p className="text-white leading-relaxed">
-          <strong>Recommendation:</strong> {recommendationText}
+         {recommendationText}
         </p>
       </div>
     </CardContent>

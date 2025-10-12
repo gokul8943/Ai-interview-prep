@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { PlayCircle, Loader2,Loader } from 'lucide-react'
+import { PlayCircle, Loader2, Loader } from 'lucide-react'
 import { domains, levels, type DomainId } from '@/helpers/InterviewData'
 import InterviewTitle from '@/pages/CreateInterview/Components/InterviewTitle'
 import DomainSelector from '@/pages/CreateInterview/Components/DomainSelector'
@@ -21,9 +21,7 @@ const CreateInterview: React.FC = () => {
   const [selectedLevel, setSelectedLevel] = useState('')
   const [numberOfQuestions, setNumberOfQuestions] = useState([10])
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [loading, setLoading] = useState(false)  
-
-
+  const [loading, setLoading] = useState(false)
 
   const { authState } = useAuthStore()
   const userId = authState.user?._id

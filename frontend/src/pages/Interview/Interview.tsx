@@ -7,6 +7,7 @@ import { useSpeechToText } from '@/hooks/useSpeechToText';
 import { getInterviewQuestionsById, saveAnswer } from '@/services/InterviewApi/CreateInterviewApi';
 import { generateSummary } from '@/services/SummaryApi/SummaryApi';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Loader } from 'lucide-react';
 
 interface Question {
   id: number;
@@ -39,7 +40,7 @@ const Interview: React.FC = () => {
     error,
   } = useSpeechToText();
 
- 
+
   useEffect(() => {
     const fetchQuestions = async () => {
       if (!interviewId) return;
@@ -76,30 +77,30 @@ const Interview: React.FC = () => {
       : notes;
 
   const startRecording = () => {
-  reset();                     
-  setRecordingTime(0);
-  setIsRecording(true);
-  startListening();             // start speech recognition
+    reset();
+    setRecordingTime(0);
+    setIsRecording(true);
+    startListening();             // start speech recognition
 
-  intervalRef.current = setInterval(() => {
-    setRecordingTime((t) => t + 1);
-  }, 1000);
-};
+    intervalRef.current = setInterval(() => {
+      setRecordingTime((t) => t + 1);
+    }, 1000);
+  };
 
-const stopRecording = () => {
-  stopListening();              // stop speech recognition
-  setIsRecording(false);
+  const stopRecording = () => {
+    stopListening();              // stop speech recognition
+    setIsRecording(false);
 
-  if (intervalRef.current) {
-    clearInterval(intervalRef.current);
-  }
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
 
-  // Take the final transcript and add it to notes
-  const finalText = finalTranscript || transcript || interimTranscript;
-  if (finalText?.trim()) {
-    setNotes((prev) => `${prev ? prev + '\n' : ''}${finalText}`);
-  }
-};
+    // Take the final transcript and add it to notes
+    const finalText = finalTranscript || transcript || interimTranscript;
+    if (finalText?.trim()) {
+      setNotes((prev) => `${prev ? prev + '\n' : ''}${finalText}`);
+    }
+  };
 
 
   const handleSave = async () => {
@@ -139,8 +140,8 @@ const stopRecording = () => {
 
   /** 🧾 Generate Summary after interview ends */
   const handleFinishInterview = async () => {
-    console.log('id',interviewId);
-    
+    console.log('id', interviewId);
+
     if (!interviewId) return;
     try {
       setIsGeneratingSummary(true);
@@ -156,10 +157,10 @@ const stopRecording = () => {
   };
 
   useEffect(() => {
-  if (isRecording && (transcript || interimTranscript)) {
-    setNotes(`${transcript || interimTranscript}`);
-  }
-}, [transcript, interimTranscript, isRecording]);
+    if (isRecording && (transcript || interimTranscript)) {
+      setNotes(`${transcript || interimTranscript}`);
+    }
+  }, [transcript, interimTranscript, isRecording]);
 
   if (loading) return <p className="text-center mt-10">Loading questions...</p>;
 
@@ -207,7 +208,12 @@ const stopRecording = () => {
         )}
 
         {isGeneratingSummary && (
-          <p className="text-center text-blue-500">⏳ Generating summary, please wait...</p>
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="bg-white/5 p-6 rounded-2xl shadow-lg flex flex-col items-center space-y-4">
+              <Loader className="w-12 h-12 text-white animate-spin" />
+              <p className="text-lg text-white font-medium">⏳ Generating summary...</p>
+            </div>
+          </div>
         )}
       </div>
     </div>
