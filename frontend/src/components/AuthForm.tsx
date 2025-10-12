@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z, ZodError } from "zod";
+import { z } from "zod";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import InputOtp from "./modal/InputOtp";
 
-import { login, register, sendOtp } from "@/services/UserAPi/AuthApi";
+import { login, register } from "@/services/UserAPi/AuthApi";
 import LogoSvg from "@/public/logo.svg";
 import useAuthStore from "@/store/AuthStrore";
 
@@ -38,7 +38,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
   const [open, setOpen] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
-  const [sendingOtp, setSendingOtp] = useState(false); // prevent multiple OTP requests
+  // const [sendingOtp, setSendingOtp] = useState(false); // prevent multiple OTP requests
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,36 +51,36 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
   const isSignIn = type === "sign-in";
 
-  const handleSendOtp = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  // const handleSendOtp = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
 
-    // Prevent multiple OTP sends
-    if (sendingOtp) return;
+  //   // Prevent multiple OTP sends
+  //   if (sendingOtp) return;
 
-    const email = form.getValues("email");
+  //   const email = form.getValues("email");
 
-    try {
-      z.string().email().parse(email);
+  //   try {
+  //     z.string().email().parse(email);
 
-      setSendingOtp(true);
-      const response = await sendOtp(email);
+  //     setSendingOtp(true);
+  //     const response = await sendOtp(email);
 
-      if (response.status === 200) {
-        toast.success("OTP sent successfully");
-        setOpen(true);
-      } else {
-        toast.error("Failed to send OTP. Try again later.");
-      }
-    } catch (error) {
-      if (error instanceof ZodError) {
-        toast.error(error.errors[0].message);
-      } else {
-        toast.error("Failed to send OTP. Please try again.");
-      }
-    } finally {
-      setSendingOtp(false);
-    }
-  };
+  //     if (response.status === 200) {
+  //       toast.success("OTP sent successfully");
+  //       setOpen(true);
+  //     } else {
+  //       toast.error("Failed to send OTP. Try again later.");
+  //     }
+  //   } catch (error) {
+  //     if (error instanceof ZodError) {
+  //       toast.error(error.errors[0].message);
+  //     } else {
+  //       toast.error("Failed to send OTP. Please try again.");
+  //     }
+  //   } finally {
+  //     setSendingOtp(false);
+  //   }
+  // };
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
@@ -143,7 +143,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
                 />
               </div>
 
-              {!isSignIn && (
+              {/* {!isSignIn && (
                 <Button
                   type="button"
                   onClick={handleSendOtp}
@@ -158,7 +158,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
                     ? "Verified"
                     : "Verify"}
                 </Button>
-              )}
+              )} */}
             </div>
 
             <FormField
@@ -167,7 +167,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               label="Password"
               placeholder="Enter your password"
               type="password"
-              disabled={!emailVerified && !isSignIn} // disable until email is verified
+              // disabled={!emailVerified && !isSignIn} // disable until email is verified
             />
 
             <Button className="btn" type="submit">
