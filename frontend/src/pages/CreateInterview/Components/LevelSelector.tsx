@@ -21,6 +21,7 @@ const LevelSelector: React.FC<Props> = ({ selectedLevel, onChange, levels }) => 
           {levels.map(level => (
             <div
               key={level.id}
+              onClick={() => onChange(level.id)} // ✅ Make entire card clickable
               className={`p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
                 selectedLevel === level.id
                   ? 'border-blue-500 bg-slate-600'
@@ -28,9 +29,15 @@ const LevelSelector: React.FC<Props> = ({ selectedLevel, onChange, levels }) => 
               }`}
             >
               <div className="flex items-center space-x-3 md:space-x-1">
-                <RadioGroupItem value={level.id} id={level.id} />
+                <RadioGroupItem
+                  value={level.id}
+                  id={level.id}
+                  checked={selectedLevel === level.id}
+                  onChange={() => onChange(level.id)} // ✅ Keep in sync
+                  className="pointer-events-none" // ✅ Disable direct interaction
+                />
                 <div className="flex-1 pl-2">
-                  <div className="flex items-center gap-2 mb-1 ">
+                  <div className="flex items-center gap-2 mb-1">
                     <Badge className={level.color}>{level.name}</Badge>
                   </div>
                   <p className="text-sm text-gray-200">{level.description}</p>
