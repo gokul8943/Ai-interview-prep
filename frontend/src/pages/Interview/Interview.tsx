@@ -24,7 +24,6 @@ const Interview: React.FC = () => {
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
   const [summary, setSummary] = useState<string | null>(null);
 
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const params = useParams<{ id: string }>();
   const interviewId = params?.id;
@@ -58,18 +57,7 @@ const Interview: React.FC = () => {
     fetchQuestions();
   }, [interviewId]);
 
-  /** 🎤 Setup mic */
-  useEffect(() => {
-    const setupRecorder = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorderRef.current = new MediaRecorder(stream);
-      } catch (err) {
-        console.error('❌ Mic access error:', err);
-      }
-    };
-    setupRecorder();
-  }, []);
+
 
   useEffect(() => {
     if (isRecording) {
@@ -88,24 +76,30 @@ const Interview: React.FC = () => {
       : notes;
 
   const startRecording = () => {
-    if (!mediaRecorderRef.current) return;
-    setRecordingTime(0);
-    reset();
-    setIsRecording(true);
-    mediaRecorderRef.current.start();
-    startListening();
-  };
+  reset();                     
+  setRecordingTime(0);
+  setIsRecording(true);
+  startListening();             // start speech recognition
 
-  const stopRecording = () => {
-    mediaRecorderRef.current?.stop();
-    stopListening();
-    setIsRecording(false);
+  intervalRef.current = setInterval(() => {
+    setRecordingTime((t) => t + 1);
+  }, 1000);
+};
 
-    const finalText = finalTranscript || transcript;
-    if (finalText?.trim()) {
-      setNotes((prev) => `${prev ? prev + '\n' : ''}${finalText}`);
-    }
-  };
+const stopRecording = () => {
+  stopListening();              // stop speech recognition
+  setIsRecording(false);
+
+  if (intervalRef.current) {
+    clearInterval(intervalRef.current);
+  }
+
+  // Take the final transcript and add it to notes
+  const finalText = finalTranscript || transcript || interimTranscript;
+  if (finalText?.trim()) {
+    setNotes((prev) => `${prev ? prev + '\n' : ''}${finalText}`);
+  }
+};
 
 
   const handleSave = async () => {
@@ -160,6 +154,12 @@ const Interview: React.FC = () => {
       setIsGeneratingSummary(false);
     }
   };
+
+  useEffect(() => {
+  if (isRecording && (transcript || interimTranscript)) {
+    setNotes(`${transcript || interimTranscript}`);
+  }
+}, [transcript, interimTranscript, isRecording]);
 
   if (loading) return <p className="text-center mt-10">Loading questions...</p>;
 
