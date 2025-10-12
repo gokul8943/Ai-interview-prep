@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { FcGoogle } from "react-icons/fc";
@@ -9,15 +8,15 @@ import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import FormField from "./FormField";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import InputOtp from "./modal/InputOtp";
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogDescription,
+//   DialogFooter,
+//   DialogHeader,
+//   DialogTitle,
+// } from "@/components/ui/dialog";
+// import InputOtp from "./modal/InputOtp";
 
 import { login, register } from "@/services/UserAPi/AuthApi";
 import LogoSvg from "@/public/logo.svg";
@@ -36,8 +35,8 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const navigate = useNavigate();
   const formSchema = authFormSchema(type);
 
-  const [open, setOpen] = useState(false);
-  const [emailVerified, setEmailVerified] = useState(false);
+  // const [open, setOpen] = useState(false);
+  // const [emailVerified, setEmailVerified] = useState(false);
   // const [sendingOtp, setSendingOtp] = useState(false); // prevent multiple OTP requests
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -93,10 +92,10 @@ const AuthForm = ({ type }: { type: FormType }) => {
           navigate("/");
         }
       } else {
-        if (!emailVerified) {
-          toast.error("Please verify your email before creating an account.");
-          return;
-        }
+        // if (!emailVerified) {
+        //   toast.error("Please verify your email before creating an account.");
+        //   return;
+        // }
 
         await register(data);
         toast.success("Account created successfully. Please sign in.");
@@ -108,7 +107,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
     }
   };
 
-  const mail = form.getValues("email");
+  // const mail = form.getValues("email");
 
   return (
     <div className="card-border lg:min-w-[566px]">
@@ -139,7 +138,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
                   label="Email"
                   placeholder="Your email address"
                   type="email"
-                  disabled={emailVerified} // disable after verification
+                  // disabled={emailVerified} // disable after verification
                 />
               </div>
 
@@ -196,7 +195,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
       </div>
 
       {/* OTP Dialog for Sign-Up only */}
-      {!isSignIn && (
+      {/* {!isSignIn && (
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogContent className="sm:max-w-[425px] bg-gradient-to-tl from-black to-blue-800">
             <DialogHeader>
@@ -215,7 +214,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
             <DialogFooter />
           </DialogContent>
         </Dialog>
-      )}
+      )} */}
     </div>
   );
 };
