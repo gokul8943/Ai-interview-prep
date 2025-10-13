@@ -10,7 +10,7 @@ export class AdminRepositoryImpl implements AdminRepository {
 
     async getUserById(userId: string): Promise<any> {
         try {
-            const user = await this.Usermodel.findById(userId)
+            const user = await this.Usermodel.findById(userId)            
             return user;
         } catch (error) {
             console.error("An error occurred on admin repo", error);

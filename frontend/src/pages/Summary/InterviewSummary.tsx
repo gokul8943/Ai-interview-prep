@@ -4,6 +4,8 @@ import StrengthsAndImprovements from "@/pages/Summary/Components/StrengthImprove
 import FinalRecommendation from "@/pages/Summary/Components/FinalRecommendation";
 import CandidateHeader from "@/pages/Summary/Components/CandiateHeader";
 import { getSummaryByInterviewId } from "@/services/SummaryApi/SummaryApi";
+import {  getUserById } from "@/services/UserAPi/AuthApi";
+import useAuthStore from "@/store/AuthStrore";
 
 interface SummaryData {
   communication: number;
@@ -13,40 +15,30 @@ interface SummaryData {
   createdAt: string;
 }
 
+interface UserData {
+  name: string;
+  position: string;
+}
+
 const InterviewSummary = () => {
   const { id } = useParams<{ id: string }>();
   const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
+  const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const interviewId = id; 
+  const interviewId = id;
+  const authState = useAuthStore();
+  const userId = authState.authState.user?._id;
   
-  const candidateData = {
-    name: "Candidate",
-    position: "Frontend Developer",
-    date: new Date().toLocaleDateString(),
-    duration: "45 minutes",
-    finalScore: summaryData?.communication || 0,
-    overallRating:
-      summaryData?.communication && summaryData.communication >= 80
-        ? "Excellent"
-        : summaryData?.communication && summaryData.communication >= 70
-          ? "Good"
-          : "Needs Improvement",
-  };
 
-  const getScoreBadge = (score: number) => {
-    if (score >= 80) return "bg-green-100 text-green-800";
-    if (score >= 70) return "bg-yellow-100 text-yellow-800";
-    return "bg-red-100 text-red-800";
-  };
-
+  // Fetch interview summary
   useEffect(() => {
     const fetchSummary = async () => {
       if (!interviewId) return;
       try {
         setLoading(true);
         const res = await getSummaryByInterviewId(interviewId);
-        setSummaryData(res.data?.data?.summary || res.data?.summary)
+        setSummaryData(res.data?.data?.summary || res.data?.summary);
       } catch (err) {
         console.error("Failed to fetch summary:", err);
       } finally {
@@ -55,7 +47,26 @@ const InterviewSummary = () => {
     };
     fetchSummary();
   }, [interviewId]);
+  
 
+  // Fetch user data
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (!userId) return;
+      try {
+        setLoading(true);
+        const res = await getUserById(userId) 
+        setUser(res.data.user);
+      } catch (error) {
+        console.error("Failed to fetch user:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  }, [userId]);
+;
+  
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -64,32 +75,40 @@ const InterviewSummary = () => {
     );
   }
 
-  if (!summaryData) {
+  if (!summaryData || !user) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <p className="text-red-500">No summary found for this interview.</p>
+        <p className="text-red-500">No summary or user data found for this interview.</p>
       </div>
     );
   }
 
+  // Candidate data using actual user info
+  const candidateData = {
+    name: user.name,
+    position: user.position || "Position not available",
+    date: new Date(summaryData.createdAt).toLocaleDateString(),
+    duration: "45 minutes", // you can replace with actual duration if availabl
+  };
+
+  console.log(candidateData);
+  
   return (
-    <>
-      <div className="min-h-screen p-3">
-        <h2 className="text-white font-bold shadow-2xl p-2.5">Summary</h2>
-        <div className="max-w-7xl mx-auto space-y-6">
-          <CandidateHeader {...candidateData} getScoreBadge={getScoreBadge} />
+    <div className="min-h-screen p-3">
+      <h2 className="text-white font-bold shadow-2xl p-2.5">Summary</h2>
+      <div className="max-w-7xl mx-auto space-y-6">
+        <CandidateHeader {...candidateData} />
 
-          <StrengthsAndImprovements
-            strengths={summaryData.strengths || []}
-            improvements={summaryData.areasForImprovement || []}
-          />
+        <StrengthsAndImprovements
+          strengths={summaryData.strengths || []}
+          improvements={summaryData.areasForImprovement || []}
+        />
 
-          <FinalRecommendation
-            recommendationText={summaryData.finalRecommendation}
-          />
-        </div>
+        <FinalRecommendation
+          recommendationText={summaryData.finalRecommendation}
+        />
       </div>
-    </>
+    </div>
   );
 };
 

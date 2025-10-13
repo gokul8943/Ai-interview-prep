@@ -17,3 +17,7 @@ export const verifyOtp = (email: string, otp: any) => {
 export const getUserByInterviews = (userId: string) => {
     return axios.get(`/interview/get-by-user/${userId}`)
 }
+
+export const getUserById = (userId: string) => {
+    return axios.get(`/admin/get-user/${userId}`)
+}

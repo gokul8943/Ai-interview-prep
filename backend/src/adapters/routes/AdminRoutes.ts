@@ -24,9 +24,9 @@ router.post('/user-access/:id', async (req, res) => {
     }
 })
 
-router.get('/get-user/:id', async (req, res) => {
+router.get('/get-user/:userId', async (req, res) => {
     try {
-        adminController.getUsers(req, res)
+        adminController.getUserById(req, res)
     } catch (error) {
         res.status(500).json({ message: "Error in routes", error })
     }

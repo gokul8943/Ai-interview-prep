@@ -5,6 +5,7 @@ import morgan from "morgan"
 import { dbConnection } from "./database/dbConnection"
 import authRouter from "../adapters/routes/AuthRoutes"
 import interviewRouter from '../adapters/routes/InterviewRoutes'
+import adminRouter from '../adapters/routes/AdminRoutes'
 
 dotenv.config()
 const app = express()
@@ -33,6 +34,7 @@ app.use(cors(
 
 app.use('/auth', authRouter)
 app.use('/interview', interviewRouter)
+app.use('/admin',adminRouter)
 
 dbConnection()
 

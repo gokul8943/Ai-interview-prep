@@ -25,7 +25,7 @@ export class AdminController {
     }
 
     async getUserById(req: Request, res: Response) {
-        const userId = req.params.id;
+        const userId = req.params.userId
         if (!userId) return res.status(400).json({ message: "User Id is required" });
         try {
             const user = await this.getUserByIdUseCase.execute(userId);
