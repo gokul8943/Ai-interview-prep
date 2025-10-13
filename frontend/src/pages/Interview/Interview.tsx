@@ -71,10 +71,10 @@ const Interview: React.FC = () => {
     };
   }, [isRecording]);
 
-  const combinedNotes =
-    isRecording && (transcript || interimTranscript)
-      ? `${notes ? notes + '\n' : ''}${transcript || interimTranscript}`
-      : notes;
+  // const combinedNotes =
+  //   isRecording && (transcript || interimTranscript)
+  //     ? `${notes ? notes + '\n' : ''}${transcript || interimTranscript}`
+  //     : notes;
 
   const startRecording = () => {
     reset();
@@ -189,7 +189,7 @@ const Interview: React.FC = () => {
             />
 
             <NotesSection
-              notes={combinedNotes}
+              notes={finalTranscript}
               setNotes={setNotes}
               saveAnswer={handleSave}
               currentAnswer={answers[questions[currentQuestionIndex]?.id]}
