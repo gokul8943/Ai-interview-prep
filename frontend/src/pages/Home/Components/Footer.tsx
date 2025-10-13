@@ -18,18 +18,18 @@ export default function Footer() {
                         <p className="text-sm mb-4">
                             Experience realistic interview scenarios with intelligent AI that adapts to your responses.                        </p>
                         <div className="flex space-x-4">
-                            <a href="#" className="hover:text-blue-400 transition-colors">
+                            <p className="hover:text-blue-400 transition-colors">
                                 <Linkedin size={20} />
-                            </a>
-                            <a href="#" className="hover:text-blue-400 transition-colors">
+                            </p>
+                            <p className="hover:text-blue-400 transition-colors">
                                 <Twitter size={20} />
-                            </a>
-                            <a href="#" className="hover:text-blue-400 transition-colors">
+                            </p>
+                            <p className="hover:text-blue-400 transition-colors">
                                 <Facebook size={20} />
-                            </a>
-                            <a href="#" className="hover:text-blue-400 transition-colors">
+                            </p>
+                            <p className="hover:text-blue-400 transition-colors">
                                 <Youtube size={20} />
-                            </a>
+                            </p>
                         </div>
                     </div>
                     {/* <div>
@@ -57,9 +57,9 @@ export default function Footer() {
                     <div className="flex flex-col md:flex-row justify-between items-center text-sm">
                         <p>&copy; {new Date().getFullYear()} IntelliPrep. All rights reserved.</p>
                         <div className="flex space-x-6 mt-4 md:mt-0">
-                            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-                            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-                            <a href="#" className="hover:text-white transition-colors">Cookie Policy</a>
+                            <p className="hover:text-white transition-colors">Privacy Policy</p>
+                            <p className="hover:text-white transition-colors">Terms of Service</p>
+                            <p className="hover:text-white transition-colors">Cookie Policy</p>
                         </div>
                     </div>
                 </div>

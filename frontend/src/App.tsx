@@ -7,6 +7,7 @@ import HomePage from "./pages/Home/HomePage";
 import CreateInterview from "./pages/CreateInterview/CreateInterview";
 import Interview from "./pages/Interview/Interview";
 import InterviewSummary from "./pages/Summary/InterviewSummary";
+import Profile from "./pages/Profile/Profile";
 
 
 
@@ -22,8 +23,9 @@ const App = () => {
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/otp-verify" element={<OtpPage />} />
             <Route path="/create-interview" element={<CreateInterview />} />
-            <Route path="/interview/:id" element={<Interview/>} />
+            <Route path="/interview/:id" element={<Interview />} />
             <Route path="/summary/:id" element={<InterviewSummary />} />
+            <Route path="/profile/:id" element={<Profile />} />
           </Routes>
         </div>
       </div>

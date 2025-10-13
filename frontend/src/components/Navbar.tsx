@@ -8,11 +8,20 @@ const Navbar = () => {
   const { authState } = useAuthStore()
 
   const user = authState.user
+  const userId = authState.user?._id
 
   const navigate = useNavigate()
 
   const handleNavigate = () => {
     navigate('/sign-in')
+  }
+
+  const handleMove = () => {
+    if (!user) {
+      navigate('/sign-in')
+    } else {
+      navigate(`/profile/${userId}`)
+    }
   }
 
   return (
@@ -26,7 +35,7 @@ const Navbar = () => {
         </div>
 
         {user ? (
-          <div className="flex items-center gap-2 mr-2 cursor-pointer">
+          <div className="flex items-center gap-2 mr-2 cursor-pointer" onClick={handleMove}>
             <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
               <User className="w-5 h-5 text-gray-600" />
             </div>
