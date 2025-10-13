@@ -26,6 +26,7 @@ const Interview: React.FC = () => {
   const [summary, setSummary] = useState<string | null>(null);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const lastTranscriptRef = useRef<string>('');
   const params = useParams<{ id: string }>();
   const interviewId = params?.id;
   const navigate = useNavigate();
@@ -155,15 +156,24 @@ const Interview: React.FC = () => {
       setIsGeneratingSummary(false);
     }
   };
+  
 
- useEffect(() => {
-  if (isRecording && (transcript || interimTranscript)) {
-    setNotes((prev) => {
-      const newText = transcript || interimTranscript;
-      return prev.includes(newText) ? prev : `${prev ? prev + '\n' : ''}${newText}`;
-    });
-  }
-}, [transcript, interimTranscript, isRecording]);
+  useEffect(() => {
+    if (isRecording) {
+      const currentText = finalTranscript || transcript || interimTranscript || '';
+      if (!currentText) return;
+
+  
+      if (!currentText.startsWith(lastTranscriptRef.current)) {
+        const newPart = lastTranscriptRef.current
+          ? currentText.replace(lastTranscriptRef.current, '')
+          : currentText;
+
+        setNotes((prev) => `${prev ? prev + '\n' : ''}${newPart.trim()}`);
+        lastTranscriptRef.current = currentText;
+      }
+    }
+  }, [transcript, interimTranscript, finalTranscript, isRecording]);
 
 
   if (loading) return <p className="text-center mt-10">Loading questions...</p>;
