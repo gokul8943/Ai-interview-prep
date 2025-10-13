@@ -90,19 +90,26 @@ const Interview: React.FC = () => {
   };
 
   const stopRecording = () => {
-    stopListening();              // stop speech recognition
+    stopListening();
     setIsRecording(false);
 
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
 
-    // Take the final transcript and add it to notes
-    const finalText = finalTranscript || transcript || interimTranscript;
-    if (finalText?.trim()) {
-      setNotes((prev) => `${prev ? prev + '\n' : ''}${finalText}`);
+    const finalText = finalTranscript || '';
+    if (finalText && finalText !== lastAppendedRef.current) {
+      const newPart = finalText.startsWith(lastAppendedRef.current)
+        ? finalText.slice(lastAppendedRef.current.length)
+        : finalText;
+
+      if (newPart.trim()) {
+        setNotes((prev) => `${prev ? prev + ' ' : ''}${newPart.trim()}`);
+        lastAppendedRef.current = finalText; 
+      }
     }
   };
+
 
 
   const handleSave = async () => {
@@ -158,22 +165,22 @@ const Interview: React.FC = () => {
     }
   };
 
-useEffect(() => {
-  if (isRecording) {
-    const currentText = transcript || interimTranscript || '';
-    if (!currentText) return;
+  useEffect(() => {
+    if (isRecording) {
+      const currentText = transcript || interimTranscript || '';
+      if (!currentText) return;
 
-    // Calculate the new part that hasn't been appended yet
-    const newPart = currentText.startsWith(lastAppendedRef.current)
-      ? currentText.slice(lastAppendedRef.current.length)
-      : currentText;
+      // Calculate the new part that hasn't been appended yet
+      const newPart = currentText.startsWith(lastAppendedRef.current)
+        ? currentText.slice(lastAppendedRef.current.length)
+        : currentText;
 
-    if (newPart.trim()) {
-      setNotes((prev) => `${prev ? prev + ' ' : ''}${newPart.trim()}`);
-      lastAppendedRef.current = currentText; // update last appended
+      if (newPart.trim()) {
+        setNotes((prev) => `${prev ? prev + ' ' : ''}${newPart.trim()}`);
+        lastAppendedRef.current = currentText; // update last appended
+      }
     }
-  }
-}, [transcript, interimTranscript, isRecording]);
+  }, [transcript, interimTranscript, isRecording]);
 
 
 
