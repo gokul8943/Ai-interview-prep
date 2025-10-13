@@ -156,11 +156,15 @@ const Interview: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (isRecording && (transcript || interimTranscript)) {
-      setNotes(`${transcript || interimTranscript}`);
-    }
-  }, [transcript, interimTranscript, isRecording]);
+ useEffect(() => {
+  if (isRecording && (transcript || interimTranscript)) {
+    setNotes((prev) => {
+      const newText = transcript || interimTranscript;
+      return prev.includes(newText) ? prev : `${prev ? prev + '\n' : ''}${newText}`;
+    });
+  }
+}, [transcript, interimTranscript, isRecording]);
+
 
   if (loading) return <p className="text-center mt-10">Loading questions...</p>;
 
@@ -189,7 +193,7 @@ const Interview: React.FC = () => {
             />
 
             <NotesSection
-              notes={transcript}
+              notes={notes}
               setNotes={setNotes}
               saveAnswer={handleSave}
               currentAnswer={answers[questions[currentQuestionIndex]?.id]}
