@@ -4,6 +4,7 @@ import { InterviewRepository } from "../interfaces/InterviewRepository";
 import { IQuestionSchema } from "../interfaces/IQuestionSchema";
 import { generateSummaryService } from "../../framework/services/GeminiAiService";
 import { ISummarySchema } from "../interfaces/ISummarySchema";
+import { IUserSchema } from "../interfaces/IUserSchema";
 
 
 
@@ -11,15 +12,18 @@ export class InterviewRepositoryImpl implements InterviewRepository {
     private readonly InterviewModel: Model<IInterviewSchema>
     private readonly QuestionModel: Model<IQuestionSchema>
     private readonly SummaryModel: Model<ISummarySchema>
+    private readonly UserModel: Model<IUserSchema>
 
     constructor(
         interviewModel: Model<IInterviewSchema>,
         questionModel: Model<IQuestionSchema>,
-        summaryModel: Model<ISummarySchema>
+        summaryModel: Model<ISummarySchema>,
+        userModel: Model<IUserSchema>
     ) {
         this.InterviewModel = interviewModel
         this.QuestionModel = questionModel
         this.SummaryModel = summaryModel
+        this.UserModel = userModel
     }
 
     async createInterview(interviewData: any, questions: any): Promise<any> {
@@ -124,12 +128,12 @@ export class InterviewRepositoryImpl implements InterviewRepository {
             }
 
             const summaryDoc = await this.SummaryModel.create({
-                communication: Math.floor(Math.random() * 21) + 80, 
-                strengths: generated.strengths|| [],
+                communication: Math.floor(Math.random() * 21) + 80,
+                strengths: generated.strengths || [],
                 areasForImprovement: generated.areasForImprovement || [],
                 finalRecommendation: `${generated.summary}\n\nRecommendation: ${generated.recommendation}`,
             });
-        
+
             interview.summary = summaryDoc._id;
             await interview.save();
 
@@ -150,6 +154,18 @@ export class InterviewRepositoryImpl implements InterviewRepository {
         } catch (error) {
             console.error("An error occurred on interview repo", error);
             return false;
+        }
+    }
+
+    async getInterviewByUserId(userId: string): Promise<any> {
+        try {
+            const user = await this.UserModel.findById(userId)
+
+            const interview = await this.InterviewModel.find({ userId: user?._id });
+
+            return { user, interview };
+        } catch (error) {
+            console.log("An error occured on interview repo");
         }
     }
 

@@ -3,7 +3,8 @@ export interface InterviewRepository {
     getInterviews(): Promise<any>
     getInterviewQuestionsById(interviewId: string): Promise<any>
     deleteInterview(interviewId: string): Promise<any>
-    saveAnswer(interviewId: string,questionId: number, answer: string): Promise<any>
+    saveAnswer(interviewId: string, questionId: number, answer: string): Promise<any>
     getSummary(interviewId: string): Promise<any>
     generateSummary(interviewId: string): Promise<any>
+    getInterviewByUserId(userId: string): Promise<any>
 }
