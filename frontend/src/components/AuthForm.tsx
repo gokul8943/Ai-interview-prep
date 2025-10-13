@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { FcGoogle } from "react-icons/fc";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -185,13 +184,13 @@ const AuthForm = ({ type }: { type: FormType }) => {
           </Link>
         </p>
 
-        <h1 className="flex justify-center text-slate-300 font-base">OR</h1>
+        {/* <h1 className="flex justify-center text-slate-300 font-base">OR</h1>
         <div className="flex justify-center">
           <Button className="border">
             <FcGoogle />
             Login with Google
           </Button>
-        </div>
+        </div> */}
       </div>
 
       {/* OTP Dialog for Sign-Up only */}
