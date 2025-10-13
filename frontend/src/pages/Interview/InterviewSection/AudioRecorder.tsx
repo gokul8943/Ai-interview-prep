@@ -65,7 +65,7 @@ const AudioRecorder: React.FC<Props> = ({
             <Mic className="w-4 h-4" />
             <AlertDescription>
               Recording in progress... Your speech will be converted to text in
-              the notes section.
+              the answer section.
             </AlertDescription>
           </Alert>
         )}

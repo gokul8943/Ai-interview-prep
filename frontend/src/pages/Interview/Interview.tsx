@@ -189,7 +189,7 @@ const Interview: React.FC = () => {
             />
 
             <NotesSection
-              notes={finalTranscript}
+              notes={transcript}
               setNotes={setNotes}
               saveAnswer={handleSave}
               currentAnswer={answers[questions[currentQuestionIndex]?.id]}
