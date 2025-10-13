@@ -161,7 +161,7 @@ export class InterviewRepositoryImpl implements InterviewRepository {
         try {
             const user = await this.UserModel.findById(userId)
 
-            const interview = await this.InterviewModel.find({ userId: user?._id });
+            const interview = await this.InterviewModel.find({ userId: user?._id }).sort({ createdAt: -1 });
 
             return { user, interview };
         } catch (error) {

@@ -3,6 +3,7 @@ import { ISummarySchema } from "../../adapters/interfaces/ISummarySchema";
 
 const summarySchema = new mongoose.Schema<ISummarySchema>({
     communication: { type: Number, min: 0, max: 100 },
+    score:{type:Number,default:0},
     summary: { type: String },
     recommendation: { type: String },
     strengths: [{ type: String }],

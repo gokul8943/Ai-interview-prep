@@ -116,8 +116,6 @@ export class InterviewController {
         try {
             const userId = req.params.userId;
             const interviews = await this.getInterviewByUserIdUseCase.execute(userId);
-            console.log(interviews);
-
             res.status(200).json({ message: "Interviews fetched successfully", interviews });
         } catch (error) {
             console.error("Error getting interviews:", error);

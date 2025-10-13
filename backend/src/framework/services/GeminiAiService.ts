@@ -24,6 +24,8 @@ Domain: ${domain}
 Topics: ${topics}
 Difficulty: ${level}
 
+Theory questions
+
 Return ONLY valid JSON in the following format (no explanations, no extra text):
 
 [
@@ -68,6 +70,7 @@ Return ONLY valid JSON in the following format (no explanations, no extra text):
 
 {
     "summary": "...",
+    score:".."
     "recommendation": "...",
     "strengths": ["..."],
     "areasForImprovement": ["..."]
