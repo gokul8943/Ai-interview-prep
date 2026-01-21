@@ -15,6 +15,8 @@ import questiomModel from "../../framework/models/questionModel";
 import summaryModel from "../../framework/models/summaryModel";
 import userModel from "../../framework/models/userModel";
 
+import { authMiddleware } from "../middleware/userAuth";
+
 
 const interviewRepository = new InterviewRepositoryImpl(interviewModel, questiomModel, summaryModel, userModel);
 const createInterview = new CreateInterview(interviewRepository);
@@ -30,67 +32,21 @@ const interviewController = new InterviewController(createInterview, getIntervie
 
 const router = Router();
 
+router.post('/create', authMiddleware, interviewController.createInterview)
 
-router.post('/create', async (req, res) => {
-    try {
-        interviewController.createInterview(req, res)
-    } catch (error) {
-        res.status(500).json({ message: "Error in routes", error })
-    }
-})
+router.get('/get', authMiddleware, interviewController.getInterview)
 
-router.get('/get', async (req, res) => {
-    try {
-        interviewController.getInterview(req, res)
-    } catch (error) {
-        res.status(500).json({ message: "Error in routes", error })
-    }
-})
-router.get('/get-question/:id', async (req, res) => {
-    try {
-        interviewController.getInterviewQuestionsById(req, res)
-    } catch (error) {
-        res.status(500).json({ message: "Error in routes", error })
-    }
-})
+router.get('/get-question/:id', authMiddleware, interviewController.getInterviewQuestionsById)
 
-router.post('/delete/:id', async (req, res) => {
-    try {
-        interviewController.deleteInterview(req, res)
-    } catch (error) {
-        res.status(500).json({ message: "error in routes", error })
-    }
-})
+router.post('/delete/:id', authMiddleware, interviewController.deleteInterview)
 
-router.post('/save-answer/:id', async (req, res) => {
-    try {
-        interviewController.saveAnswer(req, res)
-    } catch (error) {
-        res.status(500).json({ message: "error in routes", error })
-    }
-})
-router.post('/generate-summary/:interviewId', async (req, res) => {
-    try {
-        interviewController.generateSummary(req, res)
-    } catch (error) {
-        res.status(500).json({ message: "error in routes", error })
-    }
-})
+router.post('/save-answer/:id', authMiddleware, interviewController.saveAnswer)
 
-router.get('/get-summary/:interviewId', async (req, res) => {
-    try {
-        interviewController.getSummary(req, res)
-    } catch (error) {
-        res.status(500).json({ message: "error in routes", error })
-    }
-})
+router.post('/generate-summary/:interviewId', authMiddleware, interviewController.generateSummary)
 
-router.get('/get-by-user/:userId', async (req, res) => {
-    try {
-        interviewController.getInterviewByUserId(req, res)
-    } catch (error) {
-        res.status(500).json({ message: "error in routes", error })
-    }
-})
+router.get('/get-summary/:interviewId', authMiddleware, interviewController.getSummary)
+
+router.get('/get-by-user/:userId', authMiddleware, interviewController.getInterviewByUserId)
+
 
 export default router

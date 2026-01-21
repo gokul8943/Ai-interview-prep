@@ -1,28 +1,29 @@
-import { Request, Response, NextFunction } from "express";
+import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
-const userAuth = async (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
+dotenv.config();
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({ success: false, message: "Not Authorized. Login Again" });
-    }
-
-    const token = authHeader.split(" ")[1];
-
+export const authMiddleware: RequestHandler = (req, res, next) => {
     try {
-        const tokenDecode = jwt.verify(token, process.env.JWT_SECRET as string) as { id: string };
+        const authHeader = req.headers.authorization;
 
-        if (tokenDecode && tokenDecode.id) {
-            req.body.userId = tokenDecode.id; 
-            return next();
-        } else {
-            return res.status(401).json({ success: false, message: "Not Authorized. Login Again" });
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            res.status(401).json({ message: "Unauthorized: No token provided" });
+            return;
         }
-    } catch (error: any) {
-        console.error("JWT verification error:", error.message);
-        return res.status(500).json({ success: false, message: "Internal Server Error" });
+
+        const token = authHeader.split(" ")[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { id: string };
+
+        if (!decoded?.id) {
+            res.status(401).json({ message: "Not authorized" });
+            return;
+        }
+
+        req.body.userId = decoded.id;
+        next();
+    } catch (err) {
+        res.status(401).json({ message: "Invalid or expired token" });
     }
 };
-
-export default userAuth;
