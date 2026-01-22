@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
 import morgan from "morgan"
+import cookieParser from "cookie-parser"
 import { dbConnection } from "./database/dbConnection"
 import authRouter from "../adapters/routes/AuthRoutes"
 import interviewRouter from '../adapters/routes/InterviewRoutes'
@@ -31,6 +32,7 @@ app.use(morgan('dev'));
 app.use(cors(
     corsOptions
 ))
+app.use(cookieParser());
 
 app.use('/auth', authRouter)
 app.use('/interview', interviewRouter)
