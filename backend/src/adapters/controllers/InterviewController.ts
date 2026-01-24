@@ -27,13 +27,15 @@ export class InterviewController {
     async createInterview(req: Request, res: Response) {
         try {
             const interviewData = req.body;
+console.log('interviewData',interviewData);
 
             const questions = await generateInterviewQuestions(
                 interviewData.domain,
                 interviewData.level,
-                interviewData.questionCount,
-                interviewData.topics
+                interviewData.topics,
+                 interviewData.questionCount,
             );
+console.log('questions',questions);
 
             const newInterview = await this.createInterviewUseCase.execute(interviewData, questions);
             res.status(201).json({ message: "Interview created successfully", newInterview });

@@ -32,21 +32,20 @@ const interviewController = new InterviewController(createInterview, getIntervie
 
 const router = Router();
 
-router.post('/create', authMiddleware, interviewController.createInterview)
+router.post('/create', authMiddleware,   interviewController.createInterview.bind(interviewController))
 
-router.get('/get', authMiddleware, interviewController.getInterview)
+router.get('/get', authMiddleware, interviewController.getInterview.bind(interviewController))
 
-router.get('/get-question/:id', authMiddleware, interviewController.getInterviewQuestionsById)
+router.get('/get-question/:id', authMiddleware, interviewController.getInterviewQuestionsById.bind(interviewController))
 
-router.post('/delete/:id', authMiddleware, interviewController.deleteInterview)
+router.post('/delete/:id', authMiddleware, interviewController.deleteInterview.bind(interviewController))
 
-router.post('/save-answer/:id', authMiddleware, interviewController.saveAnswer)
+router.post('/save-answer/:id', authMiddleware, interviewController.saveAnswer.bind(interviewController))
 
-router.post('/generate-summary/:interviewId', authMiddleware, interviewController.generateSummary)
+router.post('/generate-summary/:interviewId', authMiddleware, interviewController.generateSummary.bind(interviewController))
 
-router.get('/get-summary/:interviewId', authMiddleware, interviewController.getSummary)
+router.get('/get-summary/:interviewId', authMiddleware, interviewController.getSummary.bind(interviewController))
 
-router.get('/get-by-user/:userId', authMiddleware, interviewController.getInterviewByUserId)
-
+router.get('/get-by-user/:userId', authMiddleware, interviewController.getInterviewByUserId.bind(interviewController))
 
 export default router
