@@ -16,7 +16,7 @@ const adminController = new AdminController(userAccess, getUserById, getUsers)
 
 const router = Router()
 
-router.post('/user-access/:id', async (req, res) => {
+router.post('/v1/user-access/:id', async (req, res) => {
     try {
         adminController.userAccess(req, res)
     } catch (error) {
@@ -24,7 +24,7 @@ router.post('/user-access/:id', async (req, res) => {
     }
 })
 
-router.get('/get-user/:userId', async (req, res) => {
+router.get('/v1/get-user/:userId', async (req, res) => {
     try {
         adminController.getUserById(req, res)
     } catch (error) {
@@ -32,7 +32,7 @@ router.get('/get-user/:userId', async (req, res) => {
     }
 })
 
-router.get('/get-users', async (req, res) => {
+router.get('/v1/get-users', async (req, res) => {
     try {
         adminController.getUsers(req, res)
     } catch (error) {

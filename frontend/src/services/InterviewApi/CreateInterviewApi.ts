@@ -1,13 +1,13 @@
 import axios from '@/constants/Axios'
 
 export const createInterview = (data: any) => {
-    return axios.post('/interview/create', data)
+    return axios.post('/interview/v1/create', data)
 }
 
 export const getInterviewQuestionsById = (interviewId: string,) => {
-    return axios.get(`/interview/get-question/${interviewId}`)
+    return axios.get(`/interview/v1/get-question/${interviewId}`)
 }
 
 export const saveAnswer = (interviewId: string, data: { questionId: number; answer: string }) => {
-  return axios.post(`/interview/save-answer/${interviewId}`, data);
+  return axios.post(`/interview/v1/save-answer/${interviewId}`, data);
 };

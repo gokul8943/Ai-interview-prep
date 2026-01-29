@@ -18,11 +18,11 @@ const feedbackController = new FeedbackController(createFeedback, getFeedback, g
 const router = Router();
 
 
-router.post('/create', authMiddleware, feedbackController.createFeedback.bind(feedbackController))
+router.post('/v1/create', authMiddleware, feedbackController.createFeedback.bind(feedbackController))
 
-router.get('/get', authMiddleware, feedbackController.getFeedback.bind(feedbackController))
+router.get('/v1/get', authMiddleware, feedbackController.getFeedback.bind(feedbackController))
 
-router.get('/get/:id', authMiddleware, feedbackController.getFeedbackById.bind(feedbackController))
+router.get('/v1/get/:id', authMiddleware, feedbackController.getFeedbackById.bind(feedbackController))
 
-router.post('/delete/:id', authMiddleware, feedbackController.deleteFeedback.bind(feedbackController))
+router.post('/v1/delete/:id', authMiddleware, feedbackController.deleteFeedback.bind(feedbackController))
 export default router

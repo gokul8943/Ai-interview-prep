@@ -11,7 +11,7 @@ const getUserInterview = new GetUserInterview(userRepository);
 const userController = new UserController(getUserInterview);
 const router = Router();
 
-router.get('/interviews/:userId', authMiddleware, userController.getUserInterviews.bind(userController));
+router.get('/v1/interviews/:userId', authMiddleware, userController.getUserInterviews.bind(userController));
 
 
 
