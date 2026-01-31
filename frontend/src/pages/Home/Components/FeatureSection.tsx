@@ -43,7 +43,7 @@ export default function FeaturesSection() {
               className="bg-slate-800/50 border-slate-700 hover:bg-slate-800/70 transition-all duration-300 group shadow-2xl"
             >
               <CardContent className="p-6">
-                <div className="text-purple-400 mb-4 group-hover:scale-110 transition-transform">
+                <div className="text-teal-400 mb-4 group-hover:scale-110 transition-transform">
                   {feature.icon}
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
