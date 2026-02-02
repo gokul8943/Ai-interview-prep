@@ -108,7 +108,7 @@ const CreateInterview: React.FC = () => {
           <Button
             disabled={!isFormValid}
             onClick={handleCreateInterview}
-            className="bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white px-8 py-3 text-lg font-medium rounded-lg shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-gradient-to-r from-blue-600 to-blue-300 hover:from-blue-700 hover:to-blue-300 text-white px-8 py-3 text-lg font-medium rounded-lg shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <>
