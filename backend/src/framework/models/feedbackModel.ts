@@ -1,4 +1,4 @@
-import mongoose, { Document,Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import{ IFeedbackSchema} from "../../adapters/interfaces/IFeedbackSchema";
 
 const  feedbackSchema = new Schema<IFeedbackSchema>({
