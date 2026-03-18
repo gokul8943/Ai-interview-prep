@@ -21,4 +21,5 @@ const LevelSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-export const LevelModel = mongoose.model<ILevel>("Level", LevelSchema);
+const LevelModel = mongoose.model<ILevel>("Level", LevelSchema);
+export default LevelModel;

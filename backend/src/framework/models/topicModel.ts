@@ -16,4 +16,5 @@ const TopicSchema: Schema = new Schema(
     { timestamps: true }
 );
 
-export const TopicModel = mongoose.model<ITopic>("Topic", TopicSchema);
+const TopicModel = mongoose.model<ITopic>("Topic", TopicSchema);
+export default TopicModel;

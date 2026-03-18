@@ -19,4 +19,5 @@ const DomainSchema: Schema = new Schema(
     { timestamps: true }
 );
 
-export const DomainModel = mongoose.model<IDomain>("Domain", DomainSchema);
+const DomainModel = mongoose.model<IDomain>("Domain", DomainSchema);
+export default DomainModel;
