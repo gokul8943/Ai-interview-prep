@@ -60,6 +60,18 @@ export class CmsRepositoryImpl implements CmsRepository {
         }
     }
 
+    async deleteDomain(domainId: string, status: boolean): Promise<any> {
+        try {
+            const data = await this.DomainModel.findByIdAndUpdate(domainId, { status }, { new: true });
+            return data
+        }
+        catch (error) {
+            console.error("An error occurred on CMS repo", error);
+            return false;
+        }
+    }
+
+
     async createTopic(topicData: any): Promise<any> {
         try {
             const data = await this.TopicModel.create(topicData);

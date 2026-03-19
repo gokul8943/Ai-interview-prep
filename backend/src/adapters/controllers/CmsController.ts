@@ -3,9 +3,11 @@ import { createDomain } from "../../usecase/Cms/createDomain";
 import { getAllDomains } from "../../usecase/Cms/getAllDomains";
 import { getDomainById } from "../../usecase/Cms/getDomainById";
 import { updateDomain } from "../../usecase/Cms/updateDomain";
+import { deleteDomain } from "../../usecase/Cms/deleteDomain";
 
 import { createTopics } from "../../usecase/Cms/createTopics";
 import { createlevel } from "../../usecase/Cms/createlevel";
+
 
 
 export class CmsController {
@@ -13,6 +15,7 @@ export class CmsController {
     private readonly getAllDomainsUseCase: getAllDomains;
     private readonly getDomainByIdUseCase: getDomainById;
     private readonly updateDomainUseCase: updateDomain;
+    private readonly deleteDomainUseCase: deleteDomain;
     private readonly createTopicUseCase: createTopics;
     private readonly createLevelUseCase: createlevel;
     constructor(
@@ -20,6 +23,7 @@ export class CmsController {
         getAllDomainsUseCase: getAllDomains,
         getDomainByIdUseCase: getDomainById,
         updateDomainUseCase: updateDomain,
+        deleteDomainUseCase: deleteDomain,
         createTopicUseCase: createTopics,
         createLevelUseCase: createlevel
     ) {
@@ -27,6 +31,7 @@ export class CmsController {
         this.getAllDomainsUseCase = getAllDomainsUseCase;
         this.getDomainByIdUseCase = getDomainByIdUseCase;
         this.updateDomainUseCase = updateDomainUseCase;
+        this.deleteDomainUseCase = deleteDomainUseCase;
         this.createTopicUseCase = createTopicUseCase;
         this.createLevelUseCase = createLevelUseCase;
     }
@@ -78,6 +83,19 @@ export class CmsController {
         }
     }
 
+    async deleteDomain(req: Request, res: Response) {
+        try {
+            const domainId = req.params.id;
+            const status = req.body.status;
+            const domain = await this.deleteDomainUseCase.execute(domainId, status);
+            if (!domain) {
+                return res.status(404).json({ message: "Domain not found" });
+            }
+            res.status(200).json({ message: "Domain details retrieved successfully", domain });
+        } catch (error) {
+            res.status(500).json({ message: "Error in controller", error });
+        }
+    }
 
     async createTopic(req: Request, res: Response) {
         try {
