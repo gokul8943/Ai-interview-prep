@@ -1,8 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { IDomain } from "../../adapters/interfaces/IDomainSchema";
 
-
-
 const DomainSchema: Schema = new Schema(
     {
         name: {
@@ -14,6 +12,10 @@ const DomainSchema: Schema = new Schema(
             type: String,
             required: true,
             unique: true
+        },
+        status:{
+            type: Boolean,
+            default: true
         }
     },
     { timestamps: true }

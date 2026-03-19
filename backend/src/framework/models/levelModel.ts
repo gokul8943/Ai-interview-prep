@@ -13,9 +13,9 @@ const LevelSchema: Schema = new Schema(
       type: String,
       required: true,
     },
-    color: {
-      type: String,
-      required: true,
+    status: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }

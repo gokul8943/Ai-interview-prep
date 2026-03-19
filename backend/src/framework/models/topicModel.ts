@@ -12,6 +12,10 @@ const TopicSchema: Schema = new Schema(
             ref: "Domain",
             required: true,
         },
+        status: {
+            type: Boolean,
+            default: true,
+        }
     },
     { timestamps: true }
 );

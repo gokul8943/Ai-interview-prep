@@ -27,6 +27,39 @@ export class CmsRepositoryImpl implements CmsRepository {
         }
     }
 
+    async getAllDomains(): Promise<any> {
+        try {
+            const data = await this.DomainModel.find();
+            return data
+        }
+        catch (error) {
+            console.error("An error occurred on CMS repo", error);
+            return false;
+        }
+    }
+
+    async getDomainById(id: string): Promise<any> {
+        try {
+            const data = await this.DomainModel.findById(id);
+            return data
+        }
+        catch (error) {
+            console.error("An error occurred on CMS repo", error);
+            return false;
+        }
+    }
+
+    async updateDomain(id: string, updateData: any): Promise<any> {
+        try {
+            const data = await this.DomainModel.findByIdAndUpdate(id, updateData, { new: true });
+            return data
+        }
+        catch (error) {
+            console.error("An error occurred on CMS repo", error);
+            return false;
+        }
+    }
+
     async createTopic(topicData: any): Promise<any> {
         try {
             const data = await this.TopicModel.create(topicData);
