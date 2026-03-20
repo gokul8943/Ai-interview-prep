@@ -83,6 +83,47 @@ export class CmsRepositoryImpl implements CmsRepository {
         }
     }
 
+    async getAllTopics(): Promise<any> {
+        try {
+            const data = await this.TopicModel.find();
+            return data
+        }
+        catch (error) {
+            console.error("An error occurred on CMS repo", error);
+            return false;
+        }
+    }
+
+    async getTopicById(id: string): Promise<any> {
+        try {
+            const data = await this.TopicModel.findById(id);
+            return data
+        } catch (error) {
+            console.error("An error occurred on CMS repo", error);
+            return false;
+        }
+    }
+
+    async updateTopic(topicId: string, updateData: any): Promise<any> {
+        try {
+            const data = await this.TopicModel.findByIdAndUpdate(topicId, updateData, { new: true });
+            return data
+        } catch (error) {
+            console.error("An error occurred on CMS repo", error);
+            return false;
+        }
+    }
+
+    async deleteTopic(topicId: string, status: boolean): Promise<any> {
+        try {
+            const data = await this.TopicModel.findByIdAndUpdate(topicId, { status }, { new: true });
+            return data
+        } catch (error) {
+            console.error("An error occurred on CMS repo", error);
+            return false;
+        }
+    }
+
     async createLevel(levelData: any): Promise<any> {
         try {
             const data = await this.TopicModel.create(levelData);

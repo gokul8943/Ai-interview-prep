@@ -1,11 +1,12 @@
 import { CmsRepository } from "../../adapters/interfaces/CmsRepository";
 
 
-export class getDomainById {
+export class getAllTopics {
     constructor(
         private cmsRepository: CmsRepository
-    ) { }
-    async execute(id: string): Promise<void> {
-        return this.cmsRepository.getDomainById(id);
+    ) { }   
+
+    async execute(): Promise<any> {
+        return this.cmsRepository.getAllTopics();
     }
 }
