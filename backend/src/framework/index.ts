@@ -7,6 +7,7 @@ import { dbConnection } from "./database/dbConnection"
 import authRouter from "../adapters/routes/AuthRoutes"
 import interviewRouter from '../adapters/routes/InterviewRoutes'
 import adminRouter from '../adapters/routes/AdminRoutes'
+import healthRouter from '../adapters/routes/health.routes'
 
 dotenv.config()
 const app = express()
@@ -37,6 +38,7 @@ app.use(cookieParser());
 app.use('/auth', authRouter)
 app.use('/interview', interviewRouter)
 app.use('/admin',adminRouter)
+app.use('/health',healthRouter)
 
 dbConnection()
 
