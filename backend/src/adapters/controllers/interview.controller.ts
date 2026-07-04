@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import { CreateInterview } from "../../usecase/Interview/CreateInterview";
-import { GetInterview } from "../../usecase/Interview/GetInterview";
-import { GetInterviewQuestionsById } from "../../usecase/Interview/GetInterviewQuestionsById";
-import { DeleteInterview } from "../../usecase/Interview/DeleteInterview";
-import { SaveAnswer } from "../../usecase/Interview/SaveAnswer";
-import { GenerateSummary } from "../../usecase/Interview/GenerateSummary";
+import { CreateInterview } from "../../usecase/Interview/createInterview";
+import { GetInterview } from "../../usecase/Interview/getInterview";
+import { GetInterviewQuestionsById } from "../../usecase/Interview/getInterviewQuestionsById";
+import { DeleteInterview } from "../../usecase/Interview/deleteInterview";
+import { SaveAnswer } from "../../usecase/Interview/saveAnswer";
+import { GenerateSummary } from "../../usecase/Interview/generateSummary";
 
 
 import { generateInterviewQuestions } from "../../framework/services/GeminiAiService";
-import { GetSummary } from "../../usecase/Interview/GetSummary";
-import { GetInterviewByUserId } from "../../usecase/Interview/GetInterviewByUserId";
+import { GetSummary } from "../../usecase/Interview/getSummary";
+import { GetInterviewByUserId } from "../../usecase/Interview/getInterviewByUserId";
 
 
 export class InterviewController {

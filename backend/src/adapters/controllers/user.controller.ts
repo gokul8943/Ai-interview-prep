@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { GetUserInterview } from "../../usecase/User/GetUserInterview";
+import { GetUserInterview } from "../../usecase/User/getUserInterview";
 
 export class UserController {
     constructor(

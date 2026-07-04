@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { SignUp } from "../../usecase/Auth/SignUp";
-import { Login } from "../../usecase/Auth/Login";
-import { GenerateOtp } from "../../usecase/Auth/GenerateOtp";
-import { VerifyOtp } from "../../usecase/Auth/VerifyOtp";
+import { SignUp } from "../../usecase/Auth/signUp";
+import { Login } from "../../usecase/Auth/login";
+import { GenerateOtp } from "../../usecase/Auth/generateOtp";
+import { VerifyOtp } from "../../usecase/Auth/verifyOtp";
 import { generateOtp } from "../../utils/generateOtp";
 import { sendOtpEmail } from "../../utils/sendOtpEmail";
 

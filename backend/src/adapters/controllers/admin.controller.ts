@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { GetUserById } from "../../usecase/Admin/GetUserById";
-import { GetUsers } from "../../usecase/Admin/Getusers";
-import { UserAccess } from "../../usecase/Admin/UserAccess";
+import { GetUserById } from "../../usecase/Admin/getUserById";
+import { GetUsers } from "../../usecase/Admin/getusers";
+import { UserAccess } from "../../usecase/Admin/userAccess";
 
 
 export class AdminController {

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { CreateFeedback } from "../../usecase/Feedback/CreateFeedback";
-import { DeleteFeedback } from "../../usecase/Feedback/DeleteFeedback";
-import { GetFeedback } from "../../usecase/Feedback/GetFeedback";
-import { GetFeedbackById } from "../../usecase/Feedback/GetFeedbackById";
+import { CreateFeedback } from "../../usecase/Feedback/createFeedback";
+import { DeleteFeedback } from "../../usecase/Feedback/deleteFeedback";
+import { GetFeedback } from "../../usecase/Feedback/getFeedback";
+import { GetFeedbackById } from "../../usecase/Feedback/getFeedbackById";
 
 export class FeedbackController {
     constructor(
