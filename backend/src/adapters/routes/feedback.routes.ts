@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { FeedbackRepositoryImpl } from "../repositories/FeedbackRepositoryImpl";
-import { CreateFeedback } from "../../usecase/Feedback/CreateFeedback";
-import { GetFeedback } from "../../usecase/Feedback/GetFeedback";
-import { GetFeedbackById } from "../../usecase/Feedback/GetFeedbackById";
-import { DeleteFeedback } from "../../usecase/Feedback/DeleteFeedback";
-import { FeedbackController } from "../controllers/FeedbackController";
-import feedbackModel from "../../framework/models/feedbackModel"
+import { FeedbackRepositoryImpl } from "../repositories/feedback.repositoryImpl";
+import { CreateFeedback } from "../../usecase/Feedback/createFeedback";
+import { GetFeedback } from "../../usecase/Feedback/getFeedback";
+import { GetFeedbackById } from "../../usecase/Feedback/getFeedbackById";
+import { DeleteFeedback } from "../../usecase/Feedback/deleteFeedback";
+import { FeedbackController } from "../controllers/feedback.controller";
+import feedbackModel from "../../framework/models/feedback.model"
 import { authMiddleware } from "../middleware/userAuth";
 
 const feedbackRepository = new FeedbackRepositoryImpl(feedbackModel);

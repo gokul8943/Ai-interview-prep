@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { AuthRepositoryImpl } from "../repositories/AuthRepositoryImpl";
-import { AuthController } from "../controllers/AuthController";
-import { SignUp } from "../../usecase/Auth/SignUp";
-import userModel from "../../framework/models/userModel";
-import { Login } from "../../usecase/Auth/Login";
-import { VerifyOtp } from "../../usecase/Auth/VerifyOtp";
-import { GenerateOtp } from "../../usecase/Auth/GenerateOtp";
-import otpModel from "../../framework/models/otpModel";
-import { OtpRepositoryImpl } from "../repositories/OtpRepositoryImpl";
+import { AuthRepositoryImpl } from "../repositories/auth.repositoryImpl";
+import { AuthController } from "../controllers/auth.controller";
+import { SignUp } from "../../usecase/Auth/signUp";
+import userModel from "../../framework/models/user.model";
+import { Login } from "../../usecase/Auth/login";
+import { VerifyOtp } from "../../usecase/Auth/verifyOtp";
+import { GenerateOtp } from "../../usecase/Auth/generateOtp";
+import otpModel from "../../framework/models/otp.model";
+import { OtpRepositoryImpl } from "../repositories/otp.repositoryImpl";
 
 
 

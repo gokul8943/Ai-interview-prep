@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { GetUserById } from "../../usecase/Admin/GetUserById";
-import { GetUsers } from "../../usecase/Admin/Getusers";
-import { UserAccess } from "../../usecase/Admin/UserAccess";
-import { AdminRepositoryImpl } from "../repositories/AdminRepositoryImpl";
-import userModel from "../../framework/models/userModel";
-import { AdminController } from "../controllers/AdminController";
+import { GetUserById } from "../../usecase/Admin/getUserById";
+import { GetUsers } from "../../usecase/Admin/getusers";
+import { UserAccess } from "../../usecase/Admin/userAccess";
+import { AdminRepositoryImpl } from "../repositories/admin.repositoryImpl";
+import userModel from "../../framework/models/user.model";
+import { AdminController } from "../controllers/admin.controller";
 
 
 

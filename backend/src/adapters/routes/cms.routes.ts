@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { CmsController } from "../controllers/CmsController";
+import { CmsController } from "../controllers/cms.controller";
 
 import { createDomain } from "../../usecase/Cms/createDomain";
 import { getAllDomains } from "../../usecase/Cms/getAllDomains";
@@ -16,10 +16,10 @@ import { deleteTopic } from "../../usecase/Cms/deleteTopic";
 
 import { createlevel } from "../../usecase/Cms/createlevel";
 
-import { CmsRepositoryImpl } from "../repositories/CmsRepositoryImpl";
+import { CmsRepositoryImpl } from "../repositories/cms.repositoryImpl";
 import { authMiddleware } from "../middleware/userAuth";
-import DomainModel from "../../framework/models/domainModel";
-import TopicModel from "../../framework/models/topicModel";
+import DomainModel from "../../framework/models/domain.model";
+import TopicModel from "../../framework/models/topic.model";
 
 
 const cmsRepository = new CmsRepositoryImpl(DomainModel, TopicModel);

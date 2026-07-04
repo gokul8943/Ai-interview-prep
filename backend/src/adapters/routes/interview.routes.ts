@@ -1,19 +1,19 @@
 import { Router } from "express";
-import { InterviewRepositoryImpl } from "../repositories/InterviewRepositoryImpl";
-import { CreateInterview } from "../../usecase/Interview/CreateInterview";
-import { GetInterview } from "../../usecase/Interview/GetInterview";
-import { GetInterviewQuestionsById } from "../../usecase/Interview/GetInterviewQuestionsById";
-import { DeleteInterview } from "../../usecase/Interview/DeleteInterview"
-import { SaveAnswer } from "../../usecase/Interview/SaveAnswer";
-import { GetSummary } from "../../usecase/Interview/GetSummary";
-import { GenerateSummary } from "../../usecase/Interview/GenerateSummary";
-import { GetInterviewByUserId } from "../../usecase/Interview/GetInterviewByUserId";
-import { InterviewController } from "../controllers/InterviewController";
+import { InterviewRepositoryImpl } from "../repositories/interview.repositoryImpl";
+import { CreateInterview } from "../../usecase/Interview/createInterview";
+import { GetInterview } from "../../usecase/Interview/getInterview";
+import { GetInterviewQuestionsById } from "../../usecase/Interview/getInterviewQuestionsById";
+import { DeleteInterview } from "../../usecase/Interview/deleteInterview"
+import { SaveAnswer } from "../../usecase/Interview/saveAnswer";
+import { GetSummary } from "../../usecase/Interview/getSummary";
+import { GenerateSummary } from "../../usecase/Interview/generateSummary";
+import { GetInterviewByUserId } from "../../usecase/Interview/getInterviewByUserId";
+import { InterviewController } from "../controllers/interview.controller";
 
-import interviewModel from "../../framework/models/interviewModel";
-import questiomModel from "../../framework/models/questionModel";
-import summaryModel from "../../framework/models/summaryModel";
-import userModel from "../../framework/models/userModel";
+import interviewModel from "../../framework/models/interview.model";
+import questiomModel from "../../framework/models/question.model";
+import summaryModel from "../../framework/models/summary.model";
+import userModel from "../../framework/models/user.model";
 
 import { authMiddleware } from "../middleware/userAuth";
 

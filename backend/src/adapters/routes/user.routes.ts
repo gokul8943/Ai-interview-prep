@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { UserRepositoryImpl } from "../repositories/UserRepositoryImpl";
-import { GetUserInterview } from "../../usecase/User/GetUserInterview";
-import { UserController } from "../controllers/UserController";
-import userModel from "../../framework/models/userModel";
+import { UserRepositoryImpl } from "../repositories/user.repositoryImpl";
+import { GetUserInterview } from "../../usecase/User/getUserInterview";
+import { UserController } from "../controllers/user.controller";
+import userModel from "../../framework/models/user.model";
 import interviewModel from "../../framework/models/interviewModel";
 import { authMiddleware } from "../middleware/userAuth";
 
