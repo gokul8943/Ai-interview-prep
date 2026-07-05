@@ -4,9 +4,9 @@ import cors from "cors"
 import morgan from "morgan"
 import cookieParser from "cookie-parser"
 import { dbConnection } from "./database/dbConnection"
-import authRouter from "../adapters/routes/AuthRoutes"
-import interviewRouter from '../adapters/routes/InterviewRoutes'
-import adminRouter from '../adapters/routes/AdminRoutes'
+import authRouter from "../adapters/routes/auth.routes"
+import interviewRouter from '../adapters/routes/interview.routes'
+import adminRouter from '../adapters/routes/admin.routes'
 import healthRouter from '../adapters/routes/health.routes'
 
 dotenv.config()
