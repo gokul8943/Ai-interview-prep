@@ -7,7 +7,7 @@ import { SaveAnswer } from "../../usecase/Interview/saveAnswer";
 import { GenerateSummary } from "../../usecase/Interview/generateSummary";
 
 
-import { generateInterviewQuestions } from "../../framework/services/GeminiAiService";
+import { generateInterviewQuestions } from "../../framework/services/geminiAiService";
 import { GetSummary } from "../../usecase/Interview/getSummary";
 import { GetInterviewByUserId } from "../../usecase/Interview/getInterviewByUserId";
 
