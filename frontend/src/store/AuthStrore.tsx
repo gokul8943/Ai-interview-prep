@@ -4,28 +4,26 @@ interface User {
   _id: string;
   name: string;
   email: string;
-  fullName?: string;
-  avatar?: string;
+  phone?: string;
   role?: string;
+  isVerified?: boolean;
 }
 
 interface AuthState {
   isAuthenticated: boolean;
-  accessToken?: string | null;
-  refreshToken?: string | null;
+  accessToken: string | null;
   user: User | null;
 }
 
 const initialAuthState: AuthState = {
-  isAuthenticated: localStorage.getItem('accessToken') ? true : false,
-  accessToken: localStorage.getItem('accessToken'),
-  refreshToken: localStorage.getItem('refreshToken'),
+  isAuthenticated: !!localStorage.getItem('user'),
+  accessToken: null,
   user: JSON.parse(localStorage.getItem('user') || 'null'),
 };
 
 interface AuthStore {
   authState: AuthState;
-  login: (accessToken: string, user: User, refreshToken: string) => void;
+  login: (accessToken: string, user: User) => void;
   logout: () => void;
   updateUser: (user: User) => void;
   updateAccessToken: (accessToken: string) => void;
@@ -33,16 +31,13 @@ interface AuthStore {
 
 const useAuthStore = create<AuthStore>((set) => ({
   authState: { ...initialAuthState },
-  login: (accessToken: string, user: User, refreshToken: string) => {
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+  login: (accessToken: string, user: User) => {
     localStorage.setItem('user', JSON.stringify(user));
     set((state) => ({
       authState: {
         ...state.authState,
         isAuthenticated: true,
         accessToken,
-        refreshToken,
         user,
       },
     }));
@@ -57,21 +52,16 @@ const useAuthStore = create<AuthStore>((set) => ({
     }));
   },
   logout: () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
     set({
       authState: {
-        ...initialAuthState,
         isAuthenticated: false,
         accessToken: null,
-        refreshToken: null,
         user: null,
       },
     });
   },
   updateAccessToken: (accessToken: string) => {
-    localStorage.setItem('accessToken', accessToken);
     set((state) => ({
       authState: {
         ...state.authState,

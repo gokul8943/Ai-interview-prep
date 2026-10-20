@@ -4,9 +4,9 @@ import { Card, CardContent } from '@/components/ui/card';
 interface ProfileHeaderProps {
   user: {
     name: string;
-    role: string;
-    createdAt: string;
-    profilePicture: string;
+    role?: string;
+    createdAt?: string;
+    profilePicture?: string;
   };
 }
 

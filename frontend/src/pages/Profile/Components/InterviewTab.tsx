@@ -3,7 +3,7 @@ import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/com
 import { Briefcase, Calendar } from 'lucide-react';
 
 interface Interview {
-  _id: string;
+  _id?: string;
   domain?: string;
   title?: string;
   createdAt?: string;
@@ -36,9 +36,9 @@ const InterviewsTab: React.FC<InterviewsTabProps> = ({ interviews }) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          {interviews.map((interview) => (
+          {interviews.map((interview, index) => (
             <div
-              key={interview._id}
+              key={interview._id ?? `${interview.title ?? 'interview'}-${index}`}
               className="flex items-center justify-between p-4 border border-slate-700 rounded-lg hover:border-blue-400 hover:shadow-md transition-all bg-slate-900"
             >
               <div className="flex-1">

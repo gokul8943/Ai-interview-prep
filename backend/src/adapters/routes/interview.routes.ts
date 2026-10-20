@@ -15,7 +15,8 @@ import questiomModel from "../../framework/models/question.model";
 import summaryModel from "../../framework/models/summary.model";
 import userModel from "../../framework/models/user.model";
 
-import { authMiddleware } from "../middleware/userAuth";
+import { authMiddleware } from "../middleware/authMiddleware";
+import { asyncHandler } from "../../utils/asyncHandler";
 
 
 const interviewRepository = new InterviewRepositoryImpl(interviewModel, questiomModel, summaryModel, userModel);
@@ -32,20 +33,20 @@ const interviewController = new InterviewController(createInterview, getIntervie
 
 const router = Router();
 
-router.post('/v1/create', authMiddleware,   interviewController.createInterview.bind(interviewController))
+router.post('/v1/create', authMiddleware, asyncHandler((req, res) => interviewController.createInterview(req, res)))
 
-router.get('/v1/get', authMiddleware, interviewController.getInterview.bind(interviewController))
+router.get('/v1/get', authMiddleware, asyncHandler((req, res) => interviewController.getInterview(req, res)))
 
-router.get('/v1/get-question/:id', authMiddleware, interviewController.getInterviewQuestionsById.bind(interviewController))
+router.get('/v1/get-question/:id', authMiddleware, asyncHandler((req, res) => interviewController.getInterviewQuestionsById(req, res)))
 
-router.post('/v1/delete/:id', authMiddleware, interviewController.deleteInterview.bind(interviewController))
+router.post('/v1/delete/:id', authMiddleware, asyncHandler((req, res) => interviewController.deleteInterview(req, res)))
 
-router.post('/v1/save-answer/:id', authMiddleware, interviewController.saveAnswer.bind(interviewController))
+router.post('/v1/save-answer/:id', authMiddleware, asyncHandler((req, res) => interviewController.saveAnswer(req, res)))
 
-router.post('/v1/generate-summary/:interviewId', authMiddleware, interviewController.generateSummary.bind(interviewController))
+router.post('/v1/generate-summary/:interviewId', authMiddleware, asyncHandler((req, res) => interviewController.generateSummary(req, res)))
 
-router.get('/v1/get-summary/:interviewId', authMiddleware, interviewController.getSummary.bind(interviewController))
+router.get('/v1/get-summary/:interviewId', authMiddleware, asyncHandler((req, res) => interviewController.getSummary(req, res)))
 
-router.get('/v1/get-by-user/:userId', authMiddleware, interviewController.getInterviewByUserId.bind(interviewController))
+router.get('/v1/get-by-user/:userId', authMiddleware, asyncHandler((req, res) => interviewController.getInterviewByUserId(req, res)))
 
 export default router

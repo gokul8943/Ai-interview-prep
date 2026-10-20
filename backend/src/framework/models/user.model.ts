@@ -4,6 +4,7 @@ import { IUserSchema } from "../../adapters/interfaces/IUserSchema";
 const userSchema = new mongoose.Schema<IUserSchema>({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
+    phone: { type: String, unique: true, sparse: true, trim: true },
     googleId: { type: String, unique: true, sparse: true},
     profilePicture: {
         type: String,

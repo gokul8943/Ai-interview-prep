@@ -1,9 +1,13 @@
 import { InterviewRepository } from "../../adapters/interfaces/InterviewRepository";
 
 export class DeleteInterview {
-    constructor(private authRepository: InterviewRepository) { }
-    
-    async execute(interviewId: string): Promise<any> {
-        return this.authRepository.deleteInterview(interviewId);
+    private authRepository: InterviewRepository;
+
+    constructor(interviewRepository: InterviewRepository) {
+        this.authRepository = interviewRepository;
+    }
+
+    async execute(interviewId: string, userId: string): Promise<any> {
+        return this.authRepository.deleteInterview(interviewId, userId);
     }
 }

@@ -4,7 +4,7 @@ import StrengthsAndImprovements from "@/pages/Summary/Components/StrengthImprove
 import FinalRecommendation from "@/pages/Summary/Components/FinalRecommendation";
 import CandidateHeader from "@/pages/Summary/Components/CandiateHeader";
 import { getSummaryByInterviewId } from "@/services/SummaryApi/SummaryApi";
-import {  getUserById } from "@/services/UserAPi/AuthApi";
+import { getMe } from "@/services/UserAPi/AuthApi";
 import useAuthStore from "@/store/AuthStrore";
 
 interface SummaryData {
@@ -55,7 +55,7 @@ const InterviewSummary = () => {
       if (!userId) return;
       try {
         setLoading(true);
-        const res = await getUserById(userId) 
+        const res = await getMe()
         setUser(res.data.user);
       } catch (error) {
         console.error("Failed to fetch user:", error);

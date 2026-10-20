@@ -7,7 +7,7 @@ interface FormFieldProps<T extends FieldValues> {
   name: Path<T>;
   label: string;
   placeholder?: string;
-  type?: "text" | "email" | "password";
+  type?: "text" | "email" | "password" | "tel";
   disabled?: boolean; // ✅ Added disabled support
 }
 

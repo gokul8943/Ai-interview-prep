@@ -15,11 +15,6 @@ export class UserRepositoryImpl implements UserRepository {
         this.InterviewModel = interviewModel;
     }
     async getUserInterviews(userId: string): Promise<any> {
-        try {
-            const interviews = await this.InterviewModel.findById(userId).populate('summary');
-            return interviews;
-        } catch (error) {
-            throw new Error("Failed to retrieve user interviews");
-        }
+        return this.InterviewModel.find({ userId }).populate('summary');
     }
 }

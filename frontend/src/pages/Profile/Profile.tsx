@@ -6,9 +6,32 @@ import InterviewsTab from './Components/InterviewTab';
 import useAuthStore from '@/store/AuthStrore';
 import { getUserByInterviews } from '@/services/UserAPi/AuthApi';
 
+interface ProfileUser {
+  name: string;
+  role?: string;
+  createdAt?: string;
+  profilePicture?: string;
+}
+
+interface ProfileInterview {
+  _id?: string;
+  title?: string;
+  domain?: string;
+  level?: string;
+  createdAt?: string;
+  finalized?: boolean;
+  status?: string;
+  score?: number;
+}
+
+interface ProfileApiData {
+  user: ProfileUser;
+  interview: ProfileInterview[];
+}
+
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState('overview');
- const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<ProfileApiData | null>(null);
   const [loading, setLoading] = useState(true);
 
   const authState = useAuthStore();
@@ -48,9 +71,6 @@ export default function ProfilePage() {
   }
 
   const { user, interview:interviews } = data;
-
-console.log('data',data);
-
 
   return (
     <div className="min-h-screen ">

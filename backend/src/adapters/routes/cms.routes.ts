@@ -17,7 +17,8 @@ import { deleteTopic } from "../../usecase/Cms/deleteTopic";
 import { createlevel } from "../../usecase/Cms/createlevel";
 
 import { CmsRepositoryImpl } from "../repositories/cms.repositoryImpl";
-import { authMiddleware } from "../middleware/userAuth";
+import { authMiddleware } from "../middleware/authMiddleware";
+import { requireRole } from "../middleware/requireRole";
 import DomainModel from "../../framework/models/domain.model";
 import TopicModel from "../../framework/models/topic.model";
 
@@ -41,26 +42,28 @@ const cmsController = new CmsController(createDomainUseCase, getAllDomainsUseCas
 
 const router = Router();
 
-router.post('/v1/domain/create', authMiddleware, cmsController.createDomain.bind(cmsController))
+router.use(authMiddleware, requireRole("admin"));
 
-router.get('/v1/domain/all', authMiddleware, cmsController.getAllDomains.bind(cmsController))
+router.post('/v1/domain/create', cmsController.createDomain.bind(cmsController))
 
-router.get('/v1/domain/:id', authMiddleware, cmsController.getDomainById.bind(cmsController))
+router.get('/v1/domain/all', cmsController.getAllDomains.bind(cmsController))
 
-router.put('/v1/domain/update/:id', authMiddleware, cmsController.updateDomain.bind(cmsController))
+router.get('/v1/domain/:id', cmsController.getDomainById.bind(cmsController))
 
-router.delete('/v1/domain/delete/:id', authMiddleware, cmsController.deleteDomain.bind(cmsController))
+router.put('/v1/domain/update/:id', cmsController.updateDomain.bind(cmsController))
 
-router.post('/v1/topic/create', authMiddleware, cmsController.createTopic.bind(cmsController))
+router.delete('/v1/domain/delete/:id', cmsController.deleteDomain.bind(cmsController))
 
-router.get('/v1/topic/all', authMiddleware, cmsController.getAllTopics.bind(cmsController))
+router.post('/v1/topic/create', cmsController.createTopic.bind(cmsController))
 
-router.get('/v1/topic/:id', authMiddleware, cmsController.getTopicById.bind(cmsController))
+router.get('/v1/topic/all', cmsController.getAllTopics.bind(cmsController))
 
-router.post('/v1/topic/update/:id', authMiddleware, cmsController.updateTopic.bind(cmsController))
+router.get('/v1/topic/:id', cmsController.getTopicById.bind(cmsController))
 
-router.delete('/v1/topic/delete/:id', authMiddleware, cmsController.deleteTopic.bind(cmsController))
+router.post('/v1/topic/update/:id', cmsController.updateTopic.bind(cmsController))
 
-router.post('/v1/level/create', authMiddleware, cmsController.createLevel.bind(cmsController))
+router.delete('/v1/topic/delete/:id', cmsController.deleteTopic.bind(cmsController))
+
+router.post('/v1/level/create', cmsController.createLevel.bind(cmsController))
 
 export default router

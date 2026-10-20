@@ -6,8 +6,10 @@
   "scripts": {
     "build": "babel src -d dist",
     "dev": "nodemon --exec ts-node src/framework/index.ts",
-    "start": "nodemon src/framework/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node src/framework/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -34,6 +36,7 @@
     "@babel/cli": "^7.28.3",
     "@babel/core": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
+    "@rolldown/binding-win32-x64-msvc": "^1.2.14",
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.17",
@@ -42,6 +45,10 @@
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.14.1",
     "@types/nodemailer": "^6.4.17",
-    "typescript": "^5.8.3"
+    "@types/supertest": "^7.2.1",
+    "mongodb-memory-server": "^11.3.0",
+    "supertest": "^7.3.1",
+    "typescript": "^5.8.3",
+    "vitest": "^5.0.5"
   }
 }

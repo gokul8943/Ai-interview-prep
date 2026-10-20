@@ -4,6 +4,7 @@ import logoSvg from '../public/logo.svg';
 import { User, LogOut, User2 } from 'lucide-react';
 import { Button } from './ui/button';
 import useAuthStore from '@/store/AuthStrore';
+import { logout as logoutApi } from '@/services/UserAPi/AuthApi';
 
 const Navbar = () => {
   const { authState, logout } = useAuthStore(); 
@@ -38,8 +39,12 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    logout(); 
-    navigate('/sign-in');
+    logoutApi()
+      .catch(() => undefined)
+      .finally(() => {
+        logout();
+        navigate('/sign-in');
+      });
     setDropdownOpen(false);
   };
 

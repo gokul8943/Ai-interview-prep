@@ -6,7 +6,7 @@ import { GetFeedbackById } from "../../usecase/Feedback/getFeedbackById";
 import { DeleteFeedback } from "../../usecase/Feedback/deleteFeedback";
 import { FeedbackController } from "../controllers/feedback.controller";
 import feedbackModel from "../../framework/models/feedback.model"
-import { authMiddleware } from "../middleware/userAuth";
+import { authMiddleware } from "../middleware/authMiddleware";
 
 const feedbackRepository = new FeedbackRepositoryImpl(feedbackModel);
 const createFeedback = new CreateFeedback(feedbackRepository);

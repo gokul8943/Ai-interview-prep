@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -18,20 +19,33 @@ import FormField from "./FormField";
 // import InputOtp from "./modal/InputOtp";
 
 import { login, register } from "@/services/UserAPi/AuthApi";
+import type { RegisterPayload } from "@/services/UserAPi/AuthApi";
 import LogoSvg from "@/public/logo.svg";
 import useAuthStore from "@/store/AuthStrore";
 
 type FormType = "sign-in" | "sign-up";
 
+const normalizePhone = (value: string) => value.replace(/[\s()-]/g, "");
+
 const authFormSchema = (type: FormType) =>
   z.object({
     name: type === "sign-up" ? z.string().min(1, "Name is required") : z.string().optional(),
     email: z.string().email("Enter a valid email"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    phone: type === "sign-up"
+      ? z
+          .string()
+          .optional()
+          .refine(
+            (val) => !val || /^\+[1-9]\d{6,14}$/.test(normalizePhone(val)),
+            "Use international format, e.g. +15551234567"
+          )
+      : z.string().optional(),
   });
 
 const AuthForm = ({ type }: { type: FormType }) => {
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const formSchema = authFormSchema(type);
 
   // const [open, setOpen] = useState(false);
@@ -44,6 +58,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
       name: "",
       email: "",
       password: "",
+      phone: "",
     },
   });
 
@@ -81,28 +96,40 @@ const AuthForm = ({ type }: { type: FormType }) => {
   // };
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     try {
       if (isSignIn) {
         const response = await login(data);
         if (response.status === 200) {
-          const { accessToken, refreshToken, user } = response.data;
-          useAuthStore.getState().login(accessToken, user, refreshToken);
+          const { accessToken, user } = response.data;
+          useAuthStore.getState().login(accessToken, user);
           toast.success("Logged in successfully.");
           navigate("/");
         }
       } else {
-        // if (!emailVerified) {
-        //   toast.error("Please verify your email before creating an account.");
-        //   return;
-        // }
-
-        await register(data);
+        const payload: RegisterPayload = {
+          name: data.name ?? "",
+          email: data.email,
+          password: data.password,
+        };
+        if (data.phone) {
+          payload.phone = normalizePhone(data.phone);
+        }
+        await register(payload);
         toast.success("Account created successfully. Please sign in.");
         navigate("/sign-in");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
-      toast.error(`There was an error: ${error?.response?.data?.message || error.message}`);
+      const message =
+        (error as { response?: { data?: { message?: string } }; message?: string })?.response?.data
+          ?.message ||
+        (error as { message?: string })?.message ||
+        "Something went wrong";
+      toast.error(`There was an error: ${message}`);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -165,11 +192,26 @@ const AuthForm = ({ type }: { type: FormType }) => {
               label="Password"
               placeholder="Enter your password"
               type="password"
-              // disabled={!emailVerified && !isSignIn} // disable until email is verified
             />
 
-            <Button className="btn" type="submit">
-              {isSignIn ? "Sign In" : "Create an Account"}
+            {!isSignIn && (
+              <FormField
+                control={form.control}
+                name="phone"
+                label="Phone (optional)"
+                placeholder="+15551234567"
+                type="tel"
+              />
+            )}
+
+            <Button className="btn" type="submit" disabled={isSubmitting}>
+              {isSubmitting
+                ? isSignIn
+                  ? "Signing In..."
+                  : "Creating Account..."
+                : isSignIn
+                ? "Sign In"
+                : "Create an Account"}
             </Button>
           </form>
         </Form>

@@ -1,6 +1,5 @@
-
 export interface OtpRepository {
-    createOtp(email: string, otp: string): Promise<any>;
-    verifyOtp(email: string, otp: number): Promise<any>;
+    createOtp(email: string, otpHash: string): Promise<any>;
+    consumeAttempt(email: string): Promise<any>;
     deleteOtp(email: string): Promise<void>;
 }

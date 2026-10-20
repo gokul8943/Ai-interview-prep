@@ -8,6 +8,7 @@ import CreateInterview from "./pages/CreateInterview/CreateInterview";
 import Interview from "./pages/Interview/Interview";
 import InterviewSummary from "./pages/Summary/InterviewSummary";
 import Profile from "./pages/Profile/Profile";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 
 
@@ -22,10 +23,38 @@ const App = () => {
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/otp-verify" element={<OtpPage />} />
-            <Route path="/create-interview" element={<CreateInterview />} />
-            <Route path="/interview/:id" element={<Interview />} />
-            <Route path="/summary/:id" element={<InterviewSummary />} />
-            <Route path="/profile/:id" element={<Profile />} />
+            <Route
+              path="/create-interview"
+              element={
+                <ProtectedRoute>
+                  <CreateInterview />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/interview/:id"
+              element={
+                <ProtectedRoute>
+                  <Interview />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/summary/:id"
+              element={
+                <ProtectedRoute>
+                  <InterviewSummary />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile/:id"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </div>
       </div>

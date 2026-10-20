@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import logoSvg from '../public/logo.svg';
 import { Button } from '@/components/ui/button';
@@ -11,7 +13,9 @@ type InputRef = HTMLInputElement | null;
 
 const OtpPage: React.FC = () => {
     const [otps, setOtps] = useState<string[]>(Array(6).fill(''));
+    const [verifying, setVerifying] = useState(false);
     const inputRefs = useRef<InputRef[]>([]);
+    const navigate = useNavigate();
 
     const handleChange = (element: HTMLInputElement, index: number): void => {
         const value = element.value;
@@ -44,11 +48,25 @@ const OtpPage: React.FC = () => {
         }
     };
 
-    const handleSubmit = (): void => {
+    const handleSubmit = async (): Promise<void> => {
         const otp = otps.join('');
         const email = localStorage.getItem("email") || "";
-        if (otp.length === 6 && email) {
-            verifyOtp(email, otp)
+        if (otp.length !== 6 || !email) {
+            toast.error('Enter the 6-digit code sent to your email');
+            return;
+        }
+        if (verifying) return;
+        try {
+            setVerifying(true);
+            await verifyOtp(email, otp);
+            toast.success('Email verified successfully');
+            localStorage.removeItem('email');
+            navigate('/sign-in');
+        } catch (error: unknown) {
+            const err = error as { response?: { data?: { message?: string } } };
+            toast.error(err?.response?.data?.message || 'Invalid or expired OTP');
+        } finally {
+            setVerifying(false);
         }
     };
 
@@ -100,9 +118,10 @@ const OtpPage: React.FC = () => {
 
                 <Button
                     onClick={handleSubmit}
+                    disabled={verifying}
                     className="w-full rounded-lg bg-purple-300 py-3 font-bold text-zinc-800 transition-colors hover:bg-purple-400"
                 >
-                    Verify OTP
+                    {verifying ? 'Verifying...' : 'Verify OTP'}
                 </Button>
 
                 <div className="mt-6 text-center">
