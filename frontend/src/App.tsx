@@ -9,14 +9,16 @@ import Interview from "./pages/Interview/Interview";
 import InterviewSummary from "./pages/Summary/InterviewSummary";
 import Profile from "./pages/Profile/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
-
-
+import { useLocation } from "react-router-dom";
 
 const App = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-tl from-black to-blue-950 pt-[50px]">
+      <div className={isHomePage ? "min-h-screen bg-slate-50" : "min-h-screen bg-gradient-to-tl from-black to-blue-950 pt-[50px]"}>
         <div>
           <Routes>
             <Route path="/" element={<HomePage />} />
