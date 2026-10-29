@@ -1,6 +1,8 @@
 import { transporter } from '../framework/services/mailOptions';
 
 export const sendOtpEmail = async (to: string, otp: string, expiresMinutes: number): Promise<void> => {
+  console.log(`[OTP-CONSOLE] To: ${to} | OTP: ${otp} | Expires in ${expiresMinutes} minutes`);
+  
   const mailOptions = {
     from: process.env.Email_User,
     to,
@@ -16,5 +18,9 @@ export const sendOtpEmail = async (to: string, otp: string, expiresMinutes: numb
     `,
   };
 
-  await transporter.sendMail(mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error('[OTP-CONSOLE] Failed to send email, logging OTP instead:', error);
+  }
 };

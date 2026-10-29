@@ -60,8 +60,15 @@ const OtpPage: React.FC = () => {
             setVerifying(true);
             await verifyOtp(email, otp);
             toast.success('Email verified successfully');
+            const source = localStorage.getItem('otpSource') || localStorage.getItem('authFlow');
             localStorage.removeItem('email');
-            navigate('/sign-in');
+            localStorage.removeItem('otpSource');
+            localStorage.removeItem('authFlow');
+            if (source === 'sign-up') {
+                navigate('/sign-in');
+            } else {
+                navigate('/sign-in');
+            }
         } catch (error: unknown) {
             const err = error as { response?: { data?: { message?: string } } };
             toast.error(err?.response?.data?.message || 'Invalid or expired OTP');
@@ -126,7 +133,20 @@ const OtpPage: React.FC = () => {
 
                 <div className="mt-6 text-center">
                     <p className="text-gray-400">
-                        Didn't receive code? <span className="cursor-pointer font-medium text-white hover:underline">Resend OTP</span>
+                        Didn't receive code? <span className="cursor-pointer font-medium text-white hover:underline" onClick={async () => {
+                        const email = localStorage.getItem("email") || "";
+                        if (!email) {
+                            toast.error("Email not found. Please try again.");
+                            return;
+                        }
+                        try {
+                            const { sendOtp } = await import("@/services/UserAPi/AuthApi");
+                            await sendOtp(email);
+                            toast.success("OTP sent successfully");
+                        } catch (e: any) {
+                            toast.error(e?.response?.data?.message || "Failed to resend OTP");
+                        }
+                    }}>Resend OTP</span>
                     </p>
                 </div>
             </div>
