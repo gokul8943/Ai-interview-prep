@@ -17,7 +17,7 @@ import { useLocation } from "react-router-dom";
 const App = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  const isPublicPage = ['/demo', '/roles', '/privacy'].includes(location.pathname);
+  const isPublicPage = ['/demo', '/roles', '/privacy', '/create-interview'].includes(location.pathname) || location.pathname.startsWith('/summary/') || location.pathname.startsWith('/interview/');
 
   return (
     <>

@@ -38,7 +38,7 @@
   --radius: 0.625rem;
   --background: var(--color-slate-50);
   --foreground: var(--color-slate-900);
-  --card: var(--color-white);
+  --card: var(--color-slate-100);
   --card-foreground: var(--color-slate-900);
   --popover: var(--color-white);
   --popover-foreground: var(--color-slate-900);
@@ -188,7 +188,16 @@
   }
 
   .card-elevated {
-    @apply bg-white border border-slate-200 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300;
+    @apply bg-white border border-slate-200 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 relative overflow-hidden;
+  }
+  .card-elevated::before {
+    @apply content-[''] absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-teal-500;
+  }
+  .card-elevated:hover {
+    @apply border-slate-300;
+  }
+  .card-elevated:hover::before {
+    @apply w-1.5 from-blue-400 to-teal-400;
   }
 
   .nav-link {
