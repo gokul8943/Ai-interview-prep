@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { CheckCircle, Mic, Volume2, ArrowRight, Sparkles } from 'lucide-react';
+import { CheckCircle, Mic, Volume2, ArrowRight, Sparkles, Users, Award, Clock } from 'lucide-react';
 import useAuthStore from '@/store/AuthStrore';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -26,15 +26,17 @@ export default function HeroSection({ className }: HeroSectionProps) {
   };
 
   const trustIndicators = [
-    { icon: Sparkles, label: 'Personalized practice' },
-    { icon: CheckCircle, label: 'Instant feedback' },
-    { icon: Mic, label: 'Practice at your own pace' },
+    { icon: Users, label: '10,000+ interviews practiced' },
+    { icon: Award, label: '4.8/5 average rating' },
+    { icon: Clock, label: 'Available 24/7' },
   ];
 
   return (
-    <section id="hero" className={cn('relative overflow-hidden py-20 sm:py-32 lg:py-40', className)}>
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-50 to-white" />
+    <section id="hero" className={cn('relative overflow-hidden pt-6 sm:pt-10 lg:pt-16 pb-12 sm:pb-16 lg:pb-24', className)}>
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-white to-white" />
       <div className="absolute inset-0 bg-[url('/pattern.png')] bg-top bg-no-repeat opacity-30" />
+      <div className="absolute -top-1/2 -right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+      <div className="absolute -bottom-1/2 -left-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl" />
       
       <div className="section-container relative">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -74,13 +76,30 @@ export default function HeroSection({ className }: HeroSectionProps) {
               </Button>
             </div>
 
-            <div className="flex flex-wrap items-center gap-6 text-sm text-slate-600">
+            <div className="flex flex-wrap items-center gap-6 text-sm text-slate-600 mb-8">
               {trustIndicators.map((item, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <item.icon className="w-5 h-5 text-blue-600" />
                   <span className="font-medium text-slate-700">{item.label}</span>
                 </div>
               ))}
+            </div>
+
+            <div className="flex items-center gap-4 text-sm text-slate-500">
+              <div className="flex items-center gap-1">
+                <span className="text-amber-400">★★★★★</span>
+                <span>Rated 4.8/5 by 2,000+ users</span>
+              </div>
+              <div className="w-px h-6 bg-slate-200" />
+              <div className="flex items-center gap-1">
+                <CheckCircle className="w-4 h-4 text-teal-500" />
+                <span>No credit card required</span>
+              </div>
+              <div className="w-px h-6 bg-slate-200" />
+              <div className="flex items-center gap-1">
+                <CheckCircle className="w-4 h-4 text-teal-500" />
+                <span>Cancel anytime</span>
+              </div>
             </div>
           </div>
 

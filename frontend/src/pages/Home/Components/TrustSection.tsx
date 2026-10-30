@@ -1,4 +1,4 @@
-import { Shield, Clock, Target, Zap } from 'lucide-react';
+import { Shield, Clock, Target, Zap, Users, Award, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface TrustSectionProps {
@@ -29,9 +29,27 @@ export default function TrustSection({ className }: TrustSectionProps) {
     },
   ];
 
+  const stats = [
+    { icon: Users, value: '10,000+', label: 'Interviews Completed' },
+    { icon: Award, value: '4.8/5', label: 'Average Rating' },
+    { icon: Globe, value: '24/7', label: 'Available Anytime' },
+  ];
+
   return (
     <section id="trust" className={cn('py-16 sm:py-20 bg-white border-y border-slate-200', className)}>
       <div className="section-container">
+        <div className="grid grid-cols-3 gap-8 mb-12 md:mb-16">
+          {stats.map((stat, i) => (
+            <div key={i} className="text-center animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
+              <div className="w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-3">
+                <stat.icon className="w-7 h-7" />
+              </div>
+              <p className="text-3xl font-bold text-slate-900">{stat.value}</p>
+              <p className="text-sm text-slate-600 mt-1">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {trustItems.map((item, index) => (
             <div

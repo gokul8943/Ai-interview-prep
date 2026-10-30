@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Mic, MessageSquare, BarChart3, CheckCircle, AlertCircle, Star, ArrowRight } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Mic, MessageSquare, BarChart3, CheckCircle, AlertCircle, Star, ArrowRight, Pause, Volume2, Send, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import useAuthStore from '@/store/AuthStrore';
@@ -15,6 +15,14 @@ export default function InteractiveDemoSection({ className }: InteractiveDemoSec
   const user = authState.user;
 
   const [activeTab, setActiveTab] = useState<'practice' | 'feedback' | 'report'>('practice');
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingTime, setRecordingTime] = useState(0);
+  const [answerProgress, setAnswerProgress] = useState(0);
+  const [typedAnswer, setTypedAnswer] = useState('');
+  const [showTranscript, setShowTranscript] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleCTAClick = () => {
     if (user) {
@@ -30,6 +38,62 @@ export default function InteractiveDemoSection({ className }: InteractiveDemoSec
     { id: 'report', label: 'Performance Report', icon: BarChart3, description: 'Comprehensive session summary' },
   ];
 
+  const practiceSteps = [
+    { label: 'AI asks question', icon: '🎤' },
+    { label: 'You answer', icon: '🎙️' },
+    { label: 'Get feedback', icon: '📊' },
+  ];
+
+  const handleStartRecording = () => {
+    setIsRecording(true);
+    setRecordingTime(0);
+    setShowTranscript(true);
+    setAnswerProgress(0);
+    
+    intervalRef.current = setInterval(() => {
+      setRecordingTime(t => t + 1);
+    }, 1000);
+    
+    progressIntervalRef.current = setInterval(() => {
+      setAnswerProgress(p => {
+        if (p >= 100) {
+          if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+          return 100;
+        }
+        return p + 5;
+      });
+    }, 800);
+  };
+
+  const handleStopRecording = () => {
+    setIsRecording(false);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+  };
+
+  const handleSendAnswer = () => {
+    if (typedAnswer.trim()) {
+      setShowTranscript(true);
+      setAnswerProgress(100);
+      setTimeout(() => {
+        setActiveTab('feedback');
+      }, 500);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    };
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   return (
     <section id="demo" className={cn('py-20 sm:py-28 bg-white', className)}>
       <div className="section-container">
@@ -42,7 +106,21 @@ export default function InteractiveDemoSection({ className }: InteractiveDemoSec
 
         <div className="max-w-4xl mx-auto">
           <div className="card-elevated overflow-hidden">
-            <div className="border-b border-slate-200">
+            <div className="bg-slate-50 border-b border-slate-200 px-6 py-4">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="flex gap-1">
+                  {practiceSteps.map((step, i) => (
+                    <div key={i} className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                      currentStep >= i 
+                        ? 'bg-blue-100 text-blue-700' 
+                        : 'bg-slate-200 text-slate-500'
+                    }`}>
+                      <span>{step.icon}</span>
+                      <span>{step.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
               <nav className="flex" role="tablist" aria-label="Demo sections">
                 {tabs.map((tab) => (
                   <button
@@ -51,9 +129,14 @@ export default function InteractiveDemoSection({ className }: InteractiveDemoSec
                     aria-selected={activeTab === tab.id}
                     aria-controls={`${tab.id}-panel`}
                     id={`${tab.id}-tab`}
-                    onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                    onClick={() => {
+                      setActiveTab(tab.id as typeof activeTab);
+                      if (tab.id === 'practice') setCurrentStep(0);
+                      else if (tab.id === 'feedback') setCurrentStep(1);
+                      else setCurrentStep(2);
+                    }}
                     className={cn(
-                      'flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors border-b-2 -mb-px',
+                      'flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors border-b-2 -mb-px',
                       activeTab === tab.id
                         ? 'border-blue-600 text-blue-600'
                         : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-200'
@@ -68,7 +151,18 @@ export default function InteractiveDemoSection({ className }: InteractiveDemoSec
 
             <div className="p-6 md:p-8">
               <div role="tabpanel" id="practice-panel" aria-labelledby="practice-tab" className={activeTab === 'practice' ? 'animate-fade-in' : 'hidden'}>
-                <DemoPracticeTab />
+                <DemoPracticeTab 
+                  isRecording={isRecording}
+                  recordingTime={recordingTime}
+                  answerProgress={answerProgress}
+                  typedAnswer={typedAnswer}
+                  showTranscript={showTranscript}
+                  onStartRecording={handleStartRecording}
+                  onStopRecording={handleStopRecording}
+                  onSendAnswer={handleSendAnswer}
+                  setTypedAnswer={setTypedAnswer}
+                  formatTime={formatTime}
+                />
               </div>
               <div role="tabpanel" id="feedback-panel" aria-labelledby="feedback-tab" className={activeTab === 'feedback' ? 'animate-fade-in' : 'hidden'}>
                 <DemoFeedbackTab />
@@ -94,7 +188,29 @@ export default function InteractiveDemoSection({ className }: InteractiveDemoSec
   );
 }
 
-function DemoPracticeTab() {
+function DemoPracticeTab({
+  isRecording,
+  recordingTime,
+  answerProgress,
+  typedAnswer,
+  showTranscript,
+  onStartRecording,
+  onStopRecording,
+  onSendAnswer,
+  setTypedAnswer,
+  formatTime,
+}: {
+  isRecording: boolean;
+  recordingTime: number;
+  answerProgress: number;
+  typedAnswer: string;
+  showTranscript: boolean;
+  onStartRecording: () => void;
+  onStopRecording: () => void;
+  onSendAnswer: () => void;
+  setTypedAnswer: (value: string) => void;
+  formatTime: (seconds: number) => string;
+}) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -106,10 +222,8 @@ function DemoPracticeTab() {
           <p className="text-sm text-slate-500">Intermediate • Question 3 of 10</p>
         </div>
         <div className="flex items-center gap-2 text-sm text-slate-500">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span>02:34</span>
+          <Volume2 className="w-4 h-4" />
+          <span>{formatTime(recordingTime)}</span>
         </div>
       </div>
 
@@ -135,33 +249,89 @@ function DemoPracticeTab() {
         </p>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         <div className="flex items-center justify-between text-sm">
           <span className="text-slate-500">Your Answer Progress</span>
-          <span className="font-medium text-slate-900">45%</span>
+          <span className="font-medium text-slate-900">{answerProgress}%</span>
         </div>
-        <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
-          <div className="h-full bg-blue-600 rounded-full transition-all duration-500" style={{ width: '45%' }} />
+        <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-blue-600 rounded-full transition-all duration-300" 
+            style={{ width: `${answerProgress}%` }}
+          />
         </div>
-      </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <Button className="btn-primary w-full justify-center gap-2" disabled>
-          <Mic className="w-4 h-4" />
-          Recording... (Demo)
-        </Button>
-        <Button variant="outline" className="w-full justify-center gap-2">
-          <MessageSquare className="w-4 h-4" />
-          Type Answer
-        </Button>
-      </div>
+        {!showTranscript ? (
+          <div className="grid grid-cols-2 gap-3">
+            <Button 
+              className={cn('btn-primary w-full justify-center gap-2', isRecording && 'bg-red-600 hover:bg-red-700')}
+              onClick={isRecording ? onStopRecording : onStartRecording}
+              disabled={answerProgress >= 100}
+            >
+              {isRecording ? (
+                <>
+                  <Pause className="w-4 h-4" />
+                  Stop Recording
+                </>
+              ) : (
+                <>
+                  <Mic className="w-4 h-4" />
+                  Start Recording
+                </>
+              )}
+            </Button>
+            <Button variant="outline" className="w-full justify-center gap-2" onClick={() => setShowTranscript(true)}>
+              <MessageSquare className="w-4 h-4" />
+              Type Answer
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <textarea
+              value={typedAnswer}
+              onChange={(e) => setTypedAnswer(e.target.value)}
+              placeholder="Type your answer here... Press Enter to send"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  onSendAnswer();
+                }
+              }}
+              className="w-full min-h-[120px] p-4 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+              rows={4}
+            />
+            <div className="flex justify-end gap-3">
+              <Button variant="ghost" onClick={() => setShowTranscript(false)}>
+                <X className="w-4 h-4" />
+                Cancel
+              </Button>
+              <Button className="btn-primary gap-2" onClick={onSendAnswer} disabled={!typedAnswer.trim()}>
+                <Send className="w-4 h-4" />
+                Send Answer
+              </Button>
+            </div>
+          </div>
+        )}
 
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-        <p className="text-sm font-medium text-blue-800 mb-2">💡 Try it yourself</p>
-        <p className="text-sm text-blue-700">
-          In a real session, you would click "Record Answer" and speak naturally. 
-          The AI transcribes your response in real-time and generates follow-up questions.
-        </p>
+        {showTranscript && typedAnswer && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 animate-fade-in">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm font-medium text-blue-800">Your Answer (Transcript)</p>
+              <span className="text-xs text-blue-600">Ready for AI analysis</span>
+            </div>
+            <p className="text-blue-700 text-sm leading-relaxed">{typedAnswer}</p>
+          </div>
+        )}
+
+        {!showTranscript && answerProgress === 0 && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+            <p className="text-sm font-medium text-blue-800 mb-2">💡 Try it yourself</p>
+            <p className="text-sm text-blue-700">
+              Click "Start Recording" to simulate a voice answer, or "Type Answer" to write your response. 
+              The AI will analyze your answer and generate instant feedback.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
