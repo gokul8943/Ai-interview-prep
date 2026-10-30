@@ -16,23 +16,15 @@ export default function FAQSection({ className }: FAQSectionProps) {
     },
     {
       question: 'Is IntelliPrep free to use?',
-      answer: 'Yes, all core features are currently free. This includes access to all 10+ interview domains, 4 experience levels, unlimited practice sessions, voice and text input, and full AI feedback reports. There is no trial period, no credit card required, and no feature limits on the free tier. Premium features may be added in the future, but the current functionality will remain free.',
+      answer: 'Yes, all core features are currently free. This includes access to all 10+ interview domains, 4 experience levels, unlimited practice sessions, voice and text input, and full AI feedback reports. There is no trial period, no credit card required, and no feature limits on the free tier.',
     },
     {
       question: 'Which interview roles are supported?',
       answer: 'IntelliPrep currently supports 10 technical domains: Frontend Development, Backend Development, Full Stack Development, Mobile Development, DevOps & Cloud, Data Science & Analytics, Machine Learning & AI, Cybersecurity, Blockchain, and Game Development. Each domain includes 5-8 specific topics you can select for targeted practice.',
     },
     {
-      question: 'Can I practice technical and HR interviews?',
-      answer: 'Yes. Technical interviews are fully supported across all domains. HR/behavioral interview practice is available as a domain option. System design interviews are supported for senior-level practice. Case studies and aptitude/logic sections are planned for future releases but not yet implemented.',
-    },
-    {
       question: 'Does IntelliPrep support voice-based interviews?',
       answer: 'Yes. You can answer questions using voice input with real-time speech-to-text transcription (using the Web Speech API). Text input is also available. Voice transcription runs in your browser — audio is not sent to our servers for transcription. The transcribed text is then sent to the AI for feedback generation.',
-    },
-    {
-      question: 'How does the AI generate interview questions?',
-      answer: 'When you create an interview, you select a domain, specific topics, experience level, and question count. The backend sends this context to Google\'s Gemini API, which generates relevant questions. Questions are not pulled from a static database — they\'re generated fresh for each session based on your exact configuration.',
     },
     {
       question: 'What kind of feedback will I receive?',
@@ -45,10 +37,6 @@ export default function FAQSection({ className }: FAQSectionProps) {
     {
       question: 'Is my interview data private?',
       answer: 'Yes. Your interview responses, transcripts, and feedback are stored in your account and are not shared publicly. We do not use your data for AI model training. Data is encrypted at rest. You can delete individual sessions or your entire account at any time. Third-party AI processing (Gemini API) receives only the minimum data needed for each request — review Google\'s data policy for their practices.',
-    },
-    {
-      question: 'Can colleges and training institutes use IntelliPrep?',
-      answer: 'Yes. IntelliPrep can be used by educational institutions for student interview preparation. There\'s no institutional licensing or admin dashboard currently — each student creates their own account. For bulk access or integration requests, please contact us. We\'re exploring institutional features for future releases.',
     },
   ];
 

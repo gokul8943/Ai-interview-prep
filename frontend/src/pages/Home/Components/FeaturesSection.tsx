@@ -1,4 +1,4 @@
-import { Bot, FileText, BarChart3, TrendingUp, CheckCircle, AlertCircle } from 'lucide-react';
+import { Bot, FileText, BarChart3, CheckCircle, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface FeaturesSectionProps {
@@ -18,9 +18,7 @@ export default function FeaturesSection({ className }: FeaturesSectionProps) {
         'Topic-specific question selection within each domain',
         'Voice or text-based answer input',
       ],
-      preview: (
-        <FeaturePreviewMockInterview />
-      ),
+      preview: <FeaturePreviewMockInterview />,
     },
     {
       icon: FileText,
@@ -31,11 +29,8 @@ export default function FeaturesSection({ className }: FeaturesSectionProps) {
         'Topic-level granularity (e.g., React, TypeScript, Web Performance)',
         'Difficulty-appropriate question complexity',
         'Mix of theoretical and practical questions',
-        'Note: Resume upload and JD matching are planned for future releases',
       ],
-      preview: (
-        <FeaturePreviewQuestionSelection />
-      ),
+      preview: <FeaturePreviewQuestionSelection />,
     },
     {
       icon: BarChart3,
@@ -48,43 +43,26 @@ export default function FeaturesSection({ className }: FeaturesSectionProps) {
         'Overall recommendation summary',
         'Suggested next steps for improvement',
       ],
-      preview: (
-        <FeaturePreviewFeedback />
-      ),
-    },
-    {
-      icon: TrendingUp,
-      title: 'Interview Performance Insights',
-      description: 'Track your progress over time with historical performance data. Compare sessions to identify trends and measure improvement.',
-      capabilities: [
-        'Session history with dates and roles',
-        'Communication score trends',
-        'Strengths and improvements across sessions',
-        'Previous interview summaries accessible',
-        'Note: Advanced analytics dashboard is in development',
-      ],
-      preview: (
-        <FeaturePreviewInsights />
-      ),
+      preview: <FeaturePreviewFeedback />,
     },
   ];
 
   return (
-    <section id="features" className={cn('py-20 sm:py-28 bg-slate-50', className)}>
+    <section id="features" className={cn('py-20 sm:py-24 bg-slate-50', className)}>
       <div className="section-container">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="section-heading mb-6">Features That Move the Needle</h2>
           <p className="section-subheading mx-auto">
             Every feature is designed to address a specific interview preparation challenge — no fluff, just practical tools that work.
           </p>
         </div>
 
-        <div className="space-y-16">
+        <div className="space-y-12">
           {features.map((feature, index) => (
             <div
               key={index}
               className={cn(
-                'grid lg:grid-cols-2 gap-12 items-center',
+                'grid lg:grid-cols-2 gap-10 items-center',
                 index % 2 === 1 && 'lg:[&>*:first-child]:order-2'
               )}
             >
@@ -94,7 +72,7 @@ export default function FeaturesSection({ className }: FeaturesSectionProps) {
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">{feature.title}</h3>
                 <p className="text-slate-600 leading-relaxed mb-6 text-lg">{feature.description}</p>
-                
+
                 <div className="space-y-3">
                   {feature.capabilities.map((capability, capIndex) => (
                     <div key={capIndex} className="flex items-start gap-3">
@@ -200,17 +178,17 @@ function FeaturePreviewFeedback() {
         <MetricCard label="Technical Depth" value="82%" color="teal" />
       </div>
       <div className="space-y-3">
-        <FeedbackItem 
-          icon="CheckCircle" 
-          color="teal" 
-          title="Strengths" 
-          items={['Clear explanation of virtual DOM concept', 'Good practical example provided']} 
+        <FeedbackItem
+          icon="CheckCircle"
+          color="teal"
+          title="Strengths"
+          items={['Clear explanation of virtual DOM concept', 'Good practical example provided']}
         />
-        <FeedbackItem 
-          icon="AlertCircle" 
-          color="amber" 
-          title="Areas for Improvement" 
-          items={['Add more detail on reconciliation process', 'Explain performance trade-offs']} 
+        <FeedbackItem
+          icon="AlertCircle"
+          color="amber"
+          title="Areas for Improvement"
+          items={['Add more detail on reconciliation process', 'Explain performance trade-offs']}
         />
       </div>
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -243,7 +221,7 @@ function FeedbackItem({ icon: IconName, color, title, items }: { icon: string; c
   };
   const IconMap = { CheckCircle, AlertCircle };
   const Icon = IconMap[IconName as keyof typeof IconMap] || CheckCircle;
-  
+
   return (
     <div className={cn('rounded-lg p-3 border', colors[color])}>
       <div className="flex items-center gap-2 mb-2">
@@ -258,36 +236,6 @@ function FeedbackItem({ icon: IconName, color, title, items }: { icon: string; c
           </li>
         ))}
       </ul>
-    </div>
-  );
-}
-
-function FeaturePreviewInsights() {
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-slate-500">Performance History</span>
-        <span className="text-xs text-slate-400">Sample Data</span>
-      </div>
-      <div className="space-y-3">
-        {[
-          { role: 'Frontend Developer', date: 'Jan 15, 2025', score: 78, trend: 'up' },
-          { role: 'Full Stack Developer', date: 'Jan 8, 2025', score: 72, trend: 'up' },
-          { role: 'React Specialist', date: 'Jan 2, 2025', score: 68, trend: 'neutral' },
-        ].map((session, i) => (
-          <div key={i} className="flex items-center justify-between p-3 bg-white border border-slate-200 rounded-lg">
-            <div>
-              <p className="font-medium text-slate-900">{session.role}</p>
-              <p className="text-xs text-slate-500">{session.date}</p>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="font-bold text-slate-900">{session.score}%</span>
-              <TrendingUp className={cn('w-4 h-4', session.trend === 'up' ? 'text-teal-500' : 'text-slate-400')} />
-            </div>
-          </div>
-        ))}
-      </div>
-      <p className="text-xs text-slate-400 text-center">Sample history — actual data requires completed sessions</p>
     </div>
   );
 }

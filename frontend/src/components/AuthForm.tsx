@@ -11,7 +11,6 @@ import FormField from "./FormField";
 
 import { login, register, sendOtp } from "@/services/UserAPi/AuthApi";
 import type { RegisterPayload } from "@/services/UserAPi/AuthApi";
-import LogoSvg from "@/public/logo.svg";
 import useAuthStore from "@/store/AuthStrore";
 
 type FormType = "sign-in" | "sign-up";
@@ -131,95 +130,85 @@ const AuthForm = ({ type }: { type: FormType }) => {
     }
   };
 
-  // const mail = form.getValues("email");
-
   return (
-    <div className="card-border lg:min-w-[566px]">
-      <div className="flex flex-col gap-6 card py-14 px-10">
-        <div className="flex justify-center gap-2">
-          <img src={LogoSvg} alt="logo" height={32} width={38} />
-          <h2 className="text-primary-100">IntelliPrep</h2>
-        </div>
-        <h3 className="text-primary-100">Practice Job Interview with AI</h3>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-5">
+        {!isSignIn && (
+          <FormField
+            control={form.control}
+            name="name"
+            label="Full Name"
+            placeholder="John Doe"
+            type="text"
+          />
+        )}
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 mt-4 form">
-            {!isSignIn && (
-              <FormField
-                control={form.control}
-                name="name"
-                label="Name"
-                placeholder="Your Name"
-                type="text"
-              />
-            )}
+        <div className="flex flex-col gap-2">
+          <FormField
+            control={form.control}
+            name="email"
+            label="Email"
+            placeholder="you@example.com"
+            type="email"
+          />
 
-            <div className="flex justify-between items-end gap-2">
-              <div className="flex-1">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  label="Email"
-                  placeholder="Your email address"
-                  type="email"
-                  // disabled={emailVerified} // disable after verification
-                />
-              </div>
-
-              {!isSignIn && (
-                <Button
-                  type="button"
-                  onClick={handleSendOtp}
-                  className="h-[42px] rounded-2xl bg-blue-200 text-black"
-                  disabled={sendingOtp}
-                >
-                  {sendingOtp ? "Sending..." : "Send OTP"}
-                </Button>
+          {!isSignIn && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleSendOtp}
+              className="w-full justify-center gap-2"
+              disabled={sendingOtp || !form.getValues("email")}
+            >
+              {sendingOtp ? (
+                <>
+                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  Send OTP
+                </>
               )}
-            </div>
-
-            <FormField
-              control={form.control}
-              name="password"
-              label="Password"
-              placeholder="Enter your password"
-              type="password"
-            />
-
-            {!isSignIn && (
-              <FormField
-                control={form.control}
-                name="phone"
-                label="Phone (optional)"
-                placeholder="+15551234567"
-                type="tel"
-              />
-            )}
-
-            <Button className="btn" type="submit" disabled={isSubmitting}>
-              {isSubmitting
-                ? isSignIn
-                  ? "Signing In..."
-                  : "Creating Account..."
-                : isSignIn
-                ? "Sign In"
-                : "Create an Account"}
             </Button>
-          </form>
-        </Form>
+          )}
+        </div>
 
-        <p className="text-center">
-          {isSignIn ? "No account yet?" : "Have an account already?"}
-          <Link
-            to={isSignIn ? "/sign-up" : "/sign-in"}
-            className="font-bold text-user-primary ml-1"
-          >
-            {isSignIn ? "Sign Up" : "Sign In"}
-          </Link>
-        </p>
+        <FormField
+          control={form.control}
+          name="password"
+          label="Password"
+          placeholder="Enter your password"
+          type="password"
+        />
 
-      </div>
-    </div>
+        {!isSignIn && (
+          <FormField
+            control={form.control}
+            name="phone"
+            label="Phone (optional)"
+            placeholder="+15551234567"
+            type="tel"
+          />
+        )}
+
+        <Button className="w-full py-3" type="submit" disabled={isSubmitting}>
+          {isSubmitting
+            ? isSignIn
+              ? "Signing In..."
+              : "Creating Account..."
+            : isSignIn
+            ? "Sign In"
+            : "Create an Account"}
+        </Button>
+      </form>
+    </Form>
   );
 };
 

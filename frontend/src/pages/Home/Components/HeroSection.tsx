@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { CheckCircle, Mic, Volume2, ArrowRight, Sparkles, Users, Award, Clock } from 'lucide-react';
+import { CheckCircle, Mic, Volume2, ArrowRight, Sparkles } from 'lucide-react';
 import useAuthStore from '@/store/AuthStrore';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -24,12 +24,6 @@ export default function HeroSection({ className }: HeroSectionProps) {
   const handleSecondaryCTAClick = () => {
     navigate('/create-interview');
   };
-
-  const trustIndicators = [
-    { icon: Users, label: '10,000+ interviews practiced' },
-    { icon: Award, label: '4.8/5 average rating' },
-    { icon: Clock, label: 'Available 24/7' },
-  ];
 
   return (
     <section id="hero" className={cn('relative overflow-hidden pt-6 sm:pt-10 lg:pt-16 pb-12 sm:pb-16 lg:pb-24', className)}>
@@ -76,13 +70,19 @@ export default function HeroSection({ className }: HeroSectionProps) {
               </Button>
             </div>
 
-            <div className="flex flex-wrap items-center gap-6 text-sm text-slate-600 mb-8">
-              {trustIndicators.map((item, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <item.icon className="w-5 h-5 text-blue-600" />
-                  <span className="font-medium text-slate-700">{item.label}</span>
-                </div>
-              ))}
+            <div className="grid grid-cols-3 gap-6 sm:gap-8 mb-8 pt-6 border-t border-slate-200">
+              <div className="text-center">
+                <p className="text-2xl sm:text-3xl font-bold text-slate-900">10,000+</p>
+                <p className="text-sm text-slate-600 mt-1">Interviews Completed</p>
+              </div>
+              <div className="text-center border-x border-slate-200">
+                <p className="text-2xl sm:text-3xl font-bold text-slate-900">4.8/5</p>
+                <p className="text-sm text-slate-600 mt-1">Average Rating</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl sm:text-3xl font-bold text-slate-900">24/7</p>
+                <p className="text-sm text-slate-600 mt-1">Available Anytime</p>
+              </div>
             </div>
 
             <div className="flex items-center gap-4 text-sm text-slate-500">
