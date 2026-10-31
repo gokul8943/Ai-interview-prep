@@ -11,6 +11,7 @@ interface ProfileUser {
   role?: string;
   createdAt?: string;
   profilePicture?: string;
+  email?: string;
 }
 
 interface ProfileInterview {
@@ -24,18 +25,14 @@ interface ProfileInterview {
   score?: number;
 }
 
-interface ProfileApiData {
-  user: ProfileUser;
-  interview: ProfileInterview[];
-}
-
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState('overview');
-  const [data, setData] = useState<ProfileApiData | null>(null);
+  const [interviews, setInterviews] = useState<ProfileInterview[]>([]);
   const [loading, setLoading] = useState(true);
 
   const authState = useAuthStore();
-  const userId = authState.authState.user?._id;
+  const user = authState.authState.user;
+  const userId = user?._id;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,9 +40,10 @@ export default function ProfilePage() {
       try {
         setLoading(true);
         const response = await getUserByInterviews(userId);
-        setData(response.data.interviews);
+        setInterviews(response.data || []);
       } catch (error) {
         console.error('Error fetching data:', error);
+        setInterviews([]);
       } finally {
         setLoading(false);
       }
@@ -56,28 +54,26 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-lg text-gray-500">Loading profile...</p>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent" />
       </div>
     );
   }
 
-  if (!data) {
+  if (!user) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-lg text-red-500">No data found.</p>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <p className="text-lg text-red-500">User not found.</p>
       </div>
     );
   }
-
-  const { user, interview:interviews } = data;
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <ProfileHeader user={user} />
         <TabsSection activeTab={activeTab} setActiveTab={setActiveTab} />
-        {activeTab === 'overview' && <OverviewTab interviews={interviews}  />}
+        {activeTab === 'overview' && <OverviewTab interviews={interviews} />}
         {activeTab === 'interviews' && <InterviewsTab interviews={interviews} />}
       </div>
     </div>

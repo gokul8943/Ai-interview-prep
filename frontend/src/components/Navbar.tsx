@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logoSvg from '../public/logo.svg';
-import { User, LogOut, User2, Menu, X } from 'lucide-react';
+import { LogOut, User2, Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
 import useAuthStore from '@/store/AuthStrore';
 import { logout as logoutApi } from '@/services/UserAPi/AuthApi';
@@ -11,9 +11,12 @@ const Navbar = () => {
   const { authState, logout } = useAuthStore();
   const user = authState.user;
   const userId = authState.user?._id;
+  const userName = authState.user?.name;
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const isHomePage = location.pathname === '/';
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -37,7 +40,10 @@ const Navbar = () => {
   }, []);
 
   const handleViewProfile = () => {
-    navigate(`/profile/${userId}`);
+    const currentUserId = useAuthStore.getState().authState.user?._id;
+    if (currentUserId) {
+      navigate(`/profile/${currentUserId}`);
+    }
     setDropdownOpen(false);
   };
 
@@ -84,7 +90,7 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex md:items-center md:gap-8">
-            {navLinks.map((link) => (
+            {isHomePage && navLinks.map((link) => (
               <button
                 key={link.label}
                 onClick={() => scrollToSection(link.href.replace('#', ''))}
@@ -97,19 +103,55 @@ const Navbar = () => {
               </button>
             ))}
             <div className="flex items-center gap-3 ml-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleNavigate('/sign-in')}
-              >
-                Log In
-              </Button>
-              <Button
-                className="btn-primary"
-                onClick={() => handleNavigate(user ? '/create-interview' : '/sign-in')}
-              >
-                {user ? 'Dashboard' : 'Start Free Interview'}
-              </Button>
+              {user ? (
+                <div className="relative" ref={dropdownRef}>
+                  <div
+                    className="flex items-center gap-2 cursor-pointer"
+                    onClick={handleToggleDropdown}
+                  >
+                    <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center">
+                      <span className="text-sm font-medium text-slate-700">
+                        {userName?.charAt(0).toUpperCase() || 'U'}
+                      </span>
+                    </div>
+                    <span className="hidden sm:block text-sm font-medium text-slate-700">
+                      {userName}
+                    </span>
+                  </div>
+                  {dropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-slate-200 overflow-hidden z-50 animate-slide-down">
+                      <Button
+                        onClick={handleViewProfile}
+                        className="flex items-center gap-2 w-full px-4 py-2 text-left text-slate-700 hover:bg-slate-100"
+                      >
+                        <User2 className="w-4 h-4" /> View Profile
+                      </Button>
+                      <Button
+                        onClick={handleLogout}
+                        className="flex items-center gap-2 w-full px-4 py-2 text-left text-red-600 hover:bg-slate-100"
+                      >
+                        <LogOut className="w-4 h-4" /> Logout
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleNavigate('/sign-in')}
+                  >
+                    Log In
+                  </Button>
+                  <Button
+                    className="btn-primary"
+                    onClick={() => handleNavigate('/sign-in')}
+                  >
+                    Start Free Interview
+                  </Button>
+                </>
+              )}
             </div>
           </div>
 
@@ -121,8 +163,13 @@ const Navbar = () => {
                   onClick={handleToggleDropdown}
                 >
                   <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center">
-                    <User className="w-5 h-5 text-slate-600" />
+                    <span className="text-sm font-medium text-slate-700">
+                      {userName?.charAt(0).toUpperCase() || 'U'}
+                    </span>
                   </div>
+                  <span className="hidden sm:block text-sm font-medium text-slate-700">
+                    {userName}
+                  </span>
                 </div>
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-slate-200 overflow-hidden z-50 animate-slide-down">
@@ -171,7 +218,7 @@ const Navbar = () => {
         {mobileMenuOpen && (
           <div id="mobile-menu" className="md:hidden py-4 border-t border-slate-200 animate-slide-down">
             <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
+              {isHomePage && navLinks.map((link) => (
                 <button
                   key={link.label}
                   onClick={() => scrollToSection(link.href.replace('#', ''))}
@@ -181,19 +228,39 @@ const Navbar = () => {
                 </button>
               ))}
               <div className="flex flex-col gap-3 pt-4 border-t border-slate-200">
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => handleNavigate('/sign-in')}
-                >
-                  Log In
-                </Button>
-                <Button
-                  className="btn-primary w-full justify-start"
-                  onClick={() => handleNavigate(user ? '/create-interview' : '/sign-in')}
-                >
-                  {user ? 'Dashboard' : 'Start Free Interview'}
-                </Button>
+                {user ? (
+                  <>
+                    <Button
+                      onClick={handleViewProfile}
+                      className="w-full justify-start"
+                    >
+                      <User2 className="w-4 h-4 mr-2" /> View Profile
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={handleLogout}
+                      className="w-full justify-start text-red-600 hover:bg-red-50"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" /> Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={() => handleNavigate('/sign-in')}
+                    >
+                      Log In
+                    </Button>
+                    <Button
+                      className="btn-primary w-full justify-start"
+                      onClick={() => handleNavigate('/sign-in')}
+                    >
+                      Start Free Interview
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>
