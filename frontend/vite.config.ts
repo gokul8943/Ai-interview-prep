@@ -17,6 +17,28 @@ export default defineConfig({
   server: {
     host: 'localhost',
     port: 5173,
-    https: undefined as any, 
+    https: undefined as any,
+    proxy: {
+      '/auth': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/interview': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/admin': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/health': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
 })

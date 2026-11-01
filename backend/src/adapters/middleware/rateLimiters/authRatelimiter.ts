@@ -1,56 +1,15 @@
-import { NextFunction, Request, Response } from "express";
+import { RequestHandler } from "express";
+import RateLimiterService from "../../../framework/services/rateLimiter/RateLimiterServices";
+import { createIpRateLimiter } from "./createRateLimiter";
 
-import RateLimiterService
-from "../../../framework/services/rateLimiter/RateLimiterServices";
+export const authRateLimiter: RequestHandler = createIpRateLimiter(
+    "login",
+    async (key) => RateLimiterService.login(key),
+    "Too many login attempts"
+);
 
-import { getRateLimitKey }
-from "../../../utils/getRateLimitKey";
-
-export const authRateLimiter = async (
-
-    req: Request,
-
-    res: Response,
-
-    next: NextFunction
-
-) => {
-
-    try {
-
-        const key = getRateLimitKey(req, "login");
-
-        const result =
-            await RateLimiterService.login(key);
-
-        res.setHeader(
-            "RateLimit-Limit",
-            result.limit
-        );
-
-        res.setHeader(
-            "RateLimit-Remaining",
-            result.remaining
-        );
-
-        if (!result.allowed) {
-
-            return res.status(429).json({
-
-                success: false,
-
-                message: "Too many login attempts"
-
-            });
-
-        }
-
-        next();
-
-    } catch (err) {
-
-        next(err);
-
-    }
-
-};
+export const signupRateLimiter: RequestHandler = createIpRateLimiter(
+    "signup",
+    async (key) => RateLimiterService.signup(key),
+    "Too many signup attempts"
+);

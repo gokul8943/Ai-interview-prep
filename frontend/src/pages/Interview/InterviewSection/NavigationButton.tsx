@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import React from 'react';
+import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 
 interface NavigationButtonsProps {
   currentIndex: number;
@@ -19,22 +20,32 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
   const isLastQuestion = currentIndex === total - 1;
 
   return (
-    <div className="flex justify-between mt-6">
+    <div className="flex justify-between pt-4 border-t border-slate-200">
       <Button
         onClick={onPrev}
         disabled={currentIndex === 0}
-        className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+        variant="outline"
+        className="px-4 py-2"
       >
+        <ArrowLeft className="w-4 h-4 mr-2" />
         Previous
       </Button>
 
       <Button
-        onClick={isLastQuestion ? onFinish : onNext} // ✅ key fix here
-        className={`px-4 py-2 rounded text-white ${
-          isLastQuestion ? 'bg-green-600' : 'bg-blue-500'
-        }`}
+        onClick={isLastQuestion ? onFinish : onNext}
+        className="btn-primary px-6 py-2 flex items-center gap-2"
       >
-        {isLastQuestion ? 'Finish' : 'Next'}
+        {isLastQuestion ? (
+          <>
+            Finish
+            <Check className="w-4 h-4" />
+          </>
+        ) : (
+          <>
+            Next
+            <ArrowRight className="w-4 h-4" />
+          </>
+        )}
       </Button>
     </div>
   );

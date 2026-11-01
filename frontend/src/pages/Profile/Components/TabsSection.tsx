@@ -18,7 +18,7 @@ const TabsSection: React.FC<TabsSectionProps> = ({ activeTab, setActiveTab }) =>
             className={`pb-4 px-2 font-medium capitalize transition-colors relative ${
               activeTab === tab 
                 ? 'text-blue-600' 
-                : 'text-slate-100 hover:text-slate-400'
+                : 'text-slate-500 hover:text-slate-700'
             }`}
           >
             {tab}

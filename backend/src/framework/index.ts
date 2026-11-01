@@ -1,47 +1,45 @@
-import express from "express"
-import dotenv from "dotenv"
-import cors from "cors"
-import morgan from "morgan"
-import cookieParser from "cookie-parser"
-import { dbConnection } from "./database/dbConnection"
-import authRouter from "../adapters/routes/auth.routes"
-import interviewRouter from '../adapters/routes/interview.routes'
-import adminRouter from '../adapters/routes/admin.routes'
-import healthRouter from '../adapters/routes/health.routes'
+import { env } from "./config/env";
+import { buildApp } from "./app";
+import { dbConnection } from "./database/dbConnection";
+import { connectRedis } from "./config/redis";
+import fs from "fs";
+import path from "path";
+import https from "https";
 
-dotenv.config()
-const app = express()
-const Port = process.env.PORT || 8000
-const allowedOrigins = ['https://localhost:5173', 'https://intelliprep-kw3t.onrender.com']
+async function main(): Promise<void> {
+    await dbConnection();
+    await connectRedis();
 
-const corsOptions: cors.CorsOptions = {
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
+    const app = buildApp();
+
+    if (env.isProduction) {
+        app.listen(env.port, () => {
+            console.log(`[server]: Server is running at http://localhost:${env.port}`);
+        });
+    } else {
+        const certPath = path.join(process.env.USERPROFILE || "", ".vite-plugin-mkcert", "cert.pem");
+        const keyPath = path.join(process.env.USERPROFILE || "", ".vite-plugin-mkcert", "dev.pem");
+
+        if (fs.existsSync(certPath) && fs.existsSync(keyPath)) {
+            const server = https.createServer(
+                {
+                    cert: fs.readFileSync(certPath),
+                    key: fs.readFileSync(keyPath),
+                },
+                app
+            );
+            server.listen(env.port, () => {
+                console.log(`[server]: Server is running at https://localhost:${env.port}`);
+            });
         } else {
-            callback(new Error("Not allowed by CORS"));
+            app.listen(env.port, () => {
+                console.log(`[server]: Server is running at http://localhost:${env.port} (HTTP fallback - certs not found)`);
+            });
         }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-};
+    }
+}
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(morgan('dev'));
-app.use(cors(
-    corsOptions
-))
-app.use(cookieParser());
-
-app.use('/auth', authRouter)
-app.use('/interview', interviewRouter)
-app.use('/admin',adminRouter)
-app.use('/health',healthRouter)
-
-dbConnection()
-
-app.listen(Port, () => {
-    console.log(`[server]: Server is running at http://localhost:${Port}`);;
+main().catch((err) => {
+    console.error("[server]: Fatal startup error:", err instanceof Error ? err.message : err);
+    process.exit(1);
 });

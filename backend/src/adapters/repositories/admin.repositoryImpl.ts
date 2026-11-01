@@ -2,6 +2,8 @@ import { Model } from "mongoose";
 import { AdminRepository } from "../interfaces/Admin/AdminRepository";
 import { IUserSchema } from "../interfaces/IUserSchema";
 
+const USER_PROJECTION = "-password -phone -googleId";
+
 export class AdminRepositoryImpl implements AdminRepository {
     private readonly Usermodel: Model<IUserSchema>
     constructor(userModel: Model<IUserSchema>) {
@@ -9,33 +11,18 @@ export class AdminRepositoryImpl implements AdminRepository {
     }
 
     async getUserById(userId: string): Promise<any> {
-        try {
-            const user = await this.Usermodel.findById(userId)            
-            return user;
-        } catch (error) {
-            console.error("An error occurred on admin repo", error);
-            return false;
-        }
+        return this.Usermodel.findById(userId).select(USER_PROJECTION);
     }
 
     async getUsers(): Promise<any> {
-        try {
-            const users = await this.Usermodel.find({});
-            return users;
-        } catch (error) {
-            console.error("An error occurred on admin repo", error);
-            return false;
-        }
+        return this.Usermodel.find({}).select(USER_PROJECTION);
     }
 
     async userAccess(userId: string, access: boolean): Promise<any> {
-        try {
-            const user = await this.Usermodel.findByIdAndUpdate(userId, { isVerified: access })
-            return user;
-        } catch (error) {
-            console.error("An error occurred on admin repo", error);
-            return false;
-        }
+        return this.Usermodel.findByIdAndUpdate(
+            userId,
+            { isVerified: access },
+            { new: true }
+        ).select(USER_PROJECTION);
     }
-
 }

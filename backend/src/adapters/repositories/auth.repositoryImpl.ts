@@ -2,31 +2,34 @@ import { Model } from "mongoose";
 import { IUserSchema } from "../interfaces/IUserSchema";
 import { AuthRepository } from "../interfaces/AuthRepository";
 
-
 export class AuthRepositoryImpl implements AuthRepository {
-    private readonly UserModel: Model<IUserSchema>
+    private readonly UserModel: Model<IUserSchema>;
 
     constructor(userModel: Model<IUserSchema>) {
-        this.UserModel = userModel
+        this.UserModel = userModel;
     }
+
     async signUp(userData: any): Promise<any> {
-        try {
-            const user = await this.UserModel.create(userData)
-            return user;
-        } catch (error) {
-            console.error("An error occoured", error)
-        }
+        return this.UserModel.create(userData);
     }
 
+    async findByEmail(email: string): Promise<any> {
+        return this.UserModel.findOne({ email });
+    }
 
-    async Login(email: string): Promise<any> {
-        try {
-            const userData = await this.UserModel.findOne({ email: email });
+    async findByPhone(phone: string): Promise<any> {
+        return this.UserModel.findOne({ phone });
+    }
 
-            return userData;
-        } catch (error) {
-            console.error("An error occurred on auth repo", error);
-            return false;
-        }
+    async findById(userId: string): Promise<any> {
+        return this.UserModel.findById(userId);
+    }
+
+    async updatePassword(userId: string, passwordHash: string): Promise<void> {
+        await this.UserModel.updateOne({ _id: userId }, { $set: { password: passwordHash } });
+    }
+
+    async markVerified(email: string): Promise<void> {
+        await this.UserModel.updateOne({ email }, { $set: { isVerified: true } });
     }
 }

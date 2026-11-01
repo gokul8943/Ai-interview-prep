@@ -4,29 +4,27 @@ import { OtpRepository } from "../interfaces/OtpRepository";
 
 export class OtpRepositoryImpl implements OtpRepository {
     private readonly OtpModel: Model<IOTPSchema>;
+    private readonly maxAttempts: number;
 
-    constructor(otpModel: Model<IOTPSchema>) {
+    constructor(otpModel: Model<IOTPSchema>, maxAttempts: number) {
         this.OtpModel = otpModel;
+        this.maxAttempts = maxAttempts;
     }
 
-    async createOtp(email: string, otp: string): Promise<any> {
-        try {
-            const result = await this.OtpModel.findOneAndUpdate(
-                { email },
-                { otp, email, createdAt: new Date() },
-                { upsert: true, new: true }
-              );
-            return result
-        } catch (error) {
-            console.error("An error occurred on otp repo", error);
-            return false;
-        }
-  
+    async createOtp(email: string, otpHash: string): Promise<any> {
+        return this.OtpModel.findOneAndUpdate(
+            { email },
+            { $set: { otp: otpHash, attempts: 0, createdAt: new Date() } },
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+        );
     }
 
-    async verifyOtp(email: string, otp: number): Promise<any> {
-        const record = await this.OtpModel.findOne({ email:email, otp:otp });
-        return record;
+    async consumeAttempt(email: string): Promise<any> {
+        return this.OtpModel.findOneAndUpdate(
+            { email, attempts: { $lt: this.maxAttempts } },
+            { $inc: { attempts: 1 } },
+            { new: true }
+        );
     }
 
     async deleteOtp(email: string): Promise<void> {

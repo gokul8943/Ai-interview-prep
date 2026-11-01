@@ -1,4 +1,4 @@
-import RedisRateLimitStore from "../RateLimiterStore"
+import { getRateLimitStore } from "../RateLimiterStore";
 
 interface RateLimitOptions {
     key: string;
@@ -10,20 +10,14 @@ class FixedWindow {
 
     async allowRequest(options: RateLimitOptions) {
 
-        const {
-            key,
-            windowMs,
-            maxRequests
-        } = options;
+        const { key, windowMs, maxRequests } = options;
 
-        const count = await RedisRateLimitStore.increment(key);
+        const store = getRateLimitStore();
 
-        // First request → set expiry
+        const count = await store.increment(key);
+
         if (count === 1) {
-            await RedisRateLimitStore.expire(
-                key,
-                Math.ceil(windowMs / 1000)
-            );
+            await store.expire(key, Math.ceil(windowMs / 1000));
         }
 
         const allowed = count <= maxRequests;

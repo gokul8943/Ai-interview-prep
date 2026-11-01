@@ -8,6 +8,9 @@ export class UserController {
     async getUserInterviews(req: Request, res: Response) {
         try {
             const userId = req.params.userId;
+            if (userId !== req.user!.userId) {
+                return res.status(403).json({ message: "Forbidden" });
+            }
             const interviews = await this.getUserInterviewUseCase.execute(userId);
             res.status(200).json({ message: "User interviews fetched successfully", interviews });
         } catch (error) {

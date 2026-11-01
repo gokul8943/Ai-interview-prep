@@ -1,12 +1,26 @@
-export class VerifyOtp {
-    constructor(private otpRepository: any) {}
+import { OtpRepository } from "../../adapters/interfaces/OtpRepository";
+import { AuthRepository } from "../../adapters/interfaces/AuthRepository";
+import { BadRequestError } from "../../adapters/errors/httpErrors";
+import { constantTimeEquals, sha256 } from "../../utils/tokenCrypto";
 
-    async execute(email: string, otp: number) {
-        const otpRecord = await this.otpRepository.verifyOtp(email, otp);
-        if (!otpRecord) {
-            throw new Error('Invalid OTP');
+export class VerifyOtp {
+    constructor(
+        private otpRepository: OtpRepository,
+        private authRepository: AuthRepository
+    ) { }
+
+    async execute(email: string, otp: string): Promise<void> {
+        const record = await this.otpRepository.consumeAttempt(email);
+        if (!record) {
+            throw new BadRequestError("Invalid or expired OTP");
         }
+
+        const presentedHash = sha256(otp);
+        if (!constantTimeEquals(String(record.otp), presentedHash)) {
+            throw new BadRequestError("Invalid or expired OTP");
+        }
+
         await this.otpRepository.deleteOtp(email);
-        return true;
+        await this.authRepository.markVerified(email);
     }
 }

@@ -187,7 +187,7 @@ const Interview: React.FC = () => {
   if (loading) return <p className="text-center mt-10">Loading questions...</p>;
 
   return (
-    <div className="min-h-screen p-5">
+    <div className="min-h-screen bg-slate-50 p-5">
       <div className="max-w-4xl mx-auto space-y-6">
         {summary ? (
           <div className="bg-gray-50 border rounded-2xl p-6 shadow-md">
