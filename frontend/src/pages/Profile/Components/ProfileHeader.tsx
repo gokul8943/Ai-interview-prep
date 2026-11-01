@@ -13,7 +13,7 @@ interface ProfileHeaderProps {
 
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => (
   <Card className="mb-8 overflow-hidden bg-white border-slate-200 shadow-sm">
-    <div className="h-32 bg-gradient-to-r from-blue-600 to-indigo-600" />
+    <div className="h-32 bg-gradient-to-r from-blue-100 to-indigo-200" />
     <CardContent className="relative pt-0 pb-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 -mt-16 sm:-mt-12">
         <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-white flex items-center justify-center text-3xl sm:text-4xl font-bold text-blue-600 border-4 border-white shadow-lg">

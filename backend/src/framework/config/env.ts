@@ -54,7 +54,8 @@ function buildConfig() {
         frontendUrls.push(
             "https://localhost:5173",
             "http://localhost:5173",
-            "http://localhost:4173"
+            "http://localhost:4173",
+            "https://localhost:5000"
         );
     }
 

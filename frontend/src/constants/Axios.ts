@@ -19,8 +19,8 @@ let refreshPromise: Promise<void> | null = null;
 
 const refreshSession = async (): Promise<void> => {
   if (!refreshPromise) {
-    refreshPromise = axios
-      .post(`${BASE_URL}/auth/v1/refresh`, {}, { withCredentials: true })
+    refreshPromise = instance
+      .post('/auth/v1/refresh')
       .then((res) => {
         const { accessToken, user } = res.data;
         if (accessToken) {

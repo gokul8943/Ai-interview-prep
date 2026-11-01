@@ -26,7 +26,7 @@ describe("POST /auth/v1/sign-in", () => {
         const refreshCookie = setCookie.find((cookie) => cookie.startsWith("ip_rt="));
         expect(refreshCookie).toBeTruthy();
         expect(refreshCookie).toMatch(/HttpOnly/i);
-        expect(refreshCookie).toMatch(/SameSite=Lax/i);
+        expect(refreshCookie).toMatch(/SameSite=None/i);
         expect(refreshCookie).toMatch(/Path=\/auth/i);
     });
 
