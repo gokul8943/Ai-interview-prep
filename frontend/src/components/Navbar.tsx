@@ -20,22 +20,26 @@ const Navbar = () => {
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const desktopDropdownRef = useRef<HTMLDivElement>(null);
+  const mobileDropdownRef = useRef<HTMLDivElement>(null);
 
   const handleToggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    const target = event.target as Node;
+    const desktopOpen = desktopDropdownRef.current?.contains(target);
+    const mobileOpen = mobileDropdownRef.current?.contains(target);
+    if (!desktopOpen && !mobileOpen) {
       setDropdownOpen(false);
     }
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('click', handleClickOutside);
     };
   }, []);
 
@@ -104,7 +108,7 @@ const Navbar = () => {
             ))}
             <div className="flex items-center gap-3 ml-4">
               {user ? (
-                <div className="relative" ref={dropdownRef}>
+                <div className="relative" ref={desktopDropdownRef}>
                   <div
                     className="flex items-center gap-2 cursor-pointer"
                     onClick={handleToggleDropdown}
@@ -157,7 +161,7 @@ const Navbar = () => {
 
           <div className="flex md:hidden items-center gap-3">
             {user ? (
-              <div className="relative" ref={dropdownRef}>
+              <div className="relative" ref={mobileDropdownRef}>
                 <div
                   className="flex items-center gap-2 cursor-pointer"
                   onClick={handleToggleDropdown}

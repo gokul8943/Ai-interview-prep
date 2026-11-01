@@ -8,11 +8,11 @@ const SignUp = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-white relative overflow-hidden">
       <div className="absolute inset-0 bg-[url('/pattern.png')] bg-top bg-no-repeat opacity-30" />
-      <div className="absolute -top-1/2 -right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-      <div className="absolute -bottom-1/2 -left-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl" />
+      <div className="absolute -top-1/2 -right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl -z-10" />
+      <div className="absolute -bottom-1/2 -left-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl -z-10" />
 
       <div className="relative flex min-h-screen items-center justify-center p-4 sm:p-8">
-        <div className="w-full max-w-4xl">
+        <div className="relative z-10 w-full max-w-4xl">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div className="hidden lg:block animate-slide-up">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-medium mb-6">
@@ -77,7 +77,7 @@ const SignUp = () => {
             </div>
 
             <div className="relative animate-fade-in">
-              <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl overflow-hidden">
+              <div className="relative z-10 bg-white rounded-2xl border border-slate-200 shadow-2xl overflow-hidden">
                 <div className="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -101,7 +101,7 @@ const SignUp = () => {
                   <AuthForm type="sign-up" />
                 </div>
 
-                <div className="absolute -bottom-6 -right-6 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl" />
+                <div className="absolute -bottom-6 -right-6 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl -z-10" />
               </div>
             </div>
           </div>
