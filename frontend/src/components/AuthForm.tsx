@@ -9,8 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import FormField from "./FormField";
 
-import { login, register, sendOtp } from "@/services/UserAPi/AuthApi";
-import type { RegisterPayload } from "@/services/UserAPi/AuthApi";
+import { login, register } from "@/services/UserAPi/AuthApi";
 import useAuthStore from "@/store/AuthStrore";
 
 type FormType = "sign-in" | "sign-up";
@@ -36,7 +35,6 @@ const authFormSchema = (type: FormType) =>
 const AuthForm = ({ type }: { type: FormType }) => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [sendingOtp, setSendingOtp] = useState(false);
   const formSchema = authFormSchema(type);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -51,35 +49,6 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
   const isSignIn = type === "sign-in";
 
-  const handleSendOtp = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (sendingOtp) return;
-
-    const email = form.getValues("email");
-    try {
-      z.string().email("Enter a valid email").parse(email);
-      setSendingOtp(true);
-      const response = await sendOtp(email);
-      if (response.status === 200) {
-        localStorage.setItem("email", email);
-        localStorage.setItem("otpSource", "sign-up");
-        toast.success("OTP sent successfully");
-        navigate("/otp-verify");
-      } else {
-        toast.error("Failed to send OTP. Try again later.");
-      }
-    } catch (error: any) {
-      if (error?.errors?.[0]?.message) {
-        toast.error(error.errors[0].message);
-      } else {
-        const message = error?.response?.data?.message || "Failed to send OTP. Please try again.";
-        toast.error(message);
-      }
-    } finally {
-      setSendingOtp(false);
-    }
-  };
-
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     if (isSubmitting) return;
     setIsSubmitting(true);
@@ -93,7 +62,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
           navigate("/");
         }
       } else {
-        const payload: RegisterPayload = {
+        const payload = {
           name: data.name ?? "",
           email: data.email,
           password: data.password,
@@ -103,17 +72,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         }
         const response = await register(payload);
         if (response.status === 201) {
-          localStorage.setItem("email", data.email);
-          localStorage.setItem("otpSource", "sign-up");
-          toast.success(response.data?.message || "Account created successfully. Please verify your email.");
-          try {
-            await sendOtp(data.email);
-          } catch (e) {
-            // ignore otp send errors, user can resend from otp page
-          }
-          navigate("/otp-verify");
-        } else {
-          toast.success("Account created successfully. Please verify your email.");
+          toast.success("Account created successfully.");
           navigate("/sign-in");
         }
       }
@@ -151,33 +110,6 @@ const AuthForm = ({ type }: { type: FormType }) => {
             placeholder="you@example.com"
             type="email"
           />
-
-          {!isSignIn && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleSendOtp}
-              className="w-full justify-center gap-2"
-              disabled={sendingOtp || !form.getValues("email")}
-            >
-              {sendingOtp ? (
-                <>
-                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
-                  Sending...
-                </>
-              ) : (
-                <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  Send OTP
-                </>
-              )}
-            </Button>
-          )}
         </div>
 
         <FormField

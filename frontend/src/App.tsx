@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Navbar from "./components/Navbar";
-import OtpPage from "./pages/Otp";
 import HomePage from "./pages/Home/HomePage";
 import CreateInterview from "./pages/CreateInterview/CreateInterview";
 import Interview from "./pages/Interview/Interview";
@@ -32,7 +31,6 @@ const App = () => {
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
-            <Route path="/otp-verify" element={<OtpPage />} />
             <Route
               path="/create-interview"
               element={
