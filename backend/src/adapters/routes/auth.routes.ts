@@ -34,7 +34,7 @@ const passwordService = new BcryptPasswordService();
 const signUp = new SignUp(authRepository, passwordService);
 const login = new Login(authRepository, passwordService, sessionRepository, tokenService, env.refreshTokenExpiresSeconds);
 const findUserByEmail = new FindUserByEmail(authRepository);
-const generateOtp = new GenerateOtp(otpRepository, authRepository, (email, otp) =>
+const generateOtp = new GenerateOtp(otpRepository, authRepository, (email: string, otp: string) =>
     sendOtpEmail(email, otp, env.otpExpiresMinutes)
 );
 const verifyOtp = new VerifyOtp(otpRepository, authRepository);
