@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { SignUp } from "../../usecase/Auth/signUp";
-import { Login, LoginMeta } from "../../usecase/Auth/login";
+import { SignUp } from "../../usecase/Auth/SignUp";
+import { Login, LoginMeta } from "../../usecase/Auth/Login";
 import { FindUserByEmail } from "../../usecase/Auth/findUserByEmail";
-import { GenerateOtp } from "../../usecase/Auth/generateOtp";
-import { VerifyOtp } from "../../usecase/Auth/verifyOtp";
+import { GenerateOtp } from "../../usecase/Auth/GenerateOtp";
+import { VerifyOtp } from "../../usecase/Auth/VerifyOtp";
 import { Refresh } from "../../usecase/Auth/refresh";
 import { Logout } from "../../usecase/Auth/logout";
 import { LogoutAll } from "../../usecase/Auth/logoutAll";

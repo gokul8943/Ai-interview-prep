@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { AuthRepositoryImpl } from "../repositories/auth.repositoryImpl";
 import { AuthController } from "../controllers/auth.controller";
-import { SignUp } from "../../usecase/Auth/signUp";
-import { Login } from "../../usecase/Auth/login";
+import { SignUp } from "../../usecase/Auth/SignUp";
+import { Login } from "../../usecase/Auth/Login";
 import { FindUserByEmail } from "../../usecase/Auth/findUserByEmail";
-import { VerifyOtp } from "../../usecase/Auth/verifyOtp";
-import { GenerateOtp } from "../../usecase/Auth/generateOtp";
+import { VerifyOtp } from "../../usecase/Auth/VerifyOtp";
+import { GenerateOtp } from "../../usecase/Auth/GenerateOtp";
 import { Refresh } from "../../usecase/Auth/refresh";
 import { Logout } from "../../usecase/Auth/logout";
 import { LogoutAll } from "../../usecase/Auth/logoutAll";

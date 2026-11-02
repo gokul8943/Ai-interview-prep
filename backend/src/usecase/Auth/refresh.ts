@@ -4,7 +4,7 @@ import { TokenService } from "../../adapters/interfaces/TokenService";
 import { UnauthorizedError } from "../../adapters/errors/httpErrors";
 import { generateRefreshToken, sha256 } from "../../utils/tokenCrypto";
 import { toUserDto, UserDto } from "./userDto";
-import { LoginMeta, SessionIssuedResult } from "./login";
+import { LoginMeta, SessionIssuedResult } from "./Login";
 
 const ROTATION_GRACE_MS = 30_000;
 const MAX_GRACE_HOPS = 5;
