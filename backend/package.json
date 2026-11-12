@@ -5,7 +5,7 @@
   "main": "dist/framework/index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon --exec \"node --max-old-space-size=512\" -r ts-node/register src/framework/index.ts",
+    "dev": "nodemon --exec \"node --max-old-space-size=512\" -r ts-node/register/transpile-only src/framework/index.ts",
     "start": "node --max-old-space-size=512 dist/framework/index.js",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
